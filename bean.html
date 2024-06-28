@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DICKSON Hub</title>
+  <link rel="stylesheet" href="sidenav.css">
+  <link rel="stylesheet" href="bean.css">
+  <link rel="stylesheet" href="watermark.css">
+  <link rel="stylesheet" href="fixed.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+
+<body>
+  <!-- Simulate a smartphone / tablet -->
+  <div class="mobile-container">
+
+    <!-- Side Navigation -->
+    <div id="sidenav" class="sidenav">
+      <a href="javascript:void(0)" class="closebtn" onclick="toggleNav()">&times;</a>
+      <a href="app.html">Home</a>
+      <a href="earn.html">Offerwall</a>
+      <a href="task.html">Task</a>
+      <a href="bean.html" class="active">Upgrade Account</a>
+      <a href="shop.html">Shop</a>
+      <a href="news.html">New Features/Updates</a>
+      <a href="withdraw.html">Withdraw</a>
+      <a href="whistory.html">Withdrawal History</a>
+      <a href="about.html">About Us</a>
+    </div>
+
+    <a href="javascript:void(0);" class="icon" onclick="toggleNav()">
+      <i class="fa fa-bars"></i>
+    </a>
+
+    <!-- Content -->
+    <div id="content">
+      <div class="card-container">
+        <div class="card card1">
+          <h1>FREE</h1>
+          <h3>Basic Membership</h3>
+          <p> ★ Get access to one quiz contest per month. 
+          <br> ★ Rewards range between ₦50 to ₦150 depending on the number of correct answers.
+          <br>★ The first three winners will be awarded.</p>
+          <a href="#" id="btn1" class="btn" onclick="return placeOrder(1, 0);">Join Now</a>
+        </div>
+
+        <div class="card card2">
+          <h1>₦300</h1>
+          <h3>Bronze Membership</h3>
+          <p>★Pay ₦300 per month and get one quiz contest every week. 
+          <br>★ The first three winners will be awarded ₦120, ₦100, and ₦80 respectively. No matter how small your winnings are, you'll receive the full reward.
+          <br>★ Your time will be increased by 20 seconds.</p>
+          <ul>
+          <li>Help in testing certain featurs and provide honest feedback</li>
+          </ul>
+          <a href="#" id="btn2" class="btn" onclick="return placeOrder(2, 300);">Join Now</a>
+        </div>
+
+        <div class="card card3">
+          <h1>₦600</h1>
+          <h3>Premium Membership</h3>
+          <p>★ Pay ₦600 per month and get one quiz contest every week. 
+          <br>★ The first three winners will be awarded ₦150, ₦100, and ₦100 respectively. No matter how small your winnings are, you will receive the full reward. 
+          <br>★ Your time will be increased by 40 seconds.</p>
+          <ul>
+            <li>Access to private groups</li>
+            <li>First to get claim codes before others</li>
+            <li>Access to new features and new designs</li>
+          </ul>
+          <a href="#" id="btn3" class="btn" onclick="return placeOrder(3, 600);">Join Now</a>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="bottom-nav">
+    <a href="app.html" class="nav-item"><i class="fa fa-home"></i><span>Home</span></a>
+    <a href="gift.html" class="nav-item"><i class="fa fa-gift"></i><span>Claim Code</span></a>
+    <a href="news.html" class="nav-item"><i class="fa fa-bell"></i><span>Notifications</span></a>
+    <a href="profile.html" class="nav-item"><i class="fa fa-user"></i><span>Profile</span></a>
+  </div>
+      
+  <div class="loader" id="loader">
+    <div class="cooking">
+      <div class="bubble"></div>
+      <div class="bubble"></div>
+      <div class="bubble"></div>
+      <div class="bubble"></div>
+      <div class="pot"></div>
+    </div>
+  </div>
+
+  <link rel="stylesheet" href="load.css">
+  <script src="load.js"></script>
+  <script src="sidenav.js"></script>
+  <script src="bean.js"></script>
+</body>
+
+</html>

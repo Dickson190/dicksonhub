@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile</title>
+    <link rel="stylesheet" href="load.css">
+    <link rel="stylesheet" href="profile.css">
+    <link rel="stylesheet" href="sidenav.css">
+     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+     
+</head>
+<body>
+  <div class="mobile-container">
+
+    <!-- Side Navigation -->
+    <div id="sidenav" class="sidenav">
+      <a href="javascript:void(0)" class="closebtn" onclick="toggleNav()">&times;</a>
+          <a href="app.html">Home</a>
+      <a href="earn.html">Offerwall</a>
+      <a href="task.html">Task</a>
+      <a href="bean.html" class="active">Upgrade Account</a>
+      <a href="shop.html">Shop</a>
+      <a href="news.html">New Features/Updates</a>
+      <a href="withdraw.html">Withdraw</a>
+      <a href="whistory.html">Withdrawal History</a>
+      <a href="about.html">About Us</a>
+    </div>
+    
+
+    <a href="javascript:void(0);" class="icon" onclick="toggleNav()">
+      <i class="fa fa-bars"></i>
+    </a>
+
+    <div class="container">
+        
+          
+
+        
+        <h1>User Profile</h1>
+        <form id="profileForm">
+            <div class="form-group">
+                <label for="username">Username:</label>
+                <input type="text" id="username" disabled required>
+            </div>
+            <div class="form-group">
+                <label for="password">Password:</label>
+                <input type="password" id="password" disabled required>
+            </div>
+            <div class="form-group">
+                <label for="uniqueCode">Unique Code:</label>
+                <input type="text" id="uniqueCode" disabled required>
+            </div>
+            <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="email" id="email" required>
+            </div>
+            <div class="form-group">
+                <label for="firstName">First Name:</label>
+                <input type="text" id="firstName" required>
+            </div>
+            <div class="form-group">
+                <label for="lastName">Last Name:</label>
+                <input type="text" id="lastName" required>
+            </div>
+            <div class="form-group">
+                <label for="age">Age:</label>
+                <select id="age" required>
+                    <option value="">Select Age</option>
+                    <!-- Populate ages dynamically -->
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="gender">Gender:</label>
+                <select id="gender" required>
+                    <option value="">Select Gender</option>
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                    <option value="Other">Other</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="state">State:</label>
+                <select id="state" required>
+                    <option value="">Select State</option>
+                    <option value="Abia">Abia</option>
+                    <option value="Adamawa">Adamawa</option>
+                    <option value="Akwa Ibom">Akwa Ibom</option>
+                    <option value="Anambra">Anambra</option>
+                    <option value="Bauchi">Bauchi</option>
+                    <option value="Bayelsa">Bayelsa</option>
+                    <option value="Benue">Benue</option>
+                    <option value="Borno">Borno</option>
+                    <option value="Cross River">Cross River</option>
+                    <option value="Delta">Delta</option>
+                    <option value="Ebonyi">Ebonyi</option>
+                    <option value="Edo">Edo</option>
+                    <option value="Ekiti">Ekiti</option>
+                    <option value="Enugu">Enugu</option>
+                    <option value="Gombe">Gombe</option>
+                    <option value="Imo">Imo</option>
+                    <option value="Jigawa">Jigawa</option>
+                    <option value="Kaduna">Kaduna</option>
+                    <option value="Kano">Kano</option>
+                    <option value="Katsina">Katsina</option>
+                    <option value="Kebbi">Kebbi</option>
+                    <option value="Kogi">Kogi</option>
+                    <option value="Kwara">Kwara</option>
+                    <option value="Lagos">Lagos</option>
+                    <option value="Nasarawa">Nasarawa</option>
+                    <option value="Niger">Niger</option>
+                    <option value="Ogun">Ogun</option>
+                    <option value="Ondo">Ondo</option>
+                    <option value="Osun">Osun</option>
+                    <option value="Oyo">Oyo</option>
+                    <option value="Plateau">Plateau</option>
+                    <option value="Rivers">Rivers</option>
+                    <option value="Sokoto">Sokoto</option>
+                    <option value="Taraba">Taraba</option>
+                    <option value="Yobe">Yobe</option>
+                    <option value="Zamfara">Zamfara</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="phoneNumber">Phone Number:</label>
+                <input type="tel" id="phoneNumber" required>
+                </div>
+                <div class="form-group">
+    <label for="network">Network:</label>
+    <select id="network" required>
+        <option value="">Select Network</option>
+        <option value="MTN">MTN</option>
+        <option value="Glo">Glo</option>
+        <option value="Airtel">Airtel</option>
+        <option value="9mobile">9mobile</option>
+    </select>
+
+            </div>
+            <div class="form-group">
+    <label for="bankName">Bank Name:</label>
+    <input type="text" id="bankName" required>
+</div>
+<div class="form-group">
+    <label for="accountName">Account Name:</label>
+    <input type="text" id="accountName" required>
+</div>
+<div class="form-group">
+    <label for="accountNumber">Account Number:</label>
+    <input type="text" id="accountNumber" required>
+</div>
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+
+
+
+<div class="loader" id="loader">
+    <div class="cooking">
+        <div class="bubble"></div>
+        <div class="bubble"></div>
+        <div class="bubble"></div>
+        <div class="bubble"></div>
+        <div class="pot"></div>
+    </div>
+</div>
+
+<script src="load.js"></script>
+<script src="sidenav.js"></script>
+    <script src="profile.js"></script>
+</body>
+</html>

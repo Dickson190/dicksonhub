@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Offer Wall - DicksonHub</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="earn.css">
+  <link rel="stylesheet" href="sidenav.css">
+  <link rel="stylesheet" href="fixed.css">
+</head>
+<body>
+  <div class="mobile-container">
+    <!-- Side Navigation -->
+    <div id="sidenav" class="sidenav">
+      <a href="javascript:void(0)" class="closebtn" onclick="toggleNav()">&times;</a>
+            <a href="app.html">Home</a>
+      <a href="earn.html">Offerwall</a>
+      <a href="task.html">Task</a>
+      <a href="bean.html" class="active">Upgrade Account</a>
+      <a href="shop.html">Shop</a>
+      <a href="news.html">New Features/Updates</a>
+      <a href="withdraw.html">Withdraw</a>
+      <a href="whistory.html">Withdrawal History</a>
+      <a href="about.html">About Us</a>
+    </div>
+
+    <a href="javascript:void(0);" class="icon" onclick="toggleNav()">
+      <i class="fa fa-bars"></i>
+    </a>
+
+    <div class="content">
+      <div class="header" id="header">
+        Welcome, <span id="username"></span>! Click any button below to sign up and start earning.
+      </div>
+      
+      <div class="container">
+        <button class="offer-button" onclick="toggleOffer('offer-info1', 'navigate-btn1')">
+          <img class="offer-img" src="Sidegig.png" alt="Sidegig Offer">
+          <div class="offer-text">Sidegig</div>
+        </button>
+        <div id="offer-info1" class="offer-info"></div>
+        <button id="navigate-btn1" class="navigate-btn" style="display: none;" onclick="navigateToPage('offer1.html')">Start</button>
+        
+        <button class="offer-button" onclick="toggleOffer('offer-info2', 'navigate-btn2')">
+          <img class="offer-img" src="Famsup.png" alt="Famsup Task Offer">
+          <div class="offer-text">Famsup Task</div>
+        </button>
+        <div id="offer-info2" class="offer-info"></div>
+        <button id="navigate-btn2" class="navigate-btn" style="display: none;" onclick="navigateToPage('offer2.html')">Start</button>
+        
+        <button class="offer-button" onclick="toggleOffer('offer-info3', 'navigate-btn3')">
+          <img class="offer-img" src="nairaworkers-84528674.png" alt="NairaWorkers Offer">
+          <div class="offer-text">NairaWorkers</div>
+        </button>
+        <div id="offer-info3" class="offer-info"></div>
+        <button id="navigate-btn3" class="navigate-btn" style="display: none;" onclick="navigateToPage('offer3.html')">Start</button>
+      </div>
+    </div>
+  </div>
+  
+  
+  <div class="bottom-nav">
+    <a href="app.html" class="nav-item"><i class="fa fa-home"></i><span>Home</span></a>
+    <a href="gift.html" class="nav-item"><i class="fa fa-gift"></i><span>Claim Code</span></a>
+    <a href="news.html" class="nav-item"><i class="fa fa-bell"></i><span>Notifications</span></a>
+    <a href="profile.html" class="nav-item"><i class="fa fa-user"></i><span>Profile</span></a>
+</div>
+  
+  
+  
+  <div class="loader" id="loader">
+    <div class="cooking">
+        <div class="bubble"></div>
+        <div class="bubble"></div>
+        <div class="bubble"></div>
+        <div class="bubble"></div>
+        <div class="pot"></div>
+    </div>
+</div>
+<link rel="stylesheet" href="load.css">
+<script src="load.js"></script>
+  <script src="sidenav.js"></script>
+  <script src="earn.js"></script>
+</body>
+</html>

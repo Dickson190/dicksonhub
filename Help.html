@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="Help.css">
+<title>Information Page</title>
+<link rel="stylesheet" href="fixed.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="sidenav.css">
+</head>
+<body>
+
+<!-- Simulate a smartphone / tablet -->
+<div class="mobile-container">
+  <!-- Side Navigation -->
+  <div id="sidenav" class="sidenav">
+    <a href="javascript:void(0)" class="closebtn" onclick="toggleNav()">&times;</a>
+          <a href="app.html">Home</a>
+      <a href="earn.html">Offerwall</a>
+      <a href="task.html">Task</a>
+      <a href="bean.html" class="active">Upgrade Account</a>
+      <a href="shop.html">Shop</a>
+      <a href="news.html">New Features/Updates</a>
+      <a href="withdraw.html">Withdraw</a>
+      <a href="whistory.html">Withdrawal History</a>
+      <a href="about.html">About Us</a>
+    </div>
+
+  <a href="javascript:void(0);" class="icon" onclick="toggleNav()">
+    <i class="fa fa-bars"></i>
+  </a>
+</div>
+
+<div id="content">
+  <div class="container">
+    <img src="Dig1.png" alt="Logo"> <!-- Adjust the image source and alt text -->
+
+    <h1>Information Page</h1>
+    
+    <div class="section">
+      <div class="title" onclick="toggleContent('section1')">How to Start Earning</div>
+      <div id="section1" class="content">
+        <p>Welcome to DicksonHub! To start earning, simply follow these steps:</p>
+        <ol>
+          <li><a href="register.html">Register</a> and create an account.</li>
+          <li>Log in to your account and navigate to the <a href="earn.html">Earn Now</a> page.</li>
+          <li>Follow the instructions to start earning by completing tasks, watching ads, or participating in offers.</li>
+          <li>Track your earnings on your dashboard and withdraw your earnings when you meet the minimum threshold.</li>
+        </ol>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="title" onclick="toggleContent('section2')">Participate in Quiz Contests</div>
+      <div id="section2" class="content">
+        <p>Boost your earnings by participating in our quiz contests! Here’s how:</p>
+        <ol>
+          <li>Visit the <a href="quiz.html">Quiz Contest</a> page.</li>
+          <li>Register for an active quiz contest and start answering questions.</li>
+          <li>Maximize your quiz earnings through the <a href="bean.html">Quiz Boost</a> section.</li>
+          <li>Track your performance and earnings in the quiz section of your dashboard.</li>
+        </ol>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="title" onclick="toggleContent('section3')">How to Withdraw Your Earnings</div>
+      <div id="section3" class="content">
+        <p>Once you've accumulated enough earnings, you can withdraw your funds:</p>
+        <ol>
+          <li>Go to your <a href="profile.html">Profile</a> page and select the withdrawal option.</li>
+          <li>Choose your preferred withdrawal method: Airtime or Bank Transfer.</li>
+          <li>Enter the required details and the amount you wish to withdraw.</li>
+          <li>Submit your request and wait for the confirmation. Your funds will be processed and transferred accordingly.</li>
+        </ol>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="title" onclick="toggleContent('section4')">Tips to Maximize Your Earnings</div>
+      <div id="section4" class="content">
+        <ul>
+          <li>Ensure you have a stable and fast internet connection to avoid interruptions.</li>
+          <li>Use recommended browsers for optimal performance.</li>
+          <li>Regularly check the <a href="news.html">New Features/Updates</a> page for additional earning opportunities and platform updates.</li>
+          <li>Refer friends to earn bonus points through our referral program.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="title" onclick="toggleContent('section5')">Contact Us</div>
+      <div id="section5" class="content">
+        <p>If you need any assistance or have any questions, feel free to reach out to us through the <a href="contact.html">Contact</a> page. Our support team is here to help you!</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="bottom-nav">
+  <a href="app.html" class="nav-item"><i class="fa fa-home"></i><span>Home</span></a>
+  <a href="gift.html" class="nav-item"><i class="fa fa-gift"></i><span>Claim Code</span></a>
+  <a href="news.html" class="nav-item"><i class="fa fa-bell"></i><span>Notifications</span></a>
+  <a href="profile.html" class="nav-item"><i class="fa fa-user"></i><span>Profile</span></a>
+</div>
+
+<div class="loader" id="loader">
+  <div class="cooking">
+    <div class="bubble"></div>
+    <div class="bubble"></div>
+    <div class="bubble"></div>
+    <div class="bubble"></div>
+    <div class="pot"></div>
+  </div>
+</div>
+
+<link rel="stylesheet" href="load.css">
+<script src="load.js"></script>
+<script src="sidenav.js"></script>
+<script src="Help.js"></script>
+</body>
+</html>

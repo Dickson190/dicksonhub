@@ -1,0 +1,40 @@
+/* Ensure table is horizontally scrollable and text does not overflow */
+.table-container {
+  overflow-x: auto; /* Enable horizontal scrolling */
+  width: 100%;
+  margin: 0 auto; /* Center the container */
+}
+
+#transactionTable {
+  width: max-content; /* Adjust width as needed */
+  table-layout: auto; /* Use auto instead of fixed */
+  border-collapse: collapse; /* Ensure cells are collapsed */
+}
+
+#transactionTable th, #transactionTable td {
+  padding: 8px;
+  white-space: nowrap; /* Prevent text from wrapping */
+  text-align: left;
+  border: 1px solid #ddd;
+}
+
+#transactionTable th {
+  background-color: #f2f2f2;
+  font-weight: bold;
+}
+
+#viewMoreButton {
+  margin-top: 10px;
+  background-color: #007BFF;
+  color: white;
+  border: none;
+  padding: 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  width: 100%;
+  text-align: center;
+}
+
+#viewMoreButton:hover {
+  background-color: #0056b3;
+}

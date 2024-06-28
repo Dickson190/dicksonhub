@@ -1,0 +1,103 @@
+
+        .iframe-container {
+            width: calc(20% - 10px); /* 20% width for each iframe with 10px margin between them */
+            height: 100px; /* Height of each iframe */
+            margin: 5px; /* Margin between iframes */
+            float: left; /* Float iframes left */
+        }
+        iframe {
+            width: 100%;
+            height: 100%;
+            border: 1px solid #ccc; /* Add border for clarity */
+        ;
+        }
+        #timer,
+#totalDurationDisplay,
+#nextRefreshDisplay {
+    background-color: #f0f0f0;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+img[src="https://www.000webhost.com/static/default.000webhost.com/images/powered-by-000webhost.png"]
+{
+    display: none;
+    }
+.alert {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.alert-content {
+    background-color: #f2f2f2;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 20px;
+    max-width: 90%; /* Adjust as needed */
+    max-height: 90%; /* Adjust as needed */
+    overflow-y: auto; /* Enable scrolling if content exceeds height */
+    position: relative;
+}
+
+.close-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    cursor: pointer;
+    font-size: 24px;
+    color: #888;
+}
+
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+}
+
+.navbar {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    background-color: #333;
+    color: #fff;
+    padding: 10px;
+}
+
+.hamburger-menu {
+    cursor: pointer;
+    padding: 10px;
+}
+
+.bar {
+    width: 25px;
+    height: 3px;
+    background-color: #fff;
+    margin: 5px 0;
+}
+
+.menu {
+    display: none;
+    position: absolute;
+    top: 50px;
+    left: 0;
+    background-color: #333;
+    padding: 10px;
+}
+
+.menu a {
+    display: block;
+    color: #fff;
+    text-decoration: none;
+    padding: 5px 0;
+}
+
+.menu a:hover {
+    background-color: #555;
+}

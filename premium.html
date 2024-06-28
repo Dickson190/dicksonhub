@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="premium.css">
+    <link rel="stylesheet" href="watermark.css">
+    <link rel="stylesheet" href="load.css">
+    <link rel="stylesheet" href="sidenav.css">
+    <title>Hmm Premium</title>
+</head>
+<body>
+    
+    <div class="mobile-container">
+
+    <!-- Side Navigation -->
+    <div id="sidenav" class="sidenav">
+      <a href="javascript:void(0)" class="closebtn" onclick="toggleNav()">&times;</a>
+          <a href="app.html">Home</a>
+      <a href="earn.html">Offerwall</a>
+      <a href="task.html">Task</a>
+      <a href="bean.html" class="active">Upgrade Account</a>
+      <a href="shop.html">Shop</a>
+      <a href="news.html">New Features/Updates</a>
+      <a href="withdraw.html">Withdraw</a>
+      <a href="whistory.html">Withdrawal History</a>
+      <a href="about.html">About Us</a>
+    </div>
+    
+
+    <a href="javascript:void(0);" class="icon" onclick="toggleNav()">
+      <i class="fa fa-bars"></i>
+    </a>
+
+        
+    
+    <header class="header">
+        <img src="Dig1.png" alt="Logo" class="logo">
+        <h1>Quiz Wall</h1>
+       <marquee> <h3> Welcome to the quiz wall where your knowledge is converted to cash ! </h3></marquee>
+    </header>
+    <main class="container">
+        <div class="card">
+            <button id="free-quiz" class="btn">
+                Free Quiz
+                <span class="timer"></span>
+            </button>
+        </div>
+        <div class="card">
+            <button id="premium-quiz" class="btn">Premium Quiz</button>
+        </div>
+    </main>
+    <div id="notification" class="notification">
+        <span id="notification-text"></span>
+        <button onclick="closeNotification()">Close</button>
+    </div>
+  
+<!-- Loader -->
+  <div class="loader" id="loader">
+    <div class="cooking">
+      <div class="bubble"></div>
+      <div class="bubble"></div>
+      <div class="bubble"></div>
+      <div class="bubble"></div>
+      <div class="pot"></div>
+    </div>
+  </div>
+     
+     
+    <script src="sidenav.js"></script>
+    <script src="premium.js" defer></script>
+    <script src="load.js"></script>
+</body>
+</html>

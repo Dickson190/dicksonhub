@@ -1,0 +1,66 @@
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f4f4f4;
+}
+
+.container {
+  max-width: 800px;
+  margin: 20px auto;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+  text-align: center;
+  color: #333;
+  margin-bottom: 20px; /* Add space below the heading */
+  font-size: 32px; /* Increase font size */
+  font-weight: bold; /* Make the text bold */
+  text-transform: uppercase; /* Convert text to uppercase */
+  letter-spacing: 2px; /* Add letter spacing for emphasis */
+  border-bottom: 2px solid #007bff; /* Add a border below the heading */
+  padding-bottom: 10px; /* Add space between text and border */
+}
+
+.news-item {
+  border: 2px solid #007bff; /* Add border around each news item */
+  border-radius: 5px; /* Add rounded corners to the border */
+  padding: 20px; /* Add padding inside the border */
+  margin-bottom: 20px;
+}
+
+.news-item:last-child {
+  margin-bottom: 0;
+}
+
+h2 {
+  color: #007bff;
+  margin-top: 0; /* Remove default margin for consistency */
+}
+
+.date {
+  font-style: italic;
+  color: #888;
+  margin-bottom: 10px; /* Add space below the date */
+}
+
+.news-image {
+  float: left;
+  margin-right: 20px;
+  max-width: 200px; /* Adjust the maximum width of the image */
+  height: auto; /* Maintain aspect ratio */
+  border-radius: 5px;
+}
+
+@media screen and (max-width: 600px) {
+  .news-image {
+    float: none;
+    margin-right: 0;
+    margin-bottom: 10px;
+    width: 100%;
+  }
+}

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Code Formatter</title>
+<style>
+    textarea {
+        width: 100%;
+        height: 200px;
+        margin-bottom: 10px;
+    }
+</style>
+</head>
+<body>
+
+<h2>Code Formatter</h2>
+
+<textarea id="inputCode" placeholder="Paste your code here..."></textarea>
+<button onclick="formatCode()">Format Code</button>
+<textarea id="outputCode" placeholder="Formatted code will appear here..." readonly></textarea>
+
+<script>
+function formatCode() {
+    var inputCode = document.getElementById('inputCode').value;
+    var formattedCode = formatHTML(inputCode);
+    document.getElementById('outputCode').value = formattedCode;
+}
+
+function formatHTML(inputCode) {
+    // Add spacing to the input code
+    // For simplicity, let's just add four spaces before each line
+    var lines = inputCode.split('\n');
+    for (var i = 0; i < lines.length; i++) {
+        lines[i] = '    ' + lines[i];
+    }
+    return lines.join('\n');
+}
+</script>
+
+</body>
+</html>
+
+
+<!--  
+ -->

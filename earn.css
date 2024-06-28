@@ -1,0 +1,142 @@
+/* Global Styles */
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f4f4f4;
+}
+
+/* Container for Mobile Devices */
+.mobile-container {
+  max-width: 480px;
+  margin: auto;
+  background-color: white;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  padding-bottom: 20px;
+  padding-top: 50px;
+}
+
+/* Side Navigation */
+.sidenav {
+  height: 100%;
+  width: 0;
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  background-color: #111;
+  overflow-x: hidden;
+  transition: 0.5s;
+  padding-top: 60px;
+}
+
+.sidenav a {
+  padding: 8px 8px 8px 32px;
+  text-decoration: none;
+  font-size: 25px;
+  color: #818181;
+  display: block;
+  transition: 0.3s;
+}
+
+.sidenav a:hover {
+  color: #f1f1f1;
+}
+
+.sidenav .closebtn {
+  position: absolute;
+  top: 0;
+  right: 25px;
+  font-size: 36px;
+  margin-left: 50px;
+}
+
+.icon {
+  font-size: 30px;
+  cursor: pointer;
+  display: block;
+  padding: 10px;
+}
+
+/* Content Styles */
+.content {
+  padding: 20px;
+  
+}
+
+/* Header Styles */
+.header {
+  background-color: #4CAF50;
+  color: white;
+  text-align: center;
+  
+  padding: 20px;
+  font-size: 24px;
+  font-weight: bold;
+  border-radius: 5px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+}
+
+/* Container Styles */
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* Offer Button Styles */
+.offer-button {
+  background-color: white;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  padding: 10px;
+  text-align: center;
+  cursor: pointer;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  transition: transform 0.2s;
+}
+
+.offer-button:hover {
+  transform: scale(1.02);
+}
+
+/* Offer Image Styles */
+.offer-img {
+  max-width: 100px;
+  margin-bottom: 10px;
+}
+
+/* Offer Text Styles */
+.offer-text {
+  font-size: 18px;
+  font-weight: bold;
+  color: #333;
+}
+
+/* Offer Info Styles */
+.offer-info {
+  margin-top: 10px;
+  font-size: 14px;
+  color: #555;
+}
+
+/* Navigate Button Styles */
+.navigate-btn {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  text-align: center;
+  font-size: 16px;
+  margin-top: 10px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.navigate-btn:hover {
+  background-color: #45a049;
+}

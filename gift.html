@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+ <link rel="stylesheet" href="sidenav.css">
+    <link rel="stylesheet" href="watermark.css">
+    <link rel="stylesheet" href="load.css">
+    <link rel="stylesheet" href="fixed.css">
+    <title>Claim Gift</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f7f7f7;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            background-color: #fff;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            width: 400px;
+        }
+        h1 {
+            color: #333;
+            margin-bottom: 30px;
+        }
+        input[type="text"] {
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            width: calc(100% - 22px);
+            box-sizing: border-box;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .flag {
+            font-size: 12px;
+            color: #666;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    
+            
+    
+    <div class="container">
+        
+        <div class="mobile-container">
+
+    <!-- Side Navigation -->
+    <div id="sidenav" class="sidenav">
+      <a href="javascript:void(0)" class="closebtn" onclick="toggleNav()">&times;</a>
+          <a href="app.html">Home</a>
+      <a href="earn.html">Offerwall</a>
+      <a href="task.html">Task</a>
+      <a href="bean.html" class="active">Upgrade Account</a>
+      <a href="shop.html">Shop</a>
+      <a href="news.html">New Features/Updates</a>
+      <a href="withdraw.html">Withdraw</a>
+      <a href="whistory.html">Withdrawal History</a>
+      <a href="about.html">About Us</a>
+    </div>
+    
+
+    <a href="javascript:void(0);" class="icon" onclick="toggleNav()">
+      <i class="fa fa-bars"></i>
+    </a>
+
+        
+        <h1>Claim Your Gift</h1>
+        <input type="text" id="claimCode" placeholder="Enter your claim code">
+        <button onclick="claimGift()">Claim Gift</button>
+        <div id="flag" class="flag">Remaining claims: 1</div>
+    </div>
+
+
+<!-- Bottom Navigation -->
+  <div class="bottom-nav">
+    <a href="app.html" class="nav-item"><i class="fa fa-home"></i><span>Home</span></a>
+    <a href="gift.html" class="nav-item"><i class="fa fa-gift"></i><span>Claim Code</span></a>
+    <a href="news.html" class="nav-item"><i class="fa fa-bell"></i><span>Notifications</span></a>
+    <a href="profile.html" class="nav-item"><i class="fa fa-user"></i><span>Profile</span></a>
+  </div>
+
+  <div class="loader" id="loader">
+    <div class="cooking">
+      <div class="bubble"></div>
+      <div class="bubble"></div>
+      <div class="bubble"></div>
+      <div class="bubble"></div>
+      <div class="pot"></div>
+    </div>
+  </div>
+  
+
+    
+    <script>
+    function claimGift() {
+        const claimCode = document.getElementById('claimCode').value.trim();
+        const phoneNumber = localStorage.getItem('phoneNumber');
+        const currentUser = localStorage.getItem('username');
+        const password = localStorage.getItem('password');
+        const userClaimKey = `${phoneNumber}_${currentUser}_${password}_claimedCodes`;
+
+        // Retrieve the claimed codes from local storage
+        const claimedCodes = JSON.parse(localStorage.getItem(userClaimKey)) || [];
+
+        // Check if the claim code has already been used
+        if (claimedCodes.includes(claimCode)) {
+            alert("You have already claimed a gift with this code.Check again next week! ");
+            return;
+        }
+
+        // Add more claim codes as needed
+        const validClaimCodes = ["Hub", "19026144Hub", "OwnerHub", ]; // Add other allowed claim codes here
+
+        if (validClaimCodes.includes(claimCode)) {
+            const userEarningsKey = `${phoneNumber}_${currentUser}_${password}_earnings`;
+            let userEarnings = parseFloat(localStorage.getItem(userEarningsKey)) || 0;
+            userEarnings += 50; // Change the amount to ₦50000
+            localStorage.setItem(userEarningsKey, userEarnings);
+
+            // Add the claimed code to the array and store it back in local storage
+            claimedCodes.push(claimCode);
+            localStorage.setItem(userClaimKey, JSON.stringify(claimedCodes));
+
+            alert("Congratulations! Your earnings have been updated with ₦50.");
+        } else {
+            alert("Invalid claim code. Please try again.");
+        }
+    }
+</script>
+<script src="sidenav.js"></script>
+<script src="load.js"></script>
+</body>
+</html>

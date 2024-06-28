@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz</title>
+    <link rel="stylesheet" href="newquiz.css">
+</head>
+<body>
+    <div id="loader" class="loader hidden">
+        <div class="cooking">
+            <div class="bubble"></div>
+            <div class="bubble"></div>
+            <div class="bubble"></div>
+            <div class="bubble"></div>
+            <div class="pot"></div>
+        </div>
+    </div>
+
+    <div class="container hidden" id="quizContainer">
+        <img src="Dig1.png" alt="Logo" class="logo">
+        <h1>Quiz</h1>
+        <div id="timer" class="floating-timer">Time left: 90s</div> 
+         <form id="quizForm">
+
+<div class="quiz-question">
+    <p>Question 5: Which of these are types of clouds?</p>
+    <div class="quiz-option">
+        <input type="radio" id="q5a" name="q5" value="Cirrus">
+        <label for="q5a">Cirrus</label>
+    </div>
+    <div class="quiz-option">
+        <input type="radio" id="q5b" name="q5" value="Nimbus">
+        <label for="q5b">Nimbus</label>
+    </div>
+    <div class="quiz-option">
+        <input type="radio" id="q5c" name="q5" value="Stratus">
+        <label for="q5c">Stratus</label>
+    </div>
+    <div class="quiz-option">
+        <input type="radio" id="q5d" name="q5" value="All of the above">
+        <label for="q5d">All of the above</label>
+    </div>
+</div>
+
+<div class="quiz-question">
+    <p>Question 6: Is white light really the color white?</p>
+    <div class="quiz-option">
+        <input type="radio" id="q6a" name="q6" value="Yes">
+        <label for="q6a">Yes</label>
+    </div>
+    <div class="quiz-option">
+        <input type="radio" id="q6b" name="q6" value="No">
+        <label for="q6b">No</label>
+    </div>
+    <div class="quiz-option">
+        <input type="radio" id="q6c" name="q6" value="Depends on the reflecting surface">
+        <label for="q6c">Depends on the reflecting surface</label>
+    </div>
+    <div class="quiz-option">
+        <input type="radio" id="q6d" name="q6" value="Depends on the time of day">
+        <label for="q6d">Depends on the time of day</label>
+    </div>
+</div>
+
+<div class="quiz-question">
+    <p>Question 7: Is Saturn the only ringed planet?</p>
+    <div class="quiz-option">
+        <input type="radio" id="q7a" name="q7" value="Yes">
+        <label for="q7a">Yes</label>
+    </div>
+    <div class="quiz-option">
+        <input type="radio" id="q7b" name="q7" value="No">
+        <label for="q7b">No</label>
+    </div>
+    <div class="quiz-option">
+        <input type="radio" id="q7c" name="q7" value="They're still debating about it">
+        <label for="q7c">They're still debating about it</label>
+    </div>
+    <div class="quiz-option">
+        <input type="radio" id="q7d" name="q7" value="Saturn has no rings anymore">
+        <label for="q7d">Saturn has no rings anymore</label>
+    </div>
+</div>
+
+<div class="quiz-question">
+    <p>Question 8: Louis Pasteur was famous for making which drink sterile and safe?</p>
+    <div class="quiz-option">
+        <input type="radio" id="q8a" name="q8" value="Oil">
+        <label for="q8a">Oil</label>
+    </div>
+    <div class="quiz-option">
+        <input type="radio" id="q8b" name="q8" value="Tap water">
+        <label for="q8b">Tap water</label>
+    </div>
+    <div class="quiz-option">
+        <input type="radio" id="q8c" name="q8" value="Milk">
+        <label for="q8c">Milk</label>
+    </div>
+    <div class="quiz-option">
+        <input type="radio" id="q8d" name="q8" value="Wine">
+        <label for="q8d">Wine</label>
+    </div>
+</div>
+
+<div class="quiz-question">
+    <p>Question 9: Fast fact for vegetarians: Is a cucumber a veggie or a fruit?</p>
+    <div class="quiz-option">
+        <input type="radio" id="q9a" name="q9" value="Veggie">
+        <label for="q9a">Veggie</label>
+    </div>
+    <div class="quiz-option">
+        <input type="radio" id="q9b" name="q9" value="Fruit">
+        <label for="q9b">Fruit</label>
+    </div>
+    <div class="quiz-option">
+        <input type="radio" id="q9c" name="q9" value="Both">
+        <label for="q9c">Both</label>
+    </div>
+    <div class="quiz-option">
+        <input type="radio" id="q9d" name="q9" value="Neither">
+        <label for="q9d">Neither</label>
+    </div>
+</div>
+
+<div class="quiz-question">
+    <p>Question 10: What does it mean when you hear an airplane’s sonic boom?</p>
+    <div class="quiz-option">
+        <input type="radio" id="q10a" name="q10" value="Plane has powerful engines">
+        <label for="q10a">Plane has powerful engines</label>
+    </div>
+    <div class="quiz-option">
+        <input type="radio" id="q10b" name="q10" value="Plane has jet engines">
+        <label for="q10b">Plane has jet engines</label>
+    </div>
+    <div class="quiz-option">
+        <input type="radio" id="q10c" name="q10" value="Plane is at maximum speed">
+        <label for="q10c">Plane is at maximum speed</label>
+    </div>
+    <div class="quiz-option">
+        <input type="radio" id="q10d" name="q10" value="Plane is flying faster than sound">
+        <label for="q10d">Plane is flying faster than sound</label>
+    </div>
+</div>
+       <button type="button" onclick="submitQuiz()">Submit</button>
+        </form>     
+    </div>
+
+    <div id="networkModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <h2>Enter Your Details Correctly</h2>
+            <form>
+                <label for="network">Network</label>
+                <select id="network" required>
+                    <option value="">Select Network</option>
+                    <option value="MTN">MTN</option>
+                    <option value="Glo">Glo</option>
+                    <option value="Airtel">Airtel</option>
+                    <option value="9mobile">9mobile</option>
+                </select>
+                <label for="phone">Phone Number</label>
+                <input type="text" id="phone" required>
+                <button type="button" onclick="saveDetails()">Submit</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="newquiz.js"></script>
+</body>
+</html>

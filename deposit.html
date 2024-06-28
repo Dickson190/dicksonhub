@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="fixed.css">
+  <link rel="stylesheet" href="sidenav.css">
+  
+  <link rel="stylesheet" href="watermark.css">
+  <title>Manual Transfer</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f2f2f2;
+      margin: 0;
+      padding-bottom: 20px;
+    }
+    .mobile-container {
+      width: 100%;
+      background-color: #333;
+      overflow: hidden;
+    }
+    .sidenav a {
+      text-decoration: none;
+      color: white;
+    }
+    .icon {
+      display: block;
+      text-align: center;
+      padding: 14px;
+      background: #333;
+      color: white;
+      cursor: pointer;
+    }
+    .content {
+      padding: 20px;
+    }
+    .card {
+      background: linear-gradient(to right, #00c6ff, #0072ff);
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      margin: 20px auto;
+      max-width: 500px;
+      color: white;
+    }
+    .warning {
+      background-color: #ffcc00;
+      color: #333;
+      padding: 10px;
+      border-radius: 5px;
+      margin: 20px 0;
+      font-weight: bold;
+    }
+    .deposit-info {
+      font-size: 1.2em;
+      margin-bottom: 10px;
+    }
+    .bank-details {
+      font-size: 1em;
+      margin-top: 10px;
+    }
+    .btn-deposit {
+      display: inline-block;
+      padding: 10px 20px;
+      background-color: #28a745;
+      color: white;
+      text-decoration: none;
+      border-radius: 5px;
+      margin-top: 20px;
+    }
+    .btn-deposit:hover {
+      background-color: #218838;
+    }
+    .bottom-nav {
+      display: flex;
+      justify-content: space-around;
+      background-color: #333;
+      position: fixed;
+      width: 100%;
+      bottom: 0;
+    }
+    .bottom-nav .nav-item {
+      color: white;
+      padding: 10px 0;
+      text-align: center;
+      text-decoration: none;
+      flex: 1;
+    }
+  </style>
+</head>
+<body>
+  <div class="mobile-container">
+    <!-- Side Navigation -->
+    <div id="sidenav" class="sidenav">
+      <a href="javascript:void(0)" class="closebtn" onclick="toggleNav()">&times;</a>
+      <a href="app.html">Home</a>
+      <a href="earn.html">Offerwall</a>
+      <a href="task.html">Task</a>
+      <a href="bean.html" class="active">Upgrade Account</a>
+      <a href="shop.html">Shop</a>
+      <a href="news.html">New Features/Updates</a>
+      <a href="withdraw.html">Withdraw</a>
+      <a href="whistory.html">Withdrawal History</a>
+      <a href="about.html">About Us</a>
+    </div>
+
+    <a href="javascript:void(0);" class="icon" onclick="toggleNav()">
+      <i class="fa fa-bars"></i>
+    </a>
+  </div>
+
+  <div class="content">
+    <center>
+      <h1>Manual Transfer</h1>
+    </center>
+    <center>
+    <div class="card">
+      <div class="warning">
+        IMPORTANT! Please refrain from making deposits unless you have a clear intended purpose, as refunds will not be issued. Regrettably, we are unable to entertain requests for refunds once a deposit has been made. DicksonHub is available for your use at no cost. Thank you for your understanding.
+      </div>
+      <p class="deposit-info">Create Deposit!</p>
+      <p class="deposit-info"><strong>Deposit p2p</strong></p>
+      <p>Please make payment into the account details below, then upload your payment proof (screenshot or receipt)! Your deposit will be confirmed within 12hrs _ 24hrs (minimum deposit is NGN100)</p>
+      <div class="bank-details">
+        <p>Bank Account Number: 916-015-7219</p>
+        <p>Account Name: DicksonHub Offerwall <b>(Send to whatever name you see there)</b></p>
+        <p>Bank Name: PALMPAY</p>
+        
+      </div>
+      <a href="pay.html" class="btn-deposit">Upload Payment Proof</a>
+    </div>
+  </div>
+</center>
+<br>
+<br>
+  <div class="bottom-nav">
+    <a href="app.html" class="nav-item"><i class="fa fa-home"></i><span>Home</span></a>
+    <a href="gift.html" class="nav-item"><i class="fa fa-gift"></i><span>Claim Code</span></a>
+    <a href="news.html" class="nav-item"><i class="fa fa-bell"></i><span>Notifications</span></a>
+    <a href="profile.html" class="nav-item"><i class="fa fa-user"></i><span>Profile</span></a>
+  </div>
+
+
+<div class="loader" id="loader">
+    <div class="cooking">
+        <div class="bubble"></div>
+        <div class="bubble"></div>
+        <div class="bubble"></div>
+        <div class="bubble"></div>
+        <div class="pot"></div>
+    </div>
+</div>
+<link rel="stylesheet" href="load.css">
+<script src="load.js"></script>
+  <script src="sidenav.js"></script>
+</body>
+</html>

@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard</title>
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick-theme.min.css">
+  <link rel="stylesheet" href="fixed.css">
+  <link rel="stylesheet" href="app.css">
+  <link rel="stylesheet" href="slides.css">
+  <link rel="stylesheet" href="app2.css">
+  <link rel="stylesheet" href="sidenav.css">
+  <link rel="stylesheet" href="load.css">
+  <link rel="stylesheet" href="wapp.css"> 
+
+  <style>
+    .withdraw-button {
+      display: inline-block;
+      padding: 10px 20px;
+      background-color: #007BFF;
+      color: white;
+      text-decoration: none;
+      border: none;
+      border-radius: 5px;
+      font-size: 16px;
+      text-align: center;
+      cursor: pointer;
+    }
+
+    .withdraw-button:hover {
+      background-color: #0056b3;
+    }
+  </style>
+</head>
+<body>
+  <!-- Side Navigation -->
+  <div id="sidenav" class="sidenav">
+    <a href="javascript:void(0)" class="closebtn" onclick="toggleNav()">&times;</a>
+    <a href="app.html">Home</a>
+    <a href="earn.html">Offerwall</a>
+    <a href="task.html">Task</a>
+    <a href="bean.html" class="active">Upgrade Account</a>
+    <a href="shop.html">Shop</a>
+    <a href="withdraw.html">Withdraw</a>
+    <a href="whistory.html">Withdrawal History</a>
+    <a href="about.html">About Us</a>
+  </div>
+
+  <!-- Top Navigation -->
+  <div class="topnav" id="myTopnav">
+    <a href="#news" class="active"><b><p style="color: cyan;">DICKSONHUB</p></b></a>
+    <a href="javascript:void(0);" class="icon" onclick="toggleNav()">
+      <i class="fa fa-bars"></i>
+    </a>
+  </div>
+
+  <div id="content" style="padding-top: 10px;">
+    <div class="container">
+      <h1>Welcome to Your Dashboard, <span id="username"></span>!</h1>
+      <p id="greeting"></p>
+
+      <!-- Earnings Section -->
+      <div class="card">
+        <h2>Your Earnings</h2>
+        <p id="userEarnings">₦0.00</p>
+        <a href="withdraw.html" class="withdraw-button">Withdraw</a>
+      </div>
+
+      <!-- Deposit Section -->
+      <div class="card">
+        <h2>Deposit Balance</h2>
+        <p id="userDeposit">₦0.00</p>
+      </div>
+
+<!-- Transaction History Section -->
+<div class="table-container">
+  <table id="transactionTable">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Time</th>
+        <th>Date</th>
+        <th>Amount</th>
+        <th>Details</th>
+      </tr>
+    </thead>
+    <tbody id="transactionTableBody">
+      <!-- Transactions will be dynamically inserted here -->
+    </tbody>
+  </table>
+  <button id="viewMoreButton">View More</button>
+</div>
+
+
+      <div class="buttons">
+        <a href="earn.html" class="button-icon">
+          <i class="fa fa-shapes"></i>
+          <span>Offerwall</span>
+        </a>
+        <a href="premium.html" class="button-icon">
+          <i class="fa fa-question-circle"></i>
+          <span>Quiz Now</span>
+        </a>
+        <a href="result.html" class="button-icon">
+          <i class="fa fa-list"></i>
+          <span>Quiz Result</span>
+        </a>
+        <a href="deposit.html" class="button-icon">
+          <i class="fa fa-bank"></i>
+          <span>Deposit</span>
+        </a>
+      </div>
+
+      <!-- Slideshow -->
+      <div class="slideshow-container">
+        <div><a href="result.html"><img src="woman.png" alt="Slide 1"></a></div>
+        <div><a href="news.html"><img src="announcement.jpg" alt="Slide 2"></a></div>
+        <div><a href="about.html"><img src="Dig1.png" alt="Slide 3"></a></div>
+        <div><a href="shop.html"><img src="boy.jpg" alt="DicksonHub"></a></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bottom Navigation -->
+  <div class="bottom-nav">
+    <a href="app.html" class="nav-item"><i class="fa fa-home"></i><span>Home</span></a>
+    <a href="gift.html" class="nav-item"><i class="fa fa-gift"></i><span>Claim Code</span></a>
+    <a href="news.html" class="nav-item"><i class="fa fa-bell"></i><span>Notifications</span></a>
+    <a href="profile.html" class="nav-item"><i class="fa fa-user"></i><span>Profile</span></a>
+  </div>
+
+  <div class="loader" id="loader">
+    <div class="cooking">
+      <div class="bubble"></div>
+      <div class="bubble"></div>
+      <div class="bubble"></div>
+      <div class="bubble"></div>
+      <div class="pot"></div>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.js"></script>
+  <script src="app.js"></script>
+  <script src="load.js"></script>
+  <script src="sidenav.js"></script>
+  <script src="implement.js"></script>
+  <script src="deposit.js"></script>
+  <script src="wapp.js"></script>
+</body>
+</html>

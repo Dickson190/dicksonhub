@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Decoder</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background-color: #f4f4f4;
+      margin: 0;
+    }
+
+    .decoder-container {
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      text-align: center;
+      width: 300px;
+    }
+
+    .decoder-container h1 {
+      color: #333;
+      margin-bottom: 20px;
+    }
+
+    .decoder-container input[type="text"] {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 20px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+    }
+
+    .decoder-container button {
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      font-size: 16px;
+      cursor: pointer;
+      border-radius: 5px;
+      width: 100%;
+    }
+
+    .decoder-container button:hover {
+      background-color: #45a049;
+    }
+
+    .decoder-container .result {
+      margin-top: 20px;
+      text-align: left;
+    }
+
+    .decoder-container .result p {
+      margin: 5px 0;
+      color: #555;
+    }
+  </style>
+</head>
+<body>
+  <div class="decoder-container">
+    <h1>Decoder</h1>
+    <input type="text" id="uniqueCodeInput" placeholder="Enter unique code">
+    <button onclick="decodeCode()">Decode</button>
+    <div class="result" id="resultContainer">
+      <p><strong>Username:</strong> <span id="decodedUsername"></span></p>
+      <p><strong>Password:</strong> <span id="decodedPassword"></span></p>
+      <p><strong>Amount:</strong> ₦<span id="decodedAmount">0.00</span></p>
+    </div>
+  </div>
+
+  <script>
+    function decodeCode() {
+      const uniqueCode = document.getElementById('uniqueCodeInput').value;
+
+      // In a real application, you'd have a more secure way to decode the unique code.
+      // Here we just assume it's base64 encoded and has a simple structure.
+      try {
+        const decodedString = atob(uniqueCode);
+        const [username, password, amount] = decodedString.split(':');
+
+        document.getElementById('decodedUsername').textContent = username;
+        document.getElementById('decodedPassword').textContent = password;
+        document.getElementById('decodedAmount').textContent = parseFloat(amount || 0).toFixed(2);
+      } catch (error) {
+        alert('Invalid unique code.');
+      }
+    }
+  </script>
+</body>
+</html>

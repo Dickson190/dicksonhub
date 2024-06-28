@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="watermark.css">
+    <title>Deposit Payment</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .form-container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+        }
+        .form-container h1 {
+            text-align: center;
+        }
+        .form-container label {
+            display: block;
+            margin: 10px 0 5px;
+        }
+        .form-container input, .form-container textarea, .form-container button {
+            width: 100%;
+            padding: 10px;
+            margin: 5px 0 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .instruction {
+            color: red;
+            font-size: 0.9em;
+            text-align: center;
+        }
+        .note {
+            color: blue;
+            font-size: 0.9em;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <h1>Deposit Payment</h1>
+        <p class="instruction">Please upload a full screenshot or a clear receipt.</p>
+        <p class="note">Minimum deposit amount is ₦200. If you deposit less, the money will not be credited to your account nor refunded.</p>
+        <form id="paymentForm" method="post" action="https://rake.red/api/deposit/deposit" enctype="multipart/form-data">
+            <label for="bankName">Bank Name</label>
+            <input type="text" id="bankName" name="bankName" required readonly />
+            <label for="accountName">Account Name</label>
+            <input type="text" id="accountName" name="accountName" required readonly />
+            <label for="accountNumber">Account Number</label>
+            <input type="text" id="accountNumber" name="accountNumber" required readonly />
+            <label for="transactionDate">Date of Transaction</label>
+            <input type="text" id="transactionDate" name="transactionDate" required readonly />
+            <label for="amount">Amount (₦)</label>
+            <input type="number" id="amount" name="amount" required>
+            <label for="receipt">Upload Receipt</label>
+            <input type="file" id="receipt" name="receipt" accept="image/*" required />
+            <button type="submit">Submit Payment</button>
+        </form>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const depositForm = document.getElementById('paymentForm');
+            const bankNameField = document.getElementById('bankName');
+            const accountNameField = document.getElementById('accountName');
+            const accountNumberField = document.getElementById('accountNumber');
+            const transactionDateField = document.getElementById('transactionDate');
+            const amountField = document.getElementById('amount');
+            const userPhoneNumber = localStorage.getItem('phoneNumber');
+            const currentUser = localStorage.getItem('username');
+            const currentPassword = localStorage.getItem('password');
+            const depositKey = `${userPhoneNumber}_${currentUser}_${currentPassword}_deposit`;
+
+            // Populate bank details from local storage
+            bankNameField.value = localStorage.getItem('bankName') || '';
+            accountNameField.value = localStorage.getItem('accountName') || '';
+            accountNumberField.value = localStorage.getItem('accountNumber') || '';
+            transactionDateField.value = new Date().toLocaleString();
+
+            depositForm.addEventListener('submit', function (event) {
+                event.preventDefault();
+
+                const amount = parseFloat(amountField.value);
+
+                // Check if the deposit amount is less than ₦200
+                if (amount < 200) {
+                    alert('Minimum deposit amount is ₦200. If you deposit less, the money will not be credited to your account nor refunded.');
+                    return;
+                }
+
+                // Get the form data
+                const formData = new FormData(depositForm);
+
+                // Submit the form
+                fetch(depositForm.action, {
+                    method: 'POST',
+                    body: formData,
+                    mode: 'no-cors'
+                })
+                .then(response => {
+                    // Update deposit amount in local storage
+                    let currentDeposit = parseFloat(localStorage.getItem(depositKey)) || 0;
+                    currentDeposit += amount;
+                    localStorage.setItem(depositKey, currentDeposit);
+
+                    alert('Deposit successful ✅');
+                    window.location.href = 'payhis.html'; // Redirect to deposit history page
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('An error occurred while processing your deposit. Please try again.');
+                });
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz Code Generator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            background-color: #f9f9f9;
+        }
+        h1 {
+            text-align: center;
+        }
+        textarea, button, pre {
+            width: 100%;
+            margin: 10px 0;
+        }
+        button {
+            padding: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        pre {
+            padding: 10px;
+            background-color: #f4f4f4;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+        #copy-button {
+            background-color: #008CBA;
+        }
+        #copy-button:hover {
+            background-color: #007BB5;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Quiz Code Generator</h1>
+        <label for="questions">Enter Questions and Options (format: Question;option1,option2,option3,...):</label><br>
+        <textarea id="questions" rows="10" placeholder="Enter each question on a new line"></textarea><br>
+        <button type="button" onclick="generateQuizCode()">Generate Code</button>
+        <h2>Generated Code:</h2>
+        <pre id="quiz-code"></pre>
+        <button id="copy-button" type="button" onclick="copyToClipboard()">Copy to Clipboard</button>
+    </div>
+
+    <script>
+        function generateQuizCode() {
+            const input = document.getElementById('questions').value;
+            const questions = input.split('\n');
+            let quizCode = '';
+            
+            questions.forEach((question, index) => {
+                const parts = question.split(';');
+                if (parts.length === 2) {
+                    const questionText = parts[0].trim();
+                    const options = parts[1].split(',').map(option => option.trim());
+                    
+                    quizCode += `<div class="quiz-question">\n`;
+                    quizCode += `    <p>Question ${index + 1}: ${questionText}</p>\n`;
+                    
+                    options.forEach((option, optionIndex) => {
+                        const optionId = `q${index + 1}${String.fromCharCode(97 + optionIndex)}`;
+                        quizCode += `    <div class="quiz-option">\n`;
+                        quizCode += `        <input type="radio" id="${optionId}" name="q${index + 1}" value="${option}">\n`;
+                        quizCode += `        <label for="${optionId}">${option}</label>\n`;
+                        quizCode += `    </div>\n`;
+                    });
+                    
+                    quizCode += `</div>\n`;
+                }
+            });
+
+            document.getElementById('quiz-code').textContent = quizCode;
+        }
+
+        function copyToClipboard() {
+            const codeElement = document.getElementById('quiz-code');
+            const range = document.createRange();
+            range.selectNode(codeElement);
+            window.getSelection().removeAllRanges();
+            window.getSelection().addRange(range);
+            try {
+                document.execCommand('copy');
+                alert('Code copied to clipboard!');
+            } catch (err) {
+                alert('Failed to copy code!');
+            }
+            window.getSelection().removeAllRanges();
+        }
+    </script>
+</body>
+</html>
+
+
+<!-- <div class="question">
+                <h3>Question 1: What is the capital of France?</h3>
+                <label><input type="radio" id="paris" name="question1" value="Paris"> Paris</label>
+                <label><input type="radio" id="london" name="question1" value="London"> London</label>
+                <label><input type="radio" id="berlin" name="question1" value="Berlin"> Berlin</label>
+                <input type="hidden" id="answer1" name="answer1">
+            </div>
+             -->

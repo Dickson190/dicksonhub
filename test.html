@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Countdown Timer</title>
+</head>
+<body>
+
+<form id="myForm" action="https://tally.so/forms/3EPp7A/edit" method="post">
+  <!-- Add your Tally form fields here -->
+  <input type="submit" value="Submit Form">
+</form>
+
+<script>
+// Function to submit the form
+function submitForm() {
+  document.getElementById("myForm").submit();
+}
+
+// Countdown timer function
+function countdown() {
+  var seconds = 10; // Set the countdown time in seconds
+
+  var timer = setInterval(function() {
+    seconds--;
+    if (seconds <= 0) {
+      clearInterval(timer);
+      submitForm(); // Call the submit form function when countdown reaches 0
+    }
+  }, 1000); // Update every second
+}
+
+// Call the countdown function when the page loads
+window.onload = function() {
+  countdown();
+};
+</script>
+
+</body>
+</html>

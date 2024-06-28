@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Withdrawal History</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="load.css">
+    <link rel="stylesheet" href="sidenav.css">
+    <link rel="stylesheet" href="whistory.css">
+</head>
+<body>
+    <div class="mobile-container">
+
+        <!-- Side Navigation -->
+        <div id="sidenav" class="sidenav">
+            <a href="javascript:void(0)" class="closebtn" onclick="toggleNav()">&times;</a>
+            <a href="app.html">Home</a>
+            <a href="earn.html">Offerwall</a>
+            <a href="task.html">Task</a>
+            <a href="bean.html" class="active">Upgrade Account</a>
+            <a href="shop.html">Shop</a>
+            <a href="news.html">New Features/Updates</a>
+            <a href="withdraw.html">Withdraw</a>
+            <a href="whistory.html">Withdrawal History</a>
+            <a href="about.html">About Us</a>
+        </div>
+
+        <a href="javascript:void(0);" class="icon" onclick="toggleNav()">
+            <i class="fa fa-bars"></i>
+        </a>
+    </div>
+    <center>
+        <h1>Withdrawal History</h1>
+    </center>
+    <div class="table-container">
+        <table id="historyTable">
+            <thead>
+                <tr>
+                    <th>Time</th>
+                    <th>Date</th>
+                    <th>Amount (₦)</th>
+                    <th>Status</th>
+                    <th>Transaction ID</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Withdrawal history will be populated here -->
+            </tbody>
+        </table>
+    </div>
+    <div class="loader" id="loader">
+        <div class="cooking">
+            <div class="bubble"></div>
+            <div class="bubble"></div>
+            <div class="bubble"></div>
+            <div class="bubble"></div>
+            <div class="pot"></div>
+        </div>
+    </div>
+
+    <script src="sidenav.js"></script>
+    <script src="load.js"></script>
+    <script src="whistory.js"></script>
+</body>
+</html>

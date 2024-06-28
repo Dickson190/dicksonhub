@@ -1,0 +1,58 @@
+
+  body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+    color: #333;
+  }
+
+  .container {
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+
+  h1 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #2600ff; /* Blue color for the heading */
+  }
+
+  .section {
+    border-bottom: 1px solid #ccc;
+    margin-bottom: 20px;
+  }
+
+  .title {
+    cursor: pointer;
+    font-size: 20px;
+    padding: 15px; /* Increased padding for better clickability */
+    background-color: #007bff;
+    color: #fff;
+    border-radius: 5px;
+    text-align: center; /* Center align the title */
+    transition: background-color 0.3s ease; /* Smooth transition effect */
+  }
+
+  .title:hover {
+    background-color: #0056b3; /* Darker shade of blue on hover */
+  }
+
+  .content {
+    padding: 20px; /* Increased padding for better readability */
+    display: none;
+  }
+
+  img {
+    display: block;
+    margin: 0 auto;
+    max-width: 100%;
+    height: auto;
+    border-radius: 5px;
+    margin-bottom: 10px; /* Add space below the images */
+  }
+

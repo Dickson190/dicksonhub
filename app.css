@@ -1,0 +1,301 @@
+/* Reset margin and padding for the entire body */
+body {
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden; /* Prevent horizontal scrolling */
+  box-sizing: border-box; /* Include padding and border in element's total width and height */
+}
+
+/* Ensure containers fit within the viewport */
+.container, .mobile-container {
+  width: 100%; /* Ensure containers are full width */
+  max-width: 100%; /* Prevent overflow */
+  margin: 0 auto; /* Center containers */
+  box-sizing: border-box; /* Include padding and border in element's total width and height */
+  padding-bottom: 40px;
+}
+
+.container {
+  margin-top: 10px; /* Adjust the margin to account for the fixed navbar */
+  text-align: center;
+}
+
+.buttons {
+  margin-top: 20px;
+}
+
+button {
+  padding: 10px 20px;
+  font-size: 16px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin: 10px 10px;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
+.topnav {
+  overflow: hidden;
+  background-color: #0d3b4e; /* Make the navbar transparent */
+  position: fixed; /* Make the navbar fixed */
+  top: 0; /* Fixed at the top of the viewport */
+  width: 100%;
+  
+  z-index: 1000; /* Ensure this is higher than the slideshow */
+  margin: 0; /* Remove margin */
+  padding: 0; /* Remove padding */
+}
+
+.topnav #myLinks {
+  display: none;
+}
+
+.topnav a {
+  color: white;
+  padding: 9px 6px;
+  text-decoration: none;
+  font-size: 17px;
+  display: block;
+}
+
+.topnav a.icon {
+  background: black;
+  display: block;
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+
+.topnav a:hover {
+  background-color: #FF7AFF00;
+  color: black;
+}
+
+.active {
+  background-color: transparent; /* Make the active link background transparent */
+  color: white;
+}
+
+#content {
+  margin-top: 90px; /* Adjust the value as needed */
+  color: blueviolet;
+}
+
+.buttons button a {
+  text-decoration: none;
+  color: white; /* Set the text color to white */
+}
+
+img[src="https://www.000webhost.com/static/default.000webhost.com/images/powered-by-000webhost.png"] {
+  display: none;
+}
+
+.loader {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2000;
+}
+
+.loader .cooking {
+  position: relative;
+  width: 100px;
+  height: 100px;
+}
+
+.loader .pot {
+  position: absolute;
+  bottom: 0;
+  width: 100px;
+  height: 60px;
+  background: #ff6347;
+  border-radius: 0 0 50px 50px;
+}
+
+.loader .bubble {
+  position: absolute;
+  bottom: 50px;
+  width: 15px;
+  height: 15px;
+  background: #ff6347;
+  border-radius: 50%;
+  opacity: 0.6;
+  animation: bubble 2s infinite;
+}
+
+.loader .bubble:nth-child(2) {
+  left: 25px;
+  animation-delay: 0.5s;
+}
+
+.loader .bubble:nth-child(3) {
+  left: 50px;
+  animation-delay: 1s;
+}
+
+.loader .bubble:nth-child(4) {
+  left: 75px;
+  animation-delay: 1.5s;
+}
+
+@keyframes bubble {
+  0% {
+    transform: translateY(0);
+    opacity: 0.6;
+  }
+  50% {
+    transform: translateY(-30px);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-60px);
+    opacity: 0;
+  }
+}
+
+@media (max-width: 768px) {
+  .earnings-section {
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 20px;
+    margin: 20px auto;
+    text-align: center;
+    max-width: 600px;
+  }
+
+  .earnings-section h2 {
+    color: #4CAF50;
+  }
+
+  .earnings-section p {
+    font-size: 22px;
+    font-weight: bold;
+    color: #4CAF50;
+    margin: 10px 0;
+  }
+
+  .withdraw-button {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 5px;
+  }
+
+  .withdraw-button:hover {
+    background-color: #45a049;
+  }
+
+  .buttons a {
+    text-decoration: none;
+    color: white;
+  }
+
+  .unique-code {
+    font-size: 15px;
+    color: #333;
+    margin: 20px 0;
+  }
+
+  .copy-button {
+    background-color: #333;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 5px;
+  }
+
+  .copy-button:hover {
+    background-color: #555;
+  }
+}
+
+.card {
+  background-color: #ffffff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 20px;
+  margin: 20px auto;
+  text-align: center;
+  max-width: 600px;
+}
+
+.user-code-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.user-code {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.copy-button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.copy-button:hover {
+  background-color: #0056b3;
+}
+
+.button-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  text-decoration: none;
+  border-radius: 5px;
+  margin: 10px;
+}
+
+.button-icon i {
+  margin-right: 5px;
+}
+
+.bottom-nav {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  background-color: #0d3b4e;
+  display: flex;
+  justify-content: space-around;
+  padding: 10px 0;
+}
+
+.nav-item {
+  color: white;
+  text-decoration: none;
+  text-align: center;
+  padding: 10px;
+}
+
+.nav-item i {
+  display: block;
+  margin-bottom: 5px;
+}
+
