@@ -41,14 +41,53 @@
             font-size: 0.9em;
             text-align: center;
         }
+        .popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: white;
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            padding: 20px;
+            z-index: 1000;
+        }
+        .popup .checkmark {
+            width: 50px;
+            height: 50px;
+            margin: 0 auto 20px;
+        }
+        .popup .checkmark svg {
+            width: 100%;
+            height: 100%;
+        }
+        .popup button {
+            background-color: blue;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
     </style>
+    <script src="pay.js"></script>
 </head>
 <body>
     <div class="form-container">
         <h1>Deposit Payment</h1>
         <p class="instruction">Please upload a full screenshot or a clear receipt.</p>
         <p class="note">Minimum deposit amount is ₦200. If you deposit less, the money will not be credited to your account nor refunded.</p>
-        <form id="paymentForm" method="post" action="https://rake.red/api/deposit/deposit" enctype="multipart/form-data">
+        <form id="paymentForm" method="POST" action="https://formsubmit.co/02a239bf9dd7f51742b5acc42c50561a" enctype="multipart/form-data">
+            <!-- Honeypot -->
+            <input type="text" name="_honey" style="display: none;">
+            
+            <!-- Disable Captcha -->
+            <input type="hidden" name="_captcha" value="false">
+            
+            <input type="hidden" name="_next" value="https://dickson190.github.io/dicksonhub/payhis.html">
+
             <label for="bankName">Bank Name</label>
             <input type="text" id="bankName" name="bankName" required readonly />
             <label for="accountName">Account Name</label>
@@ -61,64 +100,25 @@
             <input type="number" id="amount" name="amount" required>
             <label for="receipt">Upload Receipt</label>
             <input type="file" id="receipt" name="receipt" accept="image/*" required />
+            <label for="message">Message</label>
+            <textarea id="message" name="message" rows="10" required></textarea>
+
+            <!-- Hidden input to store the image URL -->
+            <input type="hidden" name="imageUrl" id="imageUrl">
+
             <button type="submit">Submit Payment</button>
         </form>
     </div>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            const depositForm = document.getElementById('paymentForm');
-            const bankNameField = document.getElementById('bankName');
-            const accountNameField = document.getElementById('accountName');
-            const accountNumberField = document.getElementById('accountNumber');
-            const transactionDateField = document.getElementById('transactionDate');
-            const amountField = document.getElementById('amount');
-            const userPhoneNumber = localStorage.getItem('phoneNumber');
-            const currentUser = localStorage.getItem('username');
-            const currentPassword = localStorage.getItem('password');
-            const depositKey = `${userPhoneNumber}_${currentUser}_${currentPassword}_deposit`;
-
-            // Populate bank details from local storage
-            bankNameField.value = localStorage.getItem('bankName') || '';
-            accountNameField.value = localStorage.getItem('accountName') || '';
-            accountNumberField.value = localStorage.getItem('accountNumber') || '';
-            transactionDateField.value = new Date().toLocaleString();
-
-            depositForm.addEventListener('submit', function (event) {
-                event.preventDefault();
-
-                const amount = parseFloat(amountField.value);
-
-                // Check if the deposit amount is less than ₦200
-                if (amount < 200) {
-                    alert('Minimum deposit amount is ₦200. If you deposit less, the money will not be credited to your account nor refunded.');
-                    return;
-                }
-
-                // Get the form data
-                const formData = new FormData(depositForm);
-
-                // Submit the form
-                fetch(depositForm.action, {
-                    method: 'POST',
-                    body: formData,
-                    mode: 'no-cors'
-                })
-                .then(response => {
-                    // Update deposit amount in local storage
-                    let currentDeposit = parseFloat(localStorage.getItem(depositKey)) || 0;
-                    currentDeposit += amount;
-                    localStorage.setItem(depositKey, currentDeposit);
-
-                    alert('Deposit successful ✅');
-                    window.location.href = 'payhis.html'; // Redirect to deposit history page
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    alert('An error occurred while processing your deposit. Please try again.');
-                });
-            });
-        });
-    </script>
+    <div id="popup" class="popup">
+        <div class="checkmark">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">
+                <circle cx="26" cy="26" r="25" fill="none" />
+                <path fill="none" stroke="#22c55e" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" d="M14 27l8 8 16-16" />
+            </svg>
+        </div>
+        <h2>Deposit Successful</h2>
+        <button onclick="handleOk()">OK</button>
+    </div>
 </body>
 </html>

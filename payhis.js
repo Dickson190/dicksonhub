@@ -4,6 +4,11 @@ document.addEventListener('DOMContentLoaded', function () {
     const currentUser = localStorage.getItem('username');
     const currentPassword = localStorage.getItem('password');
 
+    if (!userPhoneNumber || !currentUser || !currentPassword) {
+        console.error('Missing user authentication data.');
+        return;
+    }
+
     // Retrieve the deposit history from local storage
     const depositHistoryKey = `${userPhoneNumber}_${currentUser}_${currentPassword}_depositHistory`;
     const depositHistory = JSON.parse(localStorage.getItem(depositHistoryKey)) || [];
