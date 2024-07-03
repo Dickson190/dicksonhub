@@ -55,47 +55,20 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
         userEarnings -= amount;
-        localStorage.setItem(`${userPhoneNumber}_${currentUser}_${currentPassword}_earnings`, userEarnings);
+        localStorage.setItem(`${userPhoneNumber}_${currentUser}_${currentPassword}_earnings`, userEarnings.toString());
 
-        // Create a withdrawal record
-        const now = new Date();
-        const record = {
-            time: now.toLocaleTimeString(),
-            date: now.toLocaleDateString(),
-            amount: amount,
-            status: 'Not completed', // or 'Completed' based on your logic
-            transactionId: Math.random().toString(36).substr(2, 9) // unique ID
-        };
-
-        // Retrieve existing history or create a new array
-        let withdrawalHistory = JSON.parse(localStorage.getItem(`${userPhoneNumber}_${currentUser}_${currentPassword}_withdrawalHistory`)) || [];
-
-        // Add the new record to the history
-        withdrawalHistory.push(record);
-
-        // Store the updated history back to local storage
-        localStorage.setItem(`${userPhoneNumber}_${currentUser}_${currentPassword}_withdrawalHistory`, JSON.stringify(withdrawalHistory));
-
-        // Submit the form
-        fetch(withdrawForm.action, {
-            method: 'POST',
-            body: new FormData(withdrawForm),
-            mode: 'no-cors'
-        })
-        .then(response => {
-            alert('Withdrawal request sent successfully');
-            window.location.href = 'whistory.html'; // Redirect to withdrawal history page
-            // Update the status to 'Completed'
-            record.status = 'Completed';
-            localStorage.setItem(`${userPhoneNumber}_${currentUser}_${currentPassword}_withdrawalHistory`, JSON.stringify(withdrawalHistory));
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            alert('An error occurred while processing your withdrawal. Please try again.');
-
-            // Refund the amount in case of error
-            userEarnings += amount;
-            localStorage.setItem(`${userPhoneNumber}_${currentUser}_${currentPassword}_earnings`, userEarnings);
-        });
+        // Simulate a successful withdrawal process with a delay
+        setTimeout(showPopup, 2000);
     });
+
+    function showPopup() {
+        const popup = document.getElementById('popup');
+        popup.style.display = 'block';
+    }
+
+    window.handleOk = function() {
+        const popup = document.getElementById('popup');
+        popup.style.display = 'none';
+        withdrawForm.submit(); // Submit the form after showing the popup
+    }
 });

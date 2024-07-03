@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const deposits = getDepositHistory();
 
         // Combine all entries and sort by the most recent date and time
-        const allEntries = [...transactions, ...withdrawals, ...deposits].sort((a, b) => new Date(b.fullDate) - new Date(a.fullDate));
+        const allEntries = [...transactions, ...withdrawals, ...deposits].filter(entry => entry.fullDate).sort((a, b) => new Date(b.fullDate) - new Date(a.fullDate));
 
         // Determine the transactions to display
         const entriesToShow = showingAllTransactions ? allEntries : allEntries.slice(0, transactionsPerPage);
@@ -54,14 +54,37 @@ document.addEventListener('DOMContentLoaded', function() {
         const withdrawalHistoryKey = `${userPhoneNumber}_${currentUser}_${currentPassword}_withdrawalHistory`;
         const withdrawalHistory = JSON.parse(localStorage.getItem(withdrawalHistoryKey)) || [];
 
-        return withdrawalHistory.map(record => ({
-            type: 'Withdrawal',
-            time: record.time,
-            date: record.date,
-            amount: record.amount,
-            details: record.status,
-            fullDate: new Date(`${record.date} ${record.time}`).toISOString()
-        }));
+        return withdrawalHistory.map(record => {
+            // Attempt to parse date and time
+            let fullDate = null;
+            try {
+                if (record.date && record.time) {
+                    // Try parsing with a comma-separated format
+                    fullDate = new Date(`${record.date}, ${record.time}`);
+                    if (isNaN(fullDate)) {
+                        // Try parsing with a different separator or format if the first attempt fails
+                        fullDate = new Date(`${record.date} ${record.time}`);
+                    }
+                    if (isNaN(fullDate)) {
+                        throw new Error('Invalid date or time format');
+                    }
+                } else {
+                    throw new Error('Missing date or time information');
+                }
+            } catch (error) {
+                console.error(`Error parsing withdrawal record: ${JSON.stringify(record)} - ${error.message}`);
+                fullDate = new Date(); // Fallback to current date/time
+            }
+
+            return {
+                type: 'Withdrawal',
+                time: record.time || '-',
+                date: record.date || '-',
+                amount: record.amount || '-',
+                details: record.status || '-',
+                fullDate: fullDate.toISOString()
+            };
+        });
     }
 
     // Function to get deposit history
@@ -72,14 +95,37 @@ document.addEventListener('DOMContentLoaded', function() {
         const depositHistoryKey = `${userPhoneNumber}_${currentUser}_${currentPassword}_depositHistory`;
         const depositHistory = JSON.parse(localStorage.getItem(depositHistoryKey)) || [];
 
-        return depositHistory.map(record => ({
-            type: 'Deposit',
-            time: record.time,
-            date: record.date,
-            amount: record.amount,
-            details: `Bank: ${record.bankName}, Account: ${record.accountNumber}`,
-            fullDate: new Date(`${record.date} ${record.time}`).toISOString()
-        }));
+        return depositHistory.map(record => {
+            // Attempt to parse date and time
+            let fullDate = null;
+            try {
+                if (record.date && record.time) {
+                    // Try parsing with a comma-separated format
+                    fullDate = new Date(`${record.date}, ${record.time}`);
+                    if (isNaN(fullDate)) {
+                        // Try parsing with a different separator or format if the first attempt fails
+                        fullDate = new Date(`${record.date} ${record.time}`);
+                    }
+                    if (isNaN(fullDate)) {
+                        throw new Error('Invalid date or time format');
+                    }
+                } else {
+                    throw new Error('Missing date or time information');
+                }
+            } catch (error) {
+                console.error(`Error parsing deposit record: ${JSON.stringify(record)} - ${error.message}`);
+                fullDate = new Date(); // Fallback to current date/time
+            }
+
+            return {
+                type: 'Deposit',
+                time: record.time || '-',
+                date: record.date || '-',
+                amount: record.amount || '-',
+                details: `Bank: ${record.bankName || '-'}, Account: ${record.accountNumber || '-'}`,
+                fullDate: fullDate.toISOString()
+            };
+        });
     }
 
     // Add event listener to the "View More" button

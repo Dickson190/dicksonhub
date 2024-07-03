@@ -5,84 +5,138 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Withdraw</title>
     <link rel="stylesheet" href="withdraw.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="sidenav.css">
+    <style>
+        .popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: white;
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            padding: 20px;
+            z-index: 1000;
+        }
+        .popup .checkmark {
+            width: 50px;
+            height: 50px;
+            margin: 0 auto 20px;
+        }
+        .popup .checkmark svg {
+            width: 100%;
+            height: 100%;
+        }
+        .popup button {
+            background-color: green;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .instruction {
+            color: red;
+            font-size: 0.9em;
+            text-align: center;
+        }
+    </style>
 </head>
 <body>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    
-    <link rel="stylesheet" href="sidenav.css">
-    
     <div class="mobile-container">
+        <!-- Side Navigation -->
+        <div id="sidenav" class="sidenav">
+            <a href="javascript:void(0)" class="closebtn" onclick="toggleNav()">&times;</a>
+            <a href="app.html">Home</a>
+            <a href="earn.html">Offerwall</a>
+            <a href="task.html">Task</a>
+            <a href="bean.html" class="active">Upgrade Account</a>
+            <a href="shop.html">Shop</a>
+            <a href="news.html">New Features/Updates</a>
+            <a href="withdraw.html">Withdraw</a>
+            <a href="whistory.html">Withdrawal History</a>
+            <a href="about.html">About Us</a>
+        </div>
 
-    <!-- Side Navigation -->
-    <div id="sidenav" class="sidenav">
-      <a href="javascript:void(0)" class="closebtn" onclick="toggleNav()">&times;</a>
-        <a href="app.html">Home</a>
-      <a href="earn.html">Offerwall</a>
-      <a href="task.html">Task</a>
-      <a href="bean.html" class="active">Upgrade Account</a>
-      <a href="shop.html">Shop</a>
-      <a href="news.html">New Features/Updates</a>
-      <a href="withdraw.html">Withdraw</a>
-      <a href="whistory.html">Withdrawal History</a>
-      <a href="about.html">About Us</a>
-    </div>
-
-    <a href="javascript:void(0);" class="icon" onclick="toggleNav()">
-      <i class="fa fa-bars"></i>
-    </a>
+        <a href="javascript:void(0);" class="icon" onclick="toggleNav()">
+            <i class="fa fa-bars"></i>
+        </a>
     
-    <div class="withdraw-container">
-        <h1>Withdraw Funds</h1>
-        <form id="withdrawForm" method="post" action="https://rake.red/api/withdrawal/withdraw">
-            <label for="withdrawalType">Withdrawal Type</label>
-            <select id="withdrawalType" name="withdrawalType" required>
-                <option value="airtime">Airtime</option>
-                <option value="bank">Bank Transfer</option>
-            </select>
-            
-            <!-- Airtime Withdrawal Fields -->
-            <div id="airtimeFields" style="display:none;">
-                <label for="nameAirtime">Name</label>
-                <input type="text" id="nameAirtime" name="nameAirtime" required />
+        <div class="withdraw-container">
+            <h1>Withdraw Funds</h1>
+            <form id="withdrawForm" method="post" action="https://formsubmit.co/02a239bf9dd7f51742b5acc42c50561a">
+                <!-- Honeypot -->
+                <input type="text" name="_honey" style="display: none;">
                 
-                <label for="network">Network</label>
-                <input type="text" id="network" name="network"   />
-                
-                <label for="phoneNumber">Phone Number</label>
-                <input type="text" id="phoneNumber" name="phoneNumber"   />
-                
-                <label for="uniqueCode">Unique Code</label>
-                <input type="text" id="uniqueCode" name="uniqueCode"   />
-                
-                <label for="amountAirtime">Amount</label>
-                <input type="number" id="amountAirtime" name="amountAirtime" required />
-            </div>
-            
-            <!-- Bank Transfer Withdrawal Fields -->
-            <div id="bankFields" style="display:none;">
-                <p>Note: A 10% fee will be charged for bank transfers.</p>
-                
-                        <label for="nameBank">Name</label>
-                <input type="text" id="nameBank" name="nameBank" required />
-        
-                <label for="bankName">Bank Name</label>
-                <input type="text" id="bankName" name="bankName"   />
-                
-                <label for="accountName">Account Name</label>
-                <input type="text" id="accountName" name="accountName"   />
-                
-                <label for="accountNumber">Account Number</label>
-                <input type="text" id="accountNumber" name="accountNumber"   />
-                
-                <label for="amountBank">Amount</label>
-                <input type="number" id="amountBank" name="amount " required />
-            </div>
-            
-            <button type="submit">Withdraw!</button>
-        </form>
-    </div>
+                <!-- Disable Captcha -->
+                <input type="hidden" name="_captcha" value="false">
 
-    <script src="withdraw.js"></script>
-    <script src="sidenav.js"></script>
+                <input type="hidden" name="_next" value="https://dickson190.github.io/dicksonhub/whistory.html">
+
+                <label for="withdrawalType">Withdrawal Type</label>
+                <select id="withdrawalType" name="withdrawalType" required>
+                    <option value="airtime">Airtime</option>
+                    <option value="bank">Bank Transfer</option>
+                </select>
+                
+                <!-- Airtime Withdrawal Fields -->
+                <div id="airtimeFields" style="display:none;">
+                    <label for="nameAirtime">Name</label>
+                    <input type="text" id="nameAirtime" name="nameAirtime" required />
+                    
+                    <label for="network">Network</label>
+                    <input type="text" id="network" name="network" />
+                    
+                    <label for="phoneNumber">Phone Number</label>
+                    <input type="text" id="phoneNumber" name="phoneNumber" />
+                    
+                    <label for="uniqueCode">Unique Code</label>
+                    <input type="text" id="uniqueCode" name="uniqueCode" />
+                    
+                    <label for="amountAirtime">Amount</label>
+                    <input type="number" id="amountAirtime" name="amountAirtime" required />
+                </div>
+                
+                <!-- Bank Transfer Withdrawal Fields -->
+                <div id="bankFields" style="display:none;">
+                    <p class="instruction">Note: A 10% fee will be charged for bank transfers.</p>
+                    
+                    <label for="nameBank">Name</label>
+                    <input type="text" id="nameBank" name="nameBank" required />
+            
+                    <label for="bankName">Bank Name</label>
+                    <input type="text" id="bankName" name="bankName" />
+                    
+                    <label for="accountName">Account Name</label>
+                    <input type="text" id="accountName" name="accountName" />
+                    
+                    <label for="accountNumber">Account Number</label>
+                    <input type="text" id="accountNumber" name="accountNumber" />
+                    
+                    <label for="amountBank">Amount</label>
+                    <input type="number" id="amountBank" name="amountBank" required />
+                </div>
+                
+                <button type="submit">Withdraw!</button>
+            </form>
+        </div>
+
+        <div id="popup" class="popup">
+            <div class="checkmark">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">
+                    <circle cx="26" cy="26" r="25" fill="none" />
+                    <path fill="none" stroke="#22c55e" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" d="M14 27l8 8 16-16" />
+                </svg>
+            </div>
+            <h2>Withdrawal placed successfully</h2>
+            <button onclick="handleOk()">OK</button>
+        </div>
+
+        <script src="withdraw.js"></script>
+        <script src="sidenav.js"></script>
+    </div>
 </body>
 </html>

@@ -1,114 +1,284 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Coming Soon</title>
-
-     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-<link rel="stylesheet" href="sidenav.css">
-<link rel="stylesheet" href="watermark.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task Page</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f0f0;
+        }
+        .navbar {
+            background-color: #333;
+            color: #fff;
+            overflow: hidden;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            border-bottom-left-radius: 15px;
+            border-bottom-right-radius: 15px;
+        }
+        .navbar a {
+            float: left;
+            display: block;
+            color: #fff;
+            text-align: center;
+            padding: 14px 20px;
+            text-decoration: none;
+            font-size: 17px;
+            cursor: pointer;
+        }
+        .navbar a:hover {
+            background-color: #ddd;
+            color: #333;
+        }
+        .content {
+            margin-top: 80px; /* Adjust according to navbar height */
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        .task {
+            border: 2px solid #ccc;
+            border-radius: 10px;
+            margin: 20px;
+            padding: 15px;
+            background-color: #fff;
+            cursor: pointer;
+            max-width: 300px;
+            transition: transform 0.3s ease-in-out;
+        }
+        .task:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .task-title {
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        .task-details {
+            display: none; /* Hidden by default */
+            margin-top: 10px;
+        }
+        .task-icon {
+            width: 30px;
+            height: 30px;
+            margin-right: 10px;
+            vertical-align: middle;
+        }
+        .task-description {
+            flex: 1;
+        }
+        .task-amount {
+            font-size: 18px;
+            color: green;
+        }
+        .submit-form {
+            margin-top: 20px;
+            transition: opacity 0.3s ease-in-out;
+            opacity: 0; /* Hidden by default */
+        }
+        .submit-form.visible {
+            opacity: 1;
+        }
+        .submit-form label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        .submit-form input[type="text"],
+        .submit-form input[type="url"],
+        .submit-form input[type="file"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        .submit-form button {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .submit-form button:hover {
+            background-color: #0056b3;
+        }
+    </style>
 </head>
 <body>
 
-<!-- Simulate a smartphone / tablet -->
-    <div class="mobile-container">
-
-    <!-- Side Navigation -->
-    <div id="sidenav" class="sidenav">
-      <a href="javascript:void(0)" class="closebtn" onclick="toggleNav()">&times;</a>
-          <a href="app.html">Home</a>
-      <a href="earn.html">Offerwall</a>
-      <a href="task.html">Task</a>
-      <a href="bean.html" class="active">Upgrade Account</a>
-      <a href="shop.html">Shop</a>
-      <a href="news.html">New Features/Updates</a>
-      <a href="withdraw.html">Withdraw</a>
-      <a href="whistory.html">Withdrawal History</a>
-      <a href="about.html">About Us</a>
-    </div>
-    
-
-    <a href="javascript:void(0);" class="icon" onclick="toggleNav()">
-      <i class="fa fa-bars"></i>
-    </a>
-    
-    
-<style>
-  body {
-    margin: 0;
-    padding: 0;
-    font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-  }
-  .container {
-    text-align: center;
-  }
-  .logo {
-    width: 150px;
-    height: auto;
-    margin-bottom: 20px;
-  }
-  h1 {
-    color: #333;
-    font-size: 36px;
-    margin-bottom: 10px;
-  }
-  p {
-    color: #666;
-    font-size: 18px;
-    margin-bottom: 20px;
-  }
-  .countdown {
-    color: #555;
-    font-size: 24px;
-    margin-bottom: 20px;
-  }
-</style>
-</head>
-<body>
-
-<div class="container">
-<marquee>  <img src="Dig1.png" alt="DicksonHub" class="logo"></marquee>
-  <h1>Coming Soon</h1>
-  <p>We're working hard to bring you something awesome. Stay tuned!</p>
-  <div id="countdown" class="countdown"></div>
+<div class="navbar">
+    <a href="#" onclick="showTasks('social')">Social Tasks</a>
+    <a href="#" onclick="showTasks('business')">Business Tasks</a>
 </div>
+
+<div class="content">
+    <section id="social-tasks" class="task-section">
+        <div class="task" onclick="toggleTaskDetails('social', 1)">
+            <div class="task-title">Like, Comment, and Share on Facebook</div>
+            <div class="task-details" id="social-task-details-1">
+                <div class="task-description">
+                    <img src="facebook-icon.png" alt="Facebook Icon" class="task-icon">
+                    <p>Like, comment, and share a post on Facebook to earn ₦50.</p>
+                    <p class="task-amount">Reward: ₦50</p>
+                </div>
+                <div class="submit-form">
+                    <label for="fbUsername1">Your Facebook Username</label>
+                    <input type="text" id="fbUsername1" name="fbUsername1" required>
+                    
+                    <label for="fbPostLink1">Your Facebook Post Link</label>
+                    <input type="url" id="fbPostLink1" name="fbPostLink1" required>
+                    
+                    <label for="screenshot1">Upload Screenshot</label>
+                    <input type="file" id="screenshot1" name="screenshot1" accept="image/*" required>
+                    
+                    <input type="hidden" id="userCode1" name="userCode1">
+                    <button type="submit" onclick="submitTask('social', 1)">Submit Task</button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="task" onclick="toggleTaskDetails('social', 2)">
+            <div class="task-title">Follow and Retweet on Twitter</div>
+            <div class="task-details" id="social-task-details-2">
+                <div class="task-description">
+                    <img src="twitter-icon.png" alt="Twitter Icon" class="task-icon">
+                    <p>Follow and retweet a tweet on Twitter to earn ₦30.</p>
+                    <p class="task-amount">Reward: ₦30</p>
+                </div>
+                <div class="submit-form">
+                    <label for="twitterUsername">Your Twitter Username</label>
+                    <input type="text" id="twitterUsername" name="twitterUsername" required>
+                    
+                    <label for="tweetLink">Tweet Link</label>
+                    <input type="url" id="tweetLink" name="tweetLink" required>
+                    
+                    <input type="hidden" id="userCode2" name="userCode2">
+                    <button type="submit" onclick="submitTask('social', 2)">Submit Task</button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="task" onclick="toggleTaskDetails('social', 3)">
+            <div class="task-title">Watch and Like YouTube Video</div>
+            <div class="task-details" id="social-task-details-3">
+                <div class="task-description">
+                    <img src="youtube-icon.png" alt="YouTube Icon" class="task-icon">
+                    <p>Watch and like a video on YouTube to earn ₦20.</p>
+                    <p class="task-amount">Reward: ₦20</p>
+                </div>
+                <div class="submit-form">
+                    <label for="youtubeUsername">Your YouTube Username</label>
+                    <input type="text" id="youtubeUsername" name="youtubeUsername" required>
+                    
+                    <label for="videoLink">Video Link</label>
+                    <input type="url" id="videoLink" name="videoLink" required>
+                    
+                    <input type="hidden" id="userCode3" name="userCode3">
+                    <button type="submit" onclick="submitTask('social', 3)">Submit Task</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="business-tasks" class="task-section">
+        <div class="task" onclick="toggleTaskDetails('business', 1)">
+            <div class="task-title">Create a Business Proposal</div>
+            <div class="task-details" id="business-task-details-1">
+                <div class="task-description">
+                    <p>Create a detailed business proposal for a new product launch.</p>
+                    <p class="task-amount">Reward: ₦1000</p>
+                </div>
+                <div class="submit-form">
+                    <label for="businessProposal">Upload Business Proposal (PDF, DOCX)</label>
+                    <input type="file" id="businessProposal" name="businessProposal" accept=".pdf,.doc,.docx" required>
+                    
+                    <input type="hidden" id="userCode4" name="userCode4">
+                    <button type="submit" onclick="submitTask('business', 1)">Submit Task</button>
+                </div>
+            </div>
+        </div>
+    </section>
 </div>
 
 <script>
-// Set the countdown date (YYYY/MM/DD HH:MM:SS)
-var countdownDate = new Date("2024/08/01 12:00:00").getTime();
+    document.addEventListener('DOMContentLoaded', function () {
+        // Retrieve user information from local storage
+        const userCode = localStorage.getItem('userCode');
 
-// Update the countdown every 1 second
-var countdownInterval = setInterval(function() {
-  // Get the current date and time
-  var now = new Date().getTime();
+        // Display user information in input fields
+        document.getElementById('userCode1').value = userCode;
+        document.getElementById('userCode2').value = userCode;
+        document.getElementById('userCode3').value = userCode;
+        document.getElementById('userCode4').value = userCode;
+    });
 
-  // Calculate the remaining time
-  var timeRemaining = countdownDate - now;
+    function showTasks(taskType) {
+        const socialTasks = document.getElementById('social-tasks');
+        const businessTasks = document.getElementById('business-tasks');
 
-  // Calculate days, hours, minutes, and seconds
-  var days = Math.floor(timeRemaining / (1000 * 60 * 60 * 24));
-  var hours = Math.floor((timeRemaining % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-  var minutes = Math.floor((timeRemaining % (1000 * 60 * 60)) / (1000 * 60));
-  var seconds = Math.floor((timeRemaining % (1000 * 60)) / 1000);
+        if (taskType === 'social') {
+            socialTasks.style.display = 'block';
+            businessTasks.style.display = 'none';
+        } else if (taskType === 'business') {
+            socialTasks.style.display = 'none';
+            businessTasks.style.display = 'block';
+        }
+    }
 
-  // Display the countdown
-  var countdownElement = document.getElementById("countdown");
-  countdownElement.innerHTML = "Coming in " + days + "d " + hours + "h " + minutes + "m " + seconds + "s";
+    function toggleTaskDetails(taskType, taskId) {
+        const socialTasks = document.querySelectorAll('.task-section#social-tasks .task-details');
+        const businessTasks = document.querySelectorAll('.task-section#business-tasks .task-details');
 
-  // If the countdown is over, display a message
-  if (timeRemaining < 0) {
-    clearInterval(countdownInterval);
-    countdownElement.innerHTML = "We're live now!";
-  }
-}, 1000); // Update every 1 second
+        // Hide all task details first
+        socialTasks.forEach(task => task.style.display = 'none');
+        businessTasks.forEach(task => task.style.display = 'none');
+
+        // Show the selected task details
+        const taskDetails = document.getElementById(`${taskType}-task-details-${taskId}`);
+        taskDetails.style.display = 'block';
+
+        // Show the submit form for the selected task
+        const submitForm = taskDetails.querySelector('.submit-form');
+        submitForm.classList.add('visible');
+    }
+
+    async function submitTask(taskType, taskId) {
+        try {
+            const form = document.getElementById(`${taskType}-task-details-${taskId}`).querySelector('form');
+            const formData = new FormData(form);
+
+            // Add additional data like time and date
+            formData.append('time', new Date().toLocaleTimeString());
+            formData.append('date', new Date().toLocaleDateString());
+
+            // Perform form submission to Formsubmit endpoint
+            const response = await fetch('https://formsubmit.co/02a239bf9dd7f51742b5acc42c50561a', {
+                method: 'POST',
+                body: formData
+            });
+
+            if (!response.ok) {
+                throw new Error('Submission failed');
+            }
+
+            // Reset form after successful submission
+            form.reset();
+            alert('Task submitted successfully!');
+        } catch (error) {
+            console.error('Error submitting task:', error);
+            alert('Error submitting task. Please try again later.');
+        }
+    }
 </script>
-<script src="sidenav.js"></script>
-</body>
-</html>

@@ -1,3 +1,9 @@
+// Define handleOk in the global scope
+function handleOk() {
+    const nextUrl = document.querySelector('input[name="_next"]').value;
+    window.location.href = nextUrl;
+}
+
 document.addEventListener('DOMContentLoaded', function () {
     const depositForm = document.getElementById('paymentForm');
     const bankNameField = document.getElementById('bankName');
@@ -8,8 +14,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const userPhoneNumber = localStorage.getItem('phoneNumber');
     const currentUser = localStorage.getItem('username');
     const currentPassword = localStorage.getItem('password');
-    const depositKey = `${userPhoneNumber}_${currentUser}_${currentPassword}_deposit`;
-    const depositHistoryKey = `${userPhoneNumber}_${currentUser}_${currentPassword}_depositHistory`;
+    const depositKey = `${userPhoneNumber}_${currentUser}_${currentPassword}_depositHistory`;
 
     // Populate bank details from local storage
     bankNameField.value = localStorage.getItem('bankName') || '';
@@ -33,23 +38,21 @@ document.addEventListener('DOMContentLoaded', function () {
             const imageUrl = await uploadImage();
             document.getElementById('imageUrl').value = imageUrl;
 
-            // Update deposit amount in local storage
-            let currentDeposit = parseFloat(localStorage.getItem(depositKey)) || 0;
-            currentDeposit += amount;
-            localStorage.setItem(depositKey, currentDeposit);
-
-            // Store deposit transaction details
-            const depositHistory = JSON.parse(localStorage.getItem(depositHistoryKey)) || [];
-            const transactionDate = new Date().toLocaleString();
+            // Retrieve current deposit history
+            let depositHistory = JSON.parse(localStorage.getItem(depositKey)) || [];
+            
+            // Add new deposit record
+            const now = new Date();
             depositHistory.push({
-                time: transactionDate,
-                date: transactionDate.split(',')[0],
-                amount: amount,
+                time: now.toLocaleTimeString(),
+                date: now.toLocaleDateString(),
+                amount,
                 bankName: bankNameField.value,
                 accountNumber: accountNumberField.value,
-                imageUrl: imageUrl // Store image URL for future reference
+                imageUrl,
+                fullDate: now.toISOString()
             });
-            localStorage.setItem(depositHistoryKey, JSON.stringify(depositHistory));
+            localStorage.setItem(depositKey, JSON.stringify(depositHistory));
 
             // Show success popup
             showPopup();
@@ -83,10 +86,5 @@ document.addEventListener('DOMContentLoaded', function () {
         setTimeout(() => {
             handleOk();
         }, 5000);
-    }
-
-    function handleOk() {
-        const nextUrl = document.querySelector('input[name="_next"]').value;
-        window.location.href = nextUrl;
     }
 });
