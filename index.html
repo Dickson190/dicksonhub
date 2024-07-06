@@ -59,6 +59,11 @@
       border-radius: 5px;
       cursor: pointer;
     }
+
+    .error-message {
+      color: red;
+      font-size: 14px;
+    }
   </style>
 </head>
 <body>
@@ -67,11 +72,12 @@
     <h2>Sign Up</h2>
     <form id="signup-form" action="https://sheetdb.io/api/v1/op1g6xcfghwt6" method="post">
       <input type="text" name="data[name]" id="username" placeholder="Username" required>
+      <span id="username-error" class="error-message"></span>
       <input type="password" name="data[password]" id="password" placeholder="Password" required>
       <label>
         <input type="checkbox" id="remember-me"> Remember Me
       </label>
-      <button type="submit" id="signup-button">Sign Up</button>
+      <button type="submit" id="signup-button" disabled>Sign Up</button>
       <div class="loader" id="loader"></div>
       <a href="login.html" class="login-button">Login Here</a>
     </form>
