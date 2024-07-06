@@ -9,7 +9,7 @@
 </head>
 <body>
   <div class="container">
-    <img src="Dig1.png" width="70px"; height="70px"alt="DicksonHub" class="logo">
+    <img src="Dig1.png" width="70px" height="70px" alt="DicksonHub" class="logo">
     <h2>Login</h2>
     <form id="login-form">
       <input type="text" id="username" placeholder="Username" required>
@@ -20,6 +20,123 @@
     <p><a href="#" id="forgot-password">Forgot Password?</a></p>
   </div>
 
-  <script src="login.js"></script>
+  <script>
+      
+      document.addEventListener('DOMContentLoaded', function () {
+    const loginForm = document.getElementById('login-form');
+    const loader = document.getElementById('loader');
+    const forgotPasswordLink = document.getElementById('forgot-password');
+
+    let usersData = [];
+
+    const primaryApiUrl = 'https://sheetdb.io/api/v1/op1g6xcfghwt6';
+    const secondaryApiUrl = 'https://sheetdb.io/api/v1/yqjwwro2ogq7u';
+
+    function fetchData(apiUrl) {
+        return fetch(apiUrl)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .catch(error => {
+                console.error('Error fetching user data from', apiUrl, ':', error);
+                return null;
+            });
+    }
+
+    function loadData() {
+        fetchData(primaryApiUrl)
+            .then(data => {
+                if (data) {
+                    usersData = data;
+                    console.log('Fetched user data from primary API:', usersData);
+                } else {
+                    return fetchData(secondaryApiUrl);
+                }
+            })
+            .then(data => {
+                if (data) {
+                    usersData = data;
+                    console.log('Fetched user data from secondary API:', usersData);
+                } else if (usersData.length === 0) {
+                    alert('An error occurred while fetching user data. Please try again.');
+                }
+            });
+    }
+
+    loadData();
+
+    // Check for stored credentials in local storage
+    const storedUsername = localStorage.getItem('username');
+    const storedPassword = localStorage.getItem('password');
+
+    if (storedUsername && storedPassword) {
+        // Show loading animation
+        loader.style.display = 'block';
+
+        // Simulate automatic login with a 2-second delay
+        setTimeout(function () {
+            const user = usersData.find(user => user['name'] === storedUsername);
+
+            if (user && user['password'] === storedPassword) {
+                alert('Automatic login successful \u2714️');
+                window.location.href = 'app.html';
+            } else {
+                alert('Stored credentials are incorrect. Please log in manually.');
+                loader.style.display = 'none';
+            }
+        }, 2000);
+    }
+
+    forgotPasswordLink.addEventListener('click', function (event) {
+        event.preventDefault();
+        const enteredUsername = prompt('Please enter your username:');
+
+        if (!enteredUsername) {
+            alert('Username is required.');
+            return;
+        }
+
+        const user = usersData.find(user => user['name'] === enteredUsername);
+
+        if (user) {
+            alert('Your password is: ' + user['password']);
+        } else {
+            alert('Incorrect username. Please try again.');
+        }
+    });
+
+    loginForm.addEventListener('submit', function (event) {
+        event.preventDefault();
+        const enteredUsername = document.getElementById('username').value;
+        const enteredPassword = document.getElementById('password').value;
+
+        if (!enteredUsername || !enteredPassword) {
+            alert('Username and password are required.');
+            return;
+        }
+
+        // Show loading animation
+        loader.style.display = 'block';
+
+        // Match user's input against the fetched data
+        const user = usersData.find(user => user['name'] === enteredUsername);
+
+        setTimeout(function () {
+            loader.style.display = 'none';
+
+            if (user && user['password'] === enteredPassword) {
+                alert('Login successful \u2714️');
+                window.location.href = 'app.html';
+            } else {
+                alert('Incorrect username or password. Please try again.');
+            }
+        }, 2000);
+    });
+});
+      
+  </script>
 </body>
 </html>

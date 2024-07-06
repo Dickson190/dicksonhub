@@ -24,29 +24,6 @@ document.addEventListener('DOMContentLoaded', function () {
     const loader = document.getElementById('loader');
     const usernameInput = document.getElementById('username');
     const usernameError = document.getElementById('username-error');
-    const signupButton = document.getElementById('signup-button');
-
-    usernameInput.addEventListener('blur', function () {
-        const username = usernameInput.value;
-        usernameError.textContent = '';
-
-        if (username.trim() !== '') {
-            fetch(`https://sheetdb.io/api/v1/op1g6xcfghwt6/search?data[name]=${username}`)
-                .then(response => response.json())
-                .then(data => {
-                    if (data.length > 0) {
-                        usernameError.textContent = 'Username already exists.';
-                        signupButton.disabled = true;
-                    } else {
-                        signupButton.disabled = false;
-                    }
-                }).catch(error => {
-                    console.error('Error:', error);
-                });
-        } else {
-            signupButton.disabled = true;
-        }
-    });
 
     signupForm.addEventListener('submit', function (event) {
         event.preventDefault();
@@ -56,23 +33,35 @@ document.addEventListener('DOMContentLoaded', function () {
 
         loader.style.display = 'block';
 
-        const formData = new FormData(signupForm);
-        fetch(signupForm.action, {
-            method: 'POST',
-            body: formData
-        }).then(response => response.json())
-        .then(data => {
-            loader.style.display = 'none';
-            showSignupPopup();
+        fetch(`https://sheetdb.io/api/v1/op1g6xcfghwt6/search?data[name]=${username}`)
+            .then(response => response.json())
+            .then(data => {
+                if (data.length > 0) {
+                    loader.style.display = 'none';
+                    usernameError.textContent = 'Username already exists.';
+                } else {
+                    const formData = new FormData(signupForm);
+                    fetch(signupForm.action, {
+                        method: 'POST',
+                        body: formData
+                    }).then(response => response.json())
+                    .then(data => {
+                        loader.style.display = 'none';
+                        showSignupPopup();
 
-            if (rememberMe) {
-                localStorage.setItem('username', username);
-                localStorage.setItem('password', password);
-            }
-        }).catch(error => {
-            loader.style.display = 'none';
-            alert('Error: ' + error);
-        });
+                        if (rememberMe) {
+                            localStorage.setItem('username', username);
+                            localStorage.setItem('password', password);
+                        }
+                    }).catch(error => {
+                        loader.style.display = 'none';
+                        alert('Error: ' + error);
+                    });
+                }
+            }).catch(error => {
+                loader.style.display = 'none';
+                alert('Error: ' + error);
+            });
     });
 
     function showSignupPopup() {
