@@ -7,34 +7,98 @@
   <link rel="stylesheet" href="watermark.css">
   <link rel="stylesheet" href="load.css">
   <link rel="stylesheet" href="styles.css">
+  <style>
+    .login-button {
+      display: inline-block;
+      padding: 10px 20px;
+      margin: 10px 0;
+      font-size: 16px;
+      color: #fff;
+      background-color: #007BFF;
+      border: none;
+      border-radius: 25px;
+      text-align: center;
+      text-decoration: none;
+      transition: background-color 0.3s ease;
+    }
+
+    .login-button:hover {
+      background-color: #0056b3;
+    }
+
+    .popup, .popup-login {
+      display: none;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background-color: white;
+      border-radius: 15px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      text-align: center;
+      padding: 20px;
+      z-index: 1000;
+    }
+
+    .popup .checkmark, .popup-login .checkmark {
+      width: 50px;
+      height: 50px;
+      margin: 0 auto 20px;
+    }
+
+    .popup .checkmark svg, .popup-login .checkmark svg {
+      width: 100%;
+      height: 100%;
+    }
+
+    .popup button, .popup-login button {
+      background-color: blue;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+  </style>
 </head>
 <body>
-    
-      <div class="loader" id="loader">
-    <div class="cooking">
-        <div class="bubble"></div>
-        <div class="bubble"></div>
-        <div class="bubble"></div>
-        <div class="bubble"></div>
-        <div class="pot"></div>
-    </div>
-</div>
-
-    
   <div class="container">
     <img src="Dig1.png" width="70px" height="70px" alt="DicksonHub" class="logo">
     <h2>Sign Up</h2>
-    <form id="signup-form">
-      <input type="text" id="username" placeholder="Username" required>
-      <input type="password" id="password" placeholder="Password" required>
+    <form id="signup-form" action="https://sheetdb.io/api/v1/op1g6xcfghwt6" method="post">
+      <input type="text" name="data[name]" id="username" placeholder="Username" required>
+      <input type="password" name="data[password]" id="password" placeholder="Password" required>
+      <label>
+        <input type="checkbox" id="remember-me"> Remember Me
+      </label>
       <button type="submit" id="signup-button">Sign Up</button>
       <div class="loader" id="loader"></div>
-      <a href="login.html">Login In Here</a>
+      <a href="login.html" class="login-button">Login Here</a>
     </form>
   </div>
-  
 
-  
+  <div id="popup" class="popup">
+    <div class="checkmark">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">
+        <circle cx="26" cy="26" r="25" fill="none"/>
+        <path fill="none" stroke="#22c55e" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" d="M14 27l8 8 16-16"/>
+      </svg>
+    </div>
+    <h2>Sign up successful</h2>
+    <button onclick="handleOk()">OK</button>
+  </div>
+
+  <div id="popup-login" class="popup-login">
+    <div class="checkmark">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">
+        <circle cx="26" cy="26" r="25" fill="none"/>
+        <path fill="none" stroke="#22c55e" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" d="M14 27l8 8 16-16"/>
+      </svg>
+    </div>
+    <h2>Automatic login successful</h2>
+    <button onclick="handleLoginOk()">OK</button>
+  </div>
+
   <script src="load.js"></script>
   <script src="script.js"></script>
 </body>

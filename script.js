@@ -1,42 +1,65 @@
- document.addEventListener('DOMContentLoaded', function () {
-        // Check if there is an existing username and password in local storage
-        const storedUsername = localStorage.getItem('username');
-        const storedPassword = localStorage.getItem('password');
+document.addEventListener('DOMContentLoaded', function () {
+    function showLoginPopup() {
+        const popupLogin = document.getElementById('popup-login');
+        popupLogin.style.display = 'block';
+    }
 
-        if (storedUsername && storedPassword) {
-            // Simulate automatic login with a 2-second delay
-            setTimeout(function () {
-                alert('Automatic login successful \u2714️');
-                window.location.href = 'app.html';
-            }, 2000);
-            return;
-        }
+    function handleLoginOk() {
+        const popupLogin = document.getElementById('popup-login');
+        popupLogin.style.display = 'none';
+        window.location.href = 'app.html';
+    }
 
-        const signupForm = document.getElementById('signup-form');
-        const loader = document.getElementById('loader');
+    window.handleLoginOk = handleLoginOk;
 
-        signupForm.addEventListener('submit', function (event) {
-            event.preventDefault();
-            const username = document.getElementById('username').value;
-            const password = document.getElementById('password').value;
+    const storedUsername = localStorage.getItem('username');
+    const storedPassword = localStorage.getItem('password');
 
-            // Show loading animation
-            loader.style.display = 'block';
+    if (storedUsername && storedPassword) {
+        setTimeout(showLoginPopup, 2000);
+        return;
+    }
 
-            // Simulate sign-up process with a 2-second delay
-            setTimeout(function () {
-                // Store user info in local storage
+    const signupForm = document.getElementById('signup-form');
+    const loader = document.getElementById('loader');
+
+    signupForm.addEventListener('submit', function (event) {
+        event.preventDefault();
+        const username = document.getElementById('username').value;
+        const password = document.getElementById('password').value;
+        const rememberMe = document.getElementById('remember-me').checked;
+
+        loader.style.display = 'block';
+
+        const formData = new FormData(signupForm);
+        fetch(signupForm.action, {
+            method: 'POST',
+            body: formData
+        }).then(response => response.json())
+        .then(data => {
+            loader.style.display = 'none';
+            showSignupPopup();
+            
+            if (rememberMe) {
                 localStorage.setItem('username', username);
                 localStorage.setItem('password', password);
-
-                // Hide loading animation
-                loader.style.display = 'none';
-
-                // Display success alert
-                alert('Sign up successful \u2714️');
-
-                // Redirect to profile page after sign-up
-                window.location.href = 'profile.html';
-            }, 2000);
+            }
+        }).catch(error => {
+            loader.style.display = 'none';
+            alert('Error: ' + error);
         });
     });
+
+    function showSignupPopup() {
+        const popup = document.getElementById('popup');
+        popup.style.display = 'block';
+    }
+
+    function handleOk() {
+        const popup = document.getElementById('popup');
+        popup.style.display = 'none';
+        window.location.href = 'profile.html';
+    }
+
+    window.handleOk = handleOk;
+});
