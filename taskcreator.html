@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Task</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f8f9fa;
+            color: #343a40;
+        }
+        .container {
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+        label {
+            font-weight: bold;
+            margin: 10px 0 5px;
+        }
+        input, select, textarea {
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ced4da;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        button {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        pre {
+            background-color: #f1f1f1;
+            padding: 20px;
+            border-radius: 5px;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Create Task</h1>
+        <form id="taskForm">
+            <label for="taskType">Task Type:</label>
+            <select id="taskType" required>
+                <option value="social">Social</option>
+                <option value="business">Business</option>
+            </select>
+            
+            <label for="taskTitle">Task Title:</label>
+            <input type="text" id="taskTitle" required>
+            
+            <label for="taskDescription">Task Description:</label>
+            <textarea id="taskDescription" rows="3" required></textarea>
+            
+            <label for="taskIcon">Task Icon (URL):</label>
+            <input type="url" id="taskIcon" required>
+            
+            <label for="taskReward">Task Reward (₦):</label>
+            <input type="number" id="taskReward" required>
+            
+            <label for="inputFields">Input Fields (comma separated, e.g., Username, Post Link, Screenshot):</label>
+            <input type="text" id="inputFields" required>
+            
+            <button type="submit">Generate Task Code</button>
+        </form>
+        
+        <h2>Generated Code:</h2>
+        <pre id="generatedCode"></pre>
+    </div>
+
+    <script>
+        document.getElementById('taskForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            
+            const taskType = document.getElementById('taskType').value;
+            const taskTitle = document.getElementById('taskTitle').value;
+            const taskDescription = document.getElementById('taskDescription').value;
+            const taskIcon = document.getElementById('taskIcon').value;
+            const taskReward = document.getElementById('taskReward').value;
+            const inputFields = document.getElementById('inputFields').value.split(',').map(field => field.trim());
+            
+            const taskId = `${taskType}-task-${Math.floor(Math.random() * 1000)}`;
+            
+            let inputFieldsHtml = '';
+            inputFields.forEach((field, index) => {
+                const fieldId = `${taskType}${taskId}-field${index + 1}`;
+                inputFieldsHtml += `
+                    <label for="${fieldId}">Your ${field}</label>
+                    <input type="text" id="${fieldId}" name="${fieldId}" required>
+                `;
+            });
+            
+            const generatedCode = `
+<div class="task" id="${taskId}" onclick="toggleTaskDetails('${taskType}', '${taskId}')">
+    <div class="task-title">${taskTitle}</div>
+    <div class="task-details" id="${taskType}-task-details-${taskId}">
+        <div class="task-description">
+            <img src="${taskIcon}" alt="${taskTitle} Icon" class="task-icon">
+            <p>${taskDescription}</p>
+            <p class="task-amount">Reward: ₦${taskReward}</p>
+        </div>
+        <form method="post" action="https://formsubmit.co/your-form-id" class="submit-form" onsubmit="submitTask(event, '${taskId}')">
+            <input type="text" name="_honey" style="display: none;">
+            <input type="hidden" name="_captcha" value="false">
+            <input type="hidden" name="_next" value="https://dickson190.github.io/dicksonhub/premium.html">
+            ${inputFieldsHtml}
+            <input type="hidden" id="userCode${taskId}" name="userCode${taskId}">
+            <button type="submit">Submit Task</button>
+        </form>
+    </div>
+</div>
+            `;
+            
+            document.getElementById('generatedCode').textContent = generatedCode;
+        });
+    </script>
+</body>
+</html>
