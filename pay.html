@@ -4,107 +4,32 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="watermark.css">
+    <link rel="stylesheet" href="pay.css">
     <title>Deposit Payment</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-        }
-        .form-container {
-            max-width: 600px;
-            margin: 0 auto;
-            padding: 20px;
-            border: 1px solid #ccc;
-            border-radius: 10px;
-        }
-        .form-container h1 {
-            text-align: center;
-        }
-        .form-container label {
-            display: block;
-            margin: 10px 0 5px;
-        }
-        .form-container input, .form-container textarea, .form-container button {
-            width: 100%;
-            padding: 10px;
-            margin: 5px 0 15px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
-        .instruction {
-            color: red;
-            font-size: 0.9em;
-            text-align: center;
-        }
-        .note {
-            color: blue;
-            font-size: 0.9em;
-            text-align: center;
-        }
-        .popup {
-            display: none;
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background-color: white;
-            border-radius: 15px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            text-align: center;
-            padding: 20px;
-            z-index: 1000;
-        }
-        .popup .checkmark {
-            width: 50px;
-            height: 50px;
-            margin: 0 auto 20px;
-        }
-        .popup .checkmark svg {
-            width: 100%;
-            height: 100%;
-        }
-        .popup button {
-            background-color: blue;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-    </style>
-    <script src="pay.js"></script>
 </head>
 <body>
     <div class="form-container">
         <h1>Deposit Payment</h1>
         <p class="instruction">Please upload a full screenshot or a clear receipt.</p>
         <p class="note">Minimum deposit amount is ₦200. If you deposit less, the money will not be credited to your account nor refunded.</p>
-        <form id="paymentForm" method="POST" action="https://formsubmit.co/depositdicksonhub@gmail.com" enctype="multipart/form-data">
-            <!-- Honeypot -->
-            <input type="text" name="_honey" style="display: none;">
-            
-            <!-- Disable Captcha -->
-            <input type="hidden" name="_captcha" value="false">
-            
-            <input type="hidden" name="_next" value="https://dickson190.github.io/dicksonhub/payhis.html">
-
+        <form id="paymentForm" method="POST" enctype="multipart/form-data">
             <label for="bankName">Bank Name</label>
-            <input type="text" id="bankName" name="bankName" required readonly />
+            <input type="text" id="bankName" name="data[bank]" required readonly />
             <label for="accountName">Account Name</label>
-            <input type="text" id="accountName" name="accountName" required readonly />
+            <input type="text" id="accountName" name="data[accountName]" required readonly />
             <label for="accountNumber">Account Number</label>
-            <input type="text" id="accountNumber" name="accountNumber" required readonly />
+            <input type="text" id="accountNumber" name="data[accountNumber]" required readonly />
             <label for="transactionDate">Date of Transaction</label>
-            <input type="text" id="transactionDate" name="transactionDate" required readonly />
+            <input type="text" id="transactionDate" name="data[date]" required readonly />
             <label for="amount">Amount (₦)</label>
-            <input type="number" id="amount" name="amount" required>
+            <input type="number" id="amount" name="data[amount]" required>
             <label for="receipt">Upload Receipt</label>
-            <input type="file" id="receipt" name="receipt" accept="image/*" required />
+            <input type="file" id="receipt" name="data[receipt]" accept="image/*" required />
             <label for="message">Message</label>
-            <textarea id="message" name="message" rows="10" required></textarea>
+            <textarea id="message" name="data[message]" rows="10" required></textarea>
 
             <!-- Hidden input to store the image URL -->
-            <input type="hidden" name="imageUrl" id="imageUrl">
+            <input type="hidden" name="data[imageUrl]" id="imageUrl">
 
             <button type="submit">Submit Payment</button>
         </form>
@@ -120,5 +45,143 @@
         <h2>Deposit Successful</h2>
         <button onclick="handleOk()">OK</button>
     </div>
+    
+    <div id="errorPopup" class="popup">
+        <h2>Deposit Unsuccessful</h2>
+        <button onclick="handleErrorOk()">OK</button>
+    </div>
+
+    <script>
+        const apiKeys = [
+            'https://sheetdb.io/api/v1/4pmen090vij5z',
+            'https://sheetdb.io/api/v1/0cy6154dhcv8b'
+        ];
+        let currentApiKeyIndex = 0;
+
+        function handleOk() {
+            window.location.href = 'https://dickson190.github.io/dicksonhub/payhis.html';
+        }
+
+        function handleErrorOk() {
+            const errorPopup = document.getElementById('errorPopup');
+            errorPopup.style.display = 'none';
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            const depositForm = document.getElementById('paymentForm');
+            const bankNameField = document.getElementById('bankName');
+            const accountNameField = document.getElementById('accountName');
+            const accountNumberField = document.getElementById('accountNumber');
+            const transactionDateField = document.getElementById('transactionDate');
+            const amountField = document.getElementById('amount');
+            const userPhoneNumber = localStorage.getItem('phoneNumber');
+            const currentUser = localStorage.getItem('username');
+            const currentPassword = localStorage.getItem('password');
+            const depositKey = `${userPhoneNumber}_${currentUser}_${currentPassword}_depositHistory`;
+
+            bankNameField.value = localStorage.getItem('bankName') || '';
+            accountNameField.value = localStorage.getItem('accountName') || '';
+            accountNumberField.value = localStorage.getItem('accountNumber') || '';
+            transactionDateField.value = new Date().toLocaleString();
+
+            depositForm.addEventListener('submit', async function (event) {
+                event.preventDefault();
+
+                try {
+                    const amount = parseFloat(amountField.value);
+                    if (amount < 200) {
+                        alert('Minimum deposit amount is ₦200. If you deposit less, the money will not be credited to your account nor refunded.');
+                        return;
+                    }
+
+                    const imageUrl = await uploadImage();
+                    document.getElementById('imageUrl').value = imageUrl;
+
+const depositData = {
+    data: {
+        bank: bankNameField.value,
+        accountName: accountNameField.value,
+        accountNumber: accountNumberField.value,
+        date: transactionDateField.value,
+        amount: amount,
+        receipt: imageUrl,
+        message: document.getElementById('message').value,
+        imageUrl: imageUrl
+    }
+};
+                    await submitDeposit(depositData);
+
+                    let depositHistory = JSON.parse(localStorage.getItem(depositKey)) || [];
+                    const now = new Date();
+                    depositHistory.push({
+                        time: now.toLocaleTimeString(),
+                        date: now.toLocaleDateString(),
+                        amount,
+                        bankName: bankNameField.value,
+                        accountNumber: accountNumberField.value,
+                        imageUrl,
+                        fullDate: now.toISOString()
+                    });
+                    localStorage.setItem(depositKey, JSON.stringify(depositHistory));
+
+                    showPopup();
+                } catch (error) {
+                    showErrorPopup();
+                }
+            });
+
+            async function uploadImage() {
+                const receipt = document.getElementById('receipt').files[0];
+                const formData = new FormData();
+                formData.append('image', receipt);
+
+                const response = await fetch('https://api.imgbb.com/1/upload?key=2ff35d435f55b2ba82776a8d23bc26a3', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const result = await response.json();
+                if (result.success) {
+                    return result.data.url;
+                } else {
+                    throw new Error('Image upload failed');
+                }
+            }
+
+            async function submitDeposit(depositData) {
+                while (currentApiKeyIndex < apiKeys.length) {
+                    const response = await fetch(apiKeys[currentApiKeyIndex], {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(depositData)
+                    });
+
+                    const result = await response.json();
+                    if (result.error && result.error.includes('row limit')) {
+                        currentApiKeyIndex++;
+                    } else if (result.created) {
+                        return;
+                    } else {
+                        throw new Error('Deposit submission failed');
+                    }
+                }
+                throw new Error('All API keys have reached the row limit');
+            }
+
+            function showPopup() {
+                const popup = document.getElementById('popup');
+                popup.style.display = 'block';
+
+                setTimeout(() => {
+                    handleOk();
+                }, 5000);
+            }
+
+            function showErrorPopup() {
+                const errorPopup = document.getElementById('errorPopup');
+                errorPopup.style.display = 'block';
+            }
+        });
+    </script>
 </body>
 </html>
