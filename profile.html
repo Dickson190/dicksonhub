@@ -7,8 +7,7 @@
     <link rel="stylesheet" href="load.css">
     <link rel="stylesheet" href="profile.css">
     <link rel="stylesheet" href="sidenav.css">
-     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-     
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 <body>
   <div class="mobile-container">
@@ -16,7 +15,7 @@
     <!-- Side Navigation -->
     <div id="sidenav" class="sidenav">
       <a href="javascript:void(0)" class="closebtn" onclick="toggleNav()">&times;</a>
-          <a href="app.html">Home</a>
+      <a href="app.html">Home</a>
       <a href="earn.html">Offerwall</a>
       <a href="task.html">Task</a>
       <a href="bean.html" class="active">Upgrade Account</a>
@@ -26,17 +25,12 @@
       <a href="whistory.html">Withdrawal History</a>
       <a href="about.html">About Us</a>
     </div>
-    
 
     <a href="javascript:void(0);" class="icon" onclick="toggleNav()">
       <i class="fa fa-bars"></i>
     </a>
 
     <div class="container">
-        
-          
-
-        
         <h1>User Profile</h1>
         <form id="profileForm">
             <div class="form-group">
@@ -81,91 +75,211 @@
             </div>
             <div class="form-group">
                 <label for="state">State:</label>
-                <select id="state" required>
-                    <option value="">Select State</option>
-                    <option value="Abia">Abia</option>
-                    <option value="Adamawa">Adamawa</option>
-                    <option value="Akwa Ibom">Akwa Ibom</option>
-                    <option value="Anambra">Anambra</option>
-                    <option value="Bauchi">Bauchi</option>
-                    <option value="Bayelsa">Bayelsa</option>
-                    <option value="Benue">Benue</option>
-                    <option value="Borno">Borno</option>
-                    <option value="Cross River">Cross River</option>
-                    <option value="Delta">Delta</option>
-                    <option value="Ebonyi">Ebonyi</option>
-                    <option value="Edo">Edo</option>
-                    <option value="Ekiti">Ekiti</option>
-                    <option value="Enugu">Enugu</option>
-                    <option value="Gombe">Gombe</option>
-                    <option value="Imo">Imo</option>
-                    <option value="Jigawa">Jigawa</option>
-                    <option value="Kaduna">Kaduna</option>
-                    <option value="Kano">Kano</option>
-                    <option value="Katsina">Katsina</option>
-                    <option value="Kebbi">Kebbi</option>
-                    <option value="Kogi">Kogi</option>
-                    <option value="Kwara">Kwara</option>
-                    <option value="Lagos">Lagos</option>
-                    <option value="Nasarawa">Nasarawa</option>
-                    <option value="Niger">Niger</option>
-                    <option value="Ogun">Ogun</option>
-                    <option value="Ondo">Ondo</option>
-                    <option value="Osun">Osun</option>
-                    <option value="Oyo">Oyo</option>
-                    <option value="Plateau">Plateau</option>
-                    <option value="Rivers">Rivers</option>
-                    <option value="Sokoto">Sokoto</option>
-                    <option value="Taraba">Taraba</option>
-                    <option value="Yobe">Yobe</option>
-                    <option value="Zamfara">Zamfara</option>
-                </select>
+                <input type="text" id="state" required>
             </div>
             <div class="form-group">
                 <label for="phoneNumber">Phone Number:</label>
                 <input type="tel" id="phoneNumber" required>
-                </div>
-                <div class="form-group">
-    <label for="network">Network:</label>
-    <select id="network" required>
-        <option value="">Select Network</option>
-        <option value="MTN">MTN</option>
-        <option value="Glo">Glo</option>
-        <option value="Airtel">Airtel</option>
-        <option value="9mobile">9mobile</option>
-    </select>
-
             </div>
             <div class="form-group">
-    <label for="bankName">Bank Name:</label>
-    <input type="text" id="bankName" required>
-</div>
-<div class="form-group">
-    <label for="accountName">Account Name:</label>
-    <input type="text" id="accountName" required>
-</div>
-<div class="form-group">
-    <label for="accountNumber">Account Number:</label>
-    <input type="text" id="accountNumber" required>
-</div>
+                <label for="network">Network:</label>
+                <select id="network" required>
+                    <option value="">Select Network</option>
+                    <option value="MTN">MTN</option>
+                    <option value="Glo">Glo</option>
+                    <option value="Airtel">Airtel</option>
+                    <option value="9mobile">9mobile</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="bankName">Bank Name:</label>
+                <input type="text" id="bankName" required>
+            </div>
+            <div class="form-group">
+                <label for="accountName">Account Name:</label>
+                <input type="text" id="accountName" required>
+            </div>
+            <div class="form-group">
+                <label for="accountNumber">Account Number:</label>
+                <input type="text" id="accountNumber" required>
+            </div>
+            <div class="form-group">
+                <label for="lga">LGA:</label>
+                <input type="text" id="lga" required>
+            </div>
             <button type="submit">Submit</button>
         </form>
     </div>
 
-
-
-<div class="loader" id="loader">
-    <div class="cooking">
-        <div class="bubble"></div>
-        <div class="bubble"></div>
-        <div class="bubble"></div>
-        <div class="bubble"></div>
-        <div class="pot"></div>
+    <div class="loader" id="loader">
+        <div class="cooking">
+            <div class="bubble"></div>
+            <div class="bubble"></div>
+            <div class="bubble"></div>
+            <div class="bubble"></div>
+            <div class="pot"></div>
+        </div>
     </div>
-</div>
 
-<script src="load.js"></script>
-<script src="sidenav.js"></script>
-    <script src="profile.js"></script>
+    <script src="load.js"></script>
+    <script src="sidenav.js"></script>
+   <script>
+       document.addEventListener('DOMContentLoaded', () => {
+    // Helper function for displaying notifications
+    function displayNotification(message, type) {
+        const notification = document.createElement('div');
+        notification.className = `notification ${type}`;
+        notification.innerHTML = `
+            <span class="notification-icon">${type === 'success' ? '&#x2714;' : '&#x26A0;'}</span>
+            <span class="notification-message">${message}</span>
+        `;
+        document.body.appendChild(notification);
+        setTimeout(() => {
+            notification.remove();
+        }, 3000);
+    }
+
+    // Retrieve data from local storage or API
+    function loadProfileData() {
+        const storedUsername = localStorage.getItem('username');
+        const storedPassword = localStorage.getItem('password');
+        const storedUniqueCode = localStorage.getItem('uniqueCode');
+        const storedProfile = JSON.parse(localStorage.getItem('userProfile'));
+
+        if (storedProfile) {
+            // Load data from local storage
+            document.getElementById('username').value = storedUsername || '';
+            document.getElementById('password').value = storedPassword || '';
+            document.getElementById('uniqueCode').value = storedUniqueCode || '';
+            document.getElementById('firstName').value = storedProfile.firstName || '';
+            document.getElementById('lastName').value = storedProfile.lastName || '';
+            document.getElementById('age').value = storedProfile.age || '13';
+            document.getElementById('gender').value = storedProfile.gender || '';
+            document.getElementById('state').value = storedProfile.state || '';
+            document.getElementById('phoneNumber').value = storedProfile.phoneNumber || '';
+            document.getElementById('email').value = storedProfile.email || '';
+            document.getElementById('network').value = storedProfile.network || '';
+            document.getElementById('bankName').value = storedProfile.bankName || '';
+            document.getElementById('accountName').value = storedProfile.accountName || '';
+            document.getElementById('accountNumber').value = storedProfile.accountNumber || '';
+            document.getElementById('lga').value = storedProfile.lga || '';
+        } else {
+            // Fetch data from API using username and password
+            fetch(`https://sheetdb.io/api/v1/YOUR_API_KEY/search?username=${storedUsername}&password=${storedPassword}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.length > 0) {
+                        const profile = data[0];
+                        document.getElementById('username').value = profile.username || '';
+                        document.getElementById('password').value = profile.password || '';
+                        document.getElementById('uniqueCode').value = profile.uniqueCode || '';
+                        document.getElementById('firstName').value = profile.firstName || '';
+                        document.getElementById('lastName').value = profile.lastName || '';
+                        document.getElementById('age').value = profile.age || '13';
+                        document.getElementById('gender').value = profile.gender || '';
+                        document.getElementById('state').value = profile.state || '';
+                        document.getElementById('phoneNumber').value = profile.phoneNumber || '';
+                        document.getElementById('email').value = profile.email || '';
+                        document.getElementById('network').value = profile.network || '';
+                        document.getElementById('bankName').value = profile.bankName || '';
+                        document.getElementById('accountName').value = profile.accountName || '';
+                        document.getElementById('accountNumber').value = profile.accountNumber || '';
+                        document.getElementById('lga').value = profile.lga || '';
+                        
+                        // Store profile data in local storage
+                        localStorage.setItem('userProfile', JSON.stringify(profile));
+                    }
+                })
+                .catch(error => console.error('Error fetching profile:', error));
+        }
+    }
+
+    // Populate age dropdown
+    const ageSelect = document.getElementById('age');
+    for (let i = 13; i <= 100; i++) {
+        const option = document.createElement('option');
+        option.value = i;
+        option.textContent = i;
+        ageSelect.appendChild(option);
+    }
+
+    // Load profile data when the page is loaded
+    loadProfileData();
+
+    const profileForm = document.getElementById('profileForm');
+
+    // Retrieve edit count
+    let editCount = parseInt(localStorage.getItem('editCount')) || 0;
+
+    // Check if edit limit is reached
+    if (editCount >= 3) {
+        // Lock all input fields
+        Array.from(document.querySelectorAll('input, select')).forEach(input => {
+            input.disabled = true;
+        });
+        displayNotification('You have reached the maximum number of edits. The fields are now locked.', 'error');
+    } else {
+        profileForm.addEventListener('submit', (event) => {
+            event.preventDefault();
+
+            const userProfile = {
+                username: document.getElementById('username').value,
+                password: document.getElementById('password').value,
+                uniqueCode: document.getElementById('uniqueCode').value,
+                firstName: document.getElementById('firstName').value,
+                lastName: document.getElementById('lastName').value,
+                age: document.getElementById('age').value,
+                gender: document.getElementById('gender').value,
+                state: document.getElementById('state').value,
+                phoneNumber: document.getElementById('phoneNumber').value,
+                email: document.getElementById('email').value,
+                network: document.getElementById('network').value,
+                bankName: document.getElementById('bankName').value,
+                accountName: document.getElementById('accountName').value,
+                accountNumber: document.getElementById('accountNumber').value,
+                lga: document.getElementById('lga').value
+            };
+
+            // Store profile data in local storage
+            localStorage.setItem('userProfile', JSON.stringify(userProfile));
+
+            // Increment and store the edit count
+            editCount++;
+            localStorage.setItem('editCount', editCount);
+
+            // Send data to SheetDB API
+            fetch('https://sheetdb.io/api/v1/05zo2s09gbz5x', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ data: [userProfile] })
+            })
+            .then(response => response.json())
+            .then(data => {
+                displayNotification('Profile updated successfully!', 'success');
+                if (editCount >= 3) {
+                    Array.from(document.querySelectorAll('input, select')).forEach(input => {
+                        input.disabled = true;
+                    });
+                    displayNotification('You have reached the maximum number of edits. The fields are now locked.', 'error');
+                }
+                // Redirect to app.html after successful update
+                setTimeout(() => {
+                    window.location.href = 'app.html';
+                }, 3000);
+            })
+            .catch(error => {
+                displayNotification('Failed to update profile. Please try again.', 'error');
+                console.error('Error:', error);
+            });
+        });
+    }
+});        
+    </script>
 </body>
 </html>
+
+<!-- API keys -->
+<!-- https://sheetdb.io/api/v1/05zo2s09gbz5x -->
+<!-- https://sheetdb.io/api/v1/mw7e3hg45k2qt -->

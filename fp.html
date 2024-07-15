@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Forgot Password</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .container {
+      background-color: white;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      text-align: center;
+      width: 100%;
+      max-width: 400px;
+    }
+
+    .container img {
+      width: 100px;
+      margin-bottom: 20px;
+    }
+
+    .container h2 {
+      margin-bottom: 20px;
+    }
+
+    .container input {
+      width: calc(100% - 20px);
+      padding: 10px;
+      margin: 10px 0;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      box-sizing: border-box;
+    }
+
+    .container button {
+      background-color: #4CAF50;
+      color: white;
+      padding: 10px 15px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+
+    .container button:hover {
+      background-color: #45a049;
+    }
+
+    .loader {
+      display: none;
+      border: 4px solid #f3f3f3;
+      border-radius: 50%;
+      border-top: 4px solid #3498db;
+      width: 20px;
+      height: 20px;
+      -webkit-animation: spin 2s linear infinite;
+      animation: spin 2s linear infinite;
+      margin: 10px auto;
+    }
+
+    @-webkit-keyframes spin {
+      0% { -webkit-transform: rotate(0deg); }
+      100% { -webkit-transform: rotate(360deg); }
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    .notification {
+      display: none;
+      color: white;
+      padding: 15px;
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      text-align: center;
+      z-index: 1;
+    }
+
+    .notification.success {
+      background-color: #4CAF50;
+    }
+
+    .notification.error {
+      background-color: #f44336;
+    }
+
+    .suspension-notification {
+      display: none;
+      color: white;
+      background-color: #f44336;
+      padding: 20px;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      text-align: center;
+      z-index: 2;
+      border-radius: 8px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <img src="Dig1.png" alt="Logo">
+    <h2>Forgot Password</h2>
+    <form id="forgot-password-form">
+      <input type="text" id="fp-username" placeholder="Username" required>
+      <input type="email" id="fp-email" placeholder="Email" required>
+      <input type="text" id="fp-lga" placeholder="LGA" required>
+      <input type="number" id="fp-age" placeholder="Age" required>
+      <button type="submit" id="forgot-password-button">Retrieve Password</button>
+      <div class="loader" id="loader"></div>
+    </form>
+  </div>
+
+  <div id="notification" class="notification"></div>
+  <div id="suspension-notification" class="suspension-notification">You have been suspended from using this page. Come back after 1 hour.</div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const forgotPasswordForm = document.getElementById('forgot-password-form');
+      const forgotPasswordButton = document.getElementById('forgot-password-button');
+      const loader = document.getElementById('loader');
+      const notificationBox = document.getElementById('notification');
+      const suspensionNotificationBox = document.getElementById('suspension-notification');
+
+      const forgotPasswordApiUrl = 'https://sheetdb.io/api/v1/05zo2s09gbz5x';
+      const suspensionDuration = 60 * 60 * 1000; // 1 hour in milliseconds
+      const maxAttempts = 3;
+
+      function showNotification(message, isSuccess = false) {
+        notificationBox.textContent = message;
+        notificationBox.className = `notification ${isSuccess ? 'success' : 'error'}`;
+        notificationBox.style.display = 'block';
+        setTimeout(() => {
+          notificationBox.style.display = 'none';
+        }, 3000);
+      }
+
+      function showSuspensionNotification() {
+        suspensionNotificationBox.style.display = 'block';
+      }
+
+      function hideSuspensionNotification() {
+        suspensionNotificationBox.style.display = 'none';
+      }
+
+      function getFailedAttempts() {
+        return parseInt(localStorage.getItem('failedAttempts') || '0', 10);
+      }
+
+      function setFailedAttempts(attempts) {
+        localStorage.setItem('failedAttempts', attempts);
+      }
+
+      function setSuspensionTime() {
+        localStorage.setItem('suspensionTime', Date.now().toString());
+      }
+
+      function getSuspensionTime() {
+        return parseInt(localStorage.getItem('suspensionTime'), 10);
+      }
+
+      function checkSuspension() {
+        const suspensionTime = getSuspensionTime();
+        if (suspensionTime && (Date.now() - suspensionTime) < suspensionDuration) {
+          showSuspensionNotification();
+          forgotPasswordButton.disabled = true;
+          return true;
+        } else {
+          hideSuspensionNotification();
+          forgotPasswordButton.disabled = false;
+          return false;
+        }
+      }
+
+      function incrementFailedAttempts() {
+        const attempts = getFailedAttempts() + 1;
+        setFailedAttempts(attempts);
+        if (attempts >= maxAttempts) {
+          setSuspensionTime();
+          checkSuspension();
+        }
+      }
+
+      checkSuspension();
+
+      forgotPasswordForm.addEventListener('submit', function (event) {
+        event.preventDefault();
+        if (checkSuspension()) return;
+
+        const username = document.getElementById('fp-username').value;
+        const email = document.getElementById('fp-email').value;
+        const lga = document.getElementById('fp-lga').value;
+        const age = document.getElementById('fp-age').value;
+
+        if (!username || !email || !lga || !age) {
+          showNotification('All fields are required.');
+          return;
+        }
+
+        loader.style.display = 'block';
+
+        fetch(forgotPasswordApiUrl)
+          .then(response => response.json())
+          .then(data => {
+            const user = data.find(user => user.username === username && user.email === email && user.age == age && user.lga === lga);
+            if (user) {
+              showNotification('Your password is: ' + user.password, true);
+              setFailedAttempts(0); // Reset failed attempts on success
+            } else {
+              incrementFailedAttempts();
+              showNotification('Details do not match. Please try again.');
+            }
+          })
+          .catch(error => {
+            console.error('Error:', error);
+            showNotification('An error occurred. Please try again.');
+          })
+          .finally(() => {
+            loader.style.display = 'none';
+          });
+      });
+    });
+  </script>
+</body>
+</html>

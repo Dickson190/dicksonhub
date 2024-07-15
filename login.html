@@ -6,10 +6,105 @@
   <title>Login</title>
   <link rel="stylesheet" href="watermark.css">
   <link rel="stylesheet" href="styles.css">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .container {
+      background-color: white;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      text-align: center;
+      width: 100%;
+      max-width: 400px;
+    }
+
+    .container img {
+      width: 70px;
+      height: 70px;
+      margin-bottom: 20px;
+    }
+
+    .container h2 {
+      margin-bottom: 20px;
+    }
+
+    .container input {
+      width: calc(100% - 20px);
+      padding: 10px;
+      margin: 10px 0;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      box-sizing: border-box;
+    }
+
+    .container button {
+      background-color: #4CAF50;
+      color: white;
+      padding: 10px 15px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+
+    .container button:hover {
+      background-color: #45a049;
+    }
+
+    .loader {
+      display: none;
+      border: 4px solid #f3f3f3;
+      border-radius: 50%;
+      border-top: 4px solid #3498db;
+      width: 20px;
+      height: 20px;
+      -webkit-animation: spin 2s linear infinite;
+      animation: spin 2s linear infinite;
+      margin: 10px auto;
+    }
+
+    @-webkit-keyframes spin {
+      0% { -webkit-transform: rotate(0deg); }
+      100% { -webkit-transform: rotate(360deg); }
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    .notification {
+      display: none;
+      color: white;
+      padding: 15px;
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      text-align: center;
+      z-index: 1;
+    }
+
+    .notification.success {
+      background-color: #4CAF50;
+    }
+
+    .notification.error {
+      background-color: #f44336;
+    }
+  </style>
 </head>
 <body>
   <div class="container">
-    <img src="Dig1.png" width="70px" height="70px" alt="DicksonHub" class="logo">
+    <img src="Dig1.png" alt="DicksonHub" class="logo">
     <h2>Login</h2>
     <form id="login-form">
       <input type="text" id="username" placeholder="Username" required>
@@ -17,126 +112,120 @@
       <button type="submit" id="login-button">Login</button>
       <div class="loader" id="loader"></div>
     </form>
-    <p><a href="#" id="forgot-password">Forgot Password?</a></p>
+    <p><a href="fp.html" id="forgot-password">Forgot Password?</a></p>
   </div>
 
+  <div id="notification" class="notification"></div>
+
   <script>
-      
-      document.addEventListener('DOMContentLoaded', function () {
-    const loginForm = document.getElementById('login-form');
-    const loader = document.getElementById('loader');
-    const forgotPasswordLink = document.getElementById('forgot-password');
+    document.addEventListener('DOMContentLoaded', function () {
+      const loginForm = document.getElementById('login-form');
+      const loader = document.getElementById('loader');
+      const notificationBox = document.getElementById('notification');
 
-    let usersData = [];
+      let usersData = [];
 
-    const primaryApiUrl = 'https://sheetdb.io/api/v1/op1g6xcfghwt6';
-    const secondaryApiUrl = 'https://sheetdb.io/api/v1/yqjwwro2ogq7u';
+      const primaryApiUrl = 'https://sheetdb.io/api/v1/op1g6xcfghwt6';
+      const secondaryApiUrl = 'https://sheetdb.io/api/v1/yqjwwro2ogq7u';
 
-    function fetchData(apiUrl) {
+      function fetchData(apiUrl) {
         return fetch(apiUrl)
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                return response.json();
-            })
-            .catch(error => {
-                console.error('Error fetching user data from', apiUrl, ':', error);
-                return null;
-            });
-    }
+          .then(response => response.json())
+          .catch(error => {
+            console.error('Error fetching user data from', apiUrl, ':', error);
+            return null;
+          });
+      }
 
-    function loadData() {
+      function loadData() {
         fetchData(primaryApiUrl)
-            .then(data => {
-                if (data) {
-                    usersData = data;
-                    console.log('Fetched user data from primary API:', usersData);
-                } else {
-                    return fetchData(secondaryApiUrl);
-                }
-            })
-            .then(data => {
-                if (data) {
-                    usersData = data;
-                    console.log('Fetched user data from secondary API:', usersData);
-                } else if (usersData.length === 0) {
-                    alert('An error occurred while fetching user data. Please try again.');
-                }
-            });
-    }
-
-    loadData();
-
-    // Check for stored credentials in local storage
-    const storedUsername = localStorage.getItem('username');
-    const storedPassword = localStorage.getItem('password');
-
-    if (storedUsername && storedPassword) {
-        // Show loading animation
-        loader.style.display = 'block';
-
-        // Simulate automatic login with a 2-second delay
-        setTimeout(function () {
-            const user = usersData.find(user => user['name'] === storedUsername);
-
-            if (user && user['password'] === storedPassword) {
-                alert('Automatic login successful \u2714️');
-                window.location.href = 'app.html';
+          .then(data => {
+            if (data) {
+              usersData = data;
+              console.log('Fetched user data from primary API:', usersData);
             } else {
-                alert('Stored credentials are incorrect. Please log in manually.');
-                loader.style.display = 'none';
+              return fetchData(secondaryApiUrl);
             }
-        }, 2000);
-    }
+          })
+          .then(data => {
+            if (data) {
+              usersData = data;
+              console.log('Fetched user data from secondary API:', usersData);
+            } else if (usersData.length === 0) {
+              showNotification('An error occurred while fetching user data. Please try again.');
+            }
+          });
+      }
 
-    forgotPasswordLink.addEventListener('click', function (event) {
-        event.preventDefault();
-        const enteredUsername = prompt('Please enter your username:');
+      loadData();
 
-        if (!enteredUsername) {
-            alert('Username is required.');
+      function showNotification(message, isSuccess = false) {
+        notificationBox.textContent = message;
+        notificationBox.className = `notification ${isSuccess ? 'success' : 'error'}`;
+        notificationBox.style.display = 'block';
+        setTimeout(() => {
+          notificationBox.style.display = 'none';
+        }, 3000);
+      }
+
+      function parseAndStoreOthersData(others) {
+        if (!localStorage.getItem('others')) {
+          const decodedOthers = atob(others);
+          const [phone, username, password, code] = decodedOthers.split(':');
+          localStorage.setItem('phone', phone);
+          localStorage.setItem('username', username);
+          localStorage.setItem('password', password);
+          localStorage.setItem('code', code);
+          localStorage.setItem('others', others);
+        }
+      }
+
+      function automaticLogin() {
+        const storedUsername = localStorage.getItem('username');
+        const storedPassword = localStorage.getItem('password');
+
+        if (storedUsername && storedPassword) {
+          loader.style.display = 'block';
+          setTimeout(() => {
+            showNotification('Automatic login successful \u2714️', true);
+            window.location.href = 'app.html';
+          }, 2000);
+          return true;
+        }
+        return false;
+      }
+
+      if (!automaticLogin()) {
+        loginForm.addEventListener('submit', function (event) {
+          event.preventDefault();
+          const enteredUsername = document.getElementById('username').value;
+          const enteredPassword = document.getElementById('password').value;
+
+          if (!enteredUsername || !enteredPassword) {
+            showNotification('Username and password are required.');
             return;
-        }
+          }
 
-        const user = usersData.find(user => user['name'] === enteredUsername);
+          loader.style.display = 'block';
 
-        if (user) {
-            alert('Your password is: ' + user['password']);
-        } else {
-            alert('Incorrect username. Please try again.');
-        }
-    });
+          const user = usersData.find(user => user['name'] === enteredUsername);
 
-    loginForm.addEventListener('submit', function (event) {
-        event.preventDefault();
-        const enteredUsername = document.getElementById('username').value;
-        const enteredPassword = document.getElementById('password').value;
-
-        if (!enteredUsername || !enteredPassword) {
-            alert('Username and password are required.');
-            return;
-        }
-
-        // Show loading animation
-        loader.style.display = 'block';
-
-        // Match user's input against the fetched data
-        const user = usersData.find(user => user['name'] === enteredUsername);
-
-        setTimeout(function () {
+          setTimeout(() => {
             loader.style.display = 'none';
 
             if (user && user['password'] === enteredPassword) {
-                alert('Login successful \u2714️');
-                window.location.href = 'app.html';
+              showNotification('Login successful \u2714️', true);
+              parseAndStoreOthersData(user['others']);
+              localStorage.setItem('username', enteredUsername);
+              localStorage.setItem('password', enteredPassword);
+              window.location.href = 'app.html';
             } else {
-                alert('Incorrect username or password. Please try again.');
+              showNotification('Incorrect username or password. Please try again.');
             }
-        }, 2000);
+          }, 2000);
+        });
+      }
     });
-});
-      
   </script>
 </body>
 </html>

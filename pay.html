@@ -31,6 +31,9 @@
             <!-- Hidden input to store the image URL -->
             <input type="hidden" name="data[imageUrl]" id="imageUrl">
 
+            <!-- Hidden input to store the user code -->
+            <input type="hidden" name="data[uniqueCode]" id="uniqueCode">
+
             <button type="submit">Submit Payment</button>
         </form>
     </div>
@@ -74,6 +77,7 @@
             const accountNumberField = document.getElementById('accountNumber');
             const transactionDateField = document.getElementById('transactionDate');
             const amountField = document.getElementById('amount');
+            const uniqueCodeField = document.getElementById('uniqueCode');
             const userPhoneNumber = localStorage.getItem('phoneNumber');
             const currentUser = localStorage.getItem('username');
             const currentPassword = localStorage.getItem('password');
@@ -83,6 +87,7 @@
             accountNameField.value = localStorage.getItem('accountName') || '';
             accountNumberField.value = localStorage.getItem('accountNumber') || '';
             transactionDateField.value = new Date().toLocaleString();
+            uniqueCodeField.value = localStorage.getItem('uniqueCode') || '';
 
             depositForm.addEventListener('submit', async function (event) {
                 event.preventDefault();
@@ -97,18 +102,19 @@
                     const imageUrl = await uploadImage();
                     document.getElementById('imageUrl').value = imageUrl;
 
-const depositData = {
-    data: {
-        bank: bankNameField.value,
-        accountName: accountNameField.value,
-        accountNumber: accountNumberField.value,
-        date: transactionDateField.value,
-        amount: amount,
-        receipt: imageUrl,
-        message: document.getElementById('message').value,
-        imageUrl: imageUrl
-    }
-};
+                    const depositData = {
+                        data: {
+                            bank: bankNameField.value,
+                            accountName: accountNameField.value,
+                            accountNumber: accountNumberField.value,
+                            date: transactionDateField.value,
+                            amount: amount,
+                            receipt: imageUrl,
+                            message: document.getElementById('message').value,
+                            uniqueCode: uniqueCodeField.value,
+                            imageUrl: imageUrl
+                        }
+                    };
                     await submitDeposit(depositData);
 
                     let depositHistory = JSON.parse(localStorage.getItem(depositKey)) || [];

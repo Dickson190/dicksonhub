@@ -75,4 +75,27 @@ select {
     .container {
         padding: 10px;
     }
+    .notification {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    padding: 15px;
+    border-radius: 5px;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    z-index: 1000;
+}
+
+.notification.success {
+    background-color: #4CAF50;
+}
+
+.notification.error {
+    background-color: #f44336;
+}
+
+.notification i {
+    margin-right: 10px;
+}
 }
