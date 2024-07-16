@@ -5,64 +5,63 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Sign Up</title>
   <link rel="stylesheet" href="watermark.css">
-  <link rel="stylesheet" href="load.css">
   <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="index.css">
   <style>
-    .login-button {
-      display: inline-block;
-      padding: 10px 20px;
-      margin: 10px 0;
-      font-size: 16px;
-      color: #fff;
-      background-color: #007BFF;
-      border: none;
-      border-radius: 25px;
+    .container {
+      max-width: 400px;
+      margin: auto;
+      padding: 20px;
       text-align: center;
-      text-decoration: none;
-      transition: background-color 0.3s ease;
     }
-
-    .login-button:hover {
-      background-color: #0056b3;
+    .logo {
+      display: block;
+      margin: auto;
     }
-
+    .error-message {
+      color: red;
+      font-size: 12px;
+      display: block;
+      margin-bottom: 10px;
+    }
+    .loader {
+      display: none;
+      margin: 10px auto;
+      border: 4px solid #f3f3f3;
+      border-radius: 50%;
+      border-top: 4px solid #3498db;
+      width: 20px;
+      height: 20px;
+      animation: spin 1s linear infinite;
+    }
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
     .popup, .popup-login {
       display: none;
       position: fixed;
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
-      background-color: white;
-      border-radius: 15px;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-      text-align: center;
+      background: white;
       padding: 20px;
-      z-index: 1000;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      text-align: center;
     }
-
-    .popup .checkmark, .popup-login .checkmark {
+    .checkmark {
       width: 50px;
       height: 50px;
-      margin: 0 auto 20px;
+      margin: 10px auto;
     }
-
-    .popup .checkmark svg, .popup-login .checkmark svg {
-      width: 100%;
-      height: 100%;
+    .remember-me {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 10px 0;
     }
-
-    .popup button, .popup-login button {
-      background-color: blue;
-      color: white;
-      border: none;
-      padding: 10px 20px;
-      border-radius: 5px;
-      cursor: pointer;
-    }
-
-    .error-message {
-      color: red;
-      font-size: 14px;
+    .remember-me input {
+      margin-right: 10px;
     }
   </style>
 </head>
@@ -74,9 +73,10 @@
       <input type="text" name="data[name]" id="username" placeholder="Username" required>
       <span id="username-error" class="error-message"></span>
       <input type="password" name="data[password]" id="password" placeholder="Password" required>
-      <label>
-        <input type="checkbox" id="remember-me"> Remember Me
-      </label>
+      <div class="remember-me">
+        <input type="checkbox" id="remember-me">
+        <label for="remember-me">Remember Me</label>
+      </div>
       <button type="submit" id="signup-button">Sign Up</button>
       <div class="loader" id="loader"></div>
       <a href="login.html" class="login-button">Login Here</a>
@@ -101,11 +101,100 @@
         <path fill="none" stroke="#22c55e" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" d="M14 27l8 8 16-16"/>
       </svg>
     </div>
-    <h2>Automatic login successful</h2>
+    <h2>You already have an account. Press OK to login.</h2>
     <button onclick="handleLoginOk()">OK</button>
   </div>
 
   <script src="load.js"></script>
-  <script src="script.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      function showLoginPopup() {
+        const popupLogin = document.getElementById('popup-login');
+        popupLogin.style.display = 'block';
+      }
+
+      function handleLoginOk() {
+        const popupLogin = document.getElementById('popup-login');
+        popupLogin.style.display = 'none';
+        window.location.href = 'login.html';
+      }
+
+      window.handleLoginOk = handleLoginOk;
+
+      const storedUsername = localStorage.getItem('username');
+      const storedPassword = localStorage.getItem('password');
+
+      if (storedUsername && storedPassword) {
+        setTimeout(showLoginPopup, 2000);
+        return;
+      }
+
+      const signupForm = document.getElementById('signup-form');
+      const loader = document.getElementById('loader');
+      const usernameInput = document.getElementById('username');
+      const usernameError = document.getElementById('username-error');
+
+      signupForm.addEventListener('submit', function (event) {
+        event.preventDefault();
+        const username = usernameInput.value;
+        const password = document.getElementById('password').value;
+        const rememberMe = document.getElementById('remember-me').checked;
+
+        loader.style.display = 'block';
+
+        fetch('https://sheetdb.io/api/v1/op1g6xcfghwt6')
+          .then(response => response.json())
+          .then(data => {
+            const exists = data.some(entry => entry.name === username);
+
+            if (exists) {
+              loader.style.display = 'none';
+              usernameError.textContent = 'Username already exists.';
+            } else {
+              const formData = new FormData();
+              formData.append('data[name]', username);
+              formData.append('data[password]', password);
+
+              fetch(signupForm.action, {
+                method: 'POST',
+                body: formData
+              }).then(response => response.json())
+              .then(data => {
+                loader.style.display = 'none';
+                if (data && data.created === 1) {
+                  showSignupPopup();
+
+                  if (rememberMe) {
+                    localStorage.setItem('username', username);
+                    localStorage.setItem('password', password);
+                  }
+                } else {
+                  alert('Signup failed, please try again.');
+                }
+              }).catch(error => {
+                loader.style.display = 'none';
+                alert('Error: ' + error);
+              });
+            }
+          }).catch(error => {
+            loader.style.display = 'none';
+            alert('Error: ' + error);
+          });
+      });
+
+      function showSignupPopup() {
+        const popup = document.getElementById('popup');
+        popup.style.display = 'block';
+      }
+
+      function handleOk() {
+        const popup = document.getElementById('popup');
+        popup.style.display = 'none';
+        window.location.href = 'profile.html';
+      }
+
+      window.handleOk = handleOk;
+    });
+  </script>
 </body>
 </html>
