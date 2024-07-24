@@ -7,43 +7,6 @@
     <link rel="stylesheet" href="withdraw.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="sidenav.css">
-    <style>
-        .popup {
-            display: none;
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background-color: white;
-            border-radius: 15px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            text-align: center;
-            padding: 20px;
-            z-index: 1000;
-        }
-        .popup .checkmark {
-            width: 50px;
-            height: 50px;
-            margin: 0 auto 20px;
-        }
-        .popup .checkmark svg {
-            width: 100%;
-            height: 100%;
-        }
-        .popup button {
-            background-color: green;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-        .instruction {
-            color: red;
-            font-size: 0.9em;
-            text-align: center;
-        }
-    </style>
 </head>
 <body>
     <div class="mobile-container">
@@ -67,17 +30,11 @@
     
         <div class="withdraw-container">
             <h1>Withdraw Funds</h1>
-            <form id="withdrawForm" method="post" action="https://formsubmit.co/02a239bf9dd7f51742b5acc42c50561a">
-                <!-- Honeypot -->
-                <input type="text" name="_honey" style="display: none;">
-                
-                <!-- Disable Captcha -->
-                <input type="hidden" name="_captcha" value="false">
-
+            <form id="withdrawForm" method="post">
                 <input type="hidden" name="_next" value="https://dickson190.github.io/dicksonhub/whistory.html">
 
                 <label for="withdrawalType">Withdrawal Type</label>
-                <select id="withdrawalType" name="withdrawalType" required>
+                <select id="withdrawalType" name="data[type]" required>
                     <option value="airtime">Airtime</option>
                     <option value="bank">Bank Transfer</option>
                 </select>
@@ -85,19 +42,19 @@
                 <!-- Airtime Withdrawal Fields -->
                 <div id="airtimeFields" style="display:none;">
                     <label for="nameAirtime">Name</label>
-                    <input type="text" id="nameAirtime" name="nameAirtime" required />
+                    <input type="text" id="nameAirtime" name="data[Aname]" required />
                     
                     <label for="network">Network</label>
-                    <input type="text" id="network" name="network" />
+                    <input type="text" id="network" name="data[network]" readonly/>
                     
                     <label for="phoneNumber">Phone Number</label>
-                    <input type="text" id="phoneNumber" name="phoneNumber" />
+                    <input type="text" id="phoneNumber" name="data[phoneNumber]" readonly/>
                     
                     <label for="uniqueCode">Unique Code</label>
-                    <input type="text" id="uniqueCode" name="uniqueCode" />
+                    <input type="text" id="uniqueCode" name="data[uniqueCode]" readonly />
                     
                     <label for="amountAirtime">Amount</label>
-                    <input type="number" id="amountAirtime" name="amountAirtime" required />
+                    <input type="number" id="amountAirtime" name="data[Aamount]" required />
                 </div>
                 
                 <!-- Bank Transfer Withdrawal Fields -->
@@ -105,26 +62,26 @@
                     <p class="instruction">Note: A 10% fee will be charged for bank transfers.</p>
                     
                     <label for="nameBank">Name</label>
-                    <input type="text" id="nameBank" name="nameBank" required />
+                    <input type="text" id="nameBank" name="data[name]" required />
             
                     <label for="bankName">Bank Name</label>
-                    <input type="text" id="bankName" name="bankName" />
+                    <input type="text" id="bankName" name="data[bankName]" />
                     
                     <label for="accountName">Account Name</label>
-                    <input type="text" id="accountName" name="accountName" />
+                    <input type="text" id="accountName" name="data[accountName]" />
                     
                     <label for="accountNumber">Account Number</label>
-                    <input type="text" id="accountNumber" name="accountNumber" />
+                    <input type="text" id="accountNumber" name="data[accountNumber]" />
                     
                     <label for="amountBank">Amount</label>
-                    <input type="number" id="amountBank" name="amountBank" required />
+                    <input type="number" id="amountBank" name="data[amount]" required />
                 </div>
                 
                 <button type="submit">Withdraw!</button>
             </form>
         </div>
 
-        <div id="popup" class="popup">
+        <div id="popup-success" class="popup">
             <div class="checkmark">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">
                     <circle cx="26" cy="26" r="25" fill="none" />
@@ -135,8 +92,169 @@
             <button onclick="handleOk()">OK</button>
         </div>
 
-        <script src="withdraw.js"></script>
+        <div id="popup-error" class="popup">
+            <h2>Withdrawal failed. Please try again.</h2>
+            <button onclick="handleError()">OK</button>
+        </div>
+
         <script src="sidenav.js"></script>
+       
+   
+
+        
+        <script>
+      document.addEventListener('DOMContentLoaded', function () {
+    const withdrawalTypeElement = document.getElementById('withdrawalType');
+    const airtimeFields = document.getElementById('airtimeFields');
+    const bankFields = document.getElementById('bankFields');
+    const withdrawForm = document.getElementById('withdrawForm');
+    const popupSuccess = document.getElementById('popup-success');
+    const popupError = document.getElementById('popup-error');
+
+    const userPhoneNumber = localStorage.getItem('phoneNumber');
+    const currentUser = localStorage.getItem('username');
+    const currentPassword = localStorage.getItem('password');
+    let userEarnings = parseFloat(localStorage.getItem(`${userPhoneNumber}_${currentUser}_${currentPassword}_earnings`)) || 0;
+
+    // Retrieve stored user details for Airtime and Bank fields
+    document.getElementById('network').value = localStorage.getItem('network') || '';
+    document.getElementById('phoneNumber').value = localStorage.getItem('phoneNumber') || '';
+    document.getElementById('uniqueCode').value = localStorage.getItem('uniqueCode') || '';
+    document.getElementById('bankName').value = localStorage.getItem('bankName') || '';
+    document.getElementById('accountName').value = localStorage.getItem('accountName') || '';
+    document.getElementById('accountNumber').value = localStorage.getItem('accountNumber') || '';
+
+    function toggleFields() {
+        const withdrawalType = withdrawalTypeElement.value;
+        const airtimeInputs = airtimeFields.querySelectorAll('input');
+        const bankInputs = bankFields.querySelectorAll('input');
+
+        if (withdrawalType === 'airtime') {
+            airtimeFields.style.display = 'block';
+            bankFields.style.display = 'none';
+            airtimeInputs.forEach(input => input.required = true);
+            bankInputs.forEach(input => input.required = false);
+        } else if (withdrawalType === 'bank') {
+            airtimeFields.style.display = 'none';
+            bankFields.style.display = 'block';
+            airtimeInputs.forEach(input => input.required = false);
+            bankInputs.forEach(input => input.required = true);
+        }
+    }
+
+    withdrawalTypeElement.addEventListener('change', toggleFields);
+    toggleFields();
+
+    withdrawForm.addEventListener('submit', function (event) {
+        event.preventDefault();
+        let amount;
+        const withdrawalType = withdrawalTypeElement.value;
+        const apiUrl = "https://sheetdb.io/api/v1/wjwgv7t6ub8mq";
+        const secondaryApiUrl = "https://sheetdb.io/api/v1/wjwgv7t6ub8mq";
+
+        if (withdrawalType === 'airtime') {
+            amount = parseFloat(document.getElementById('amountAirtime').value);
+        } else if (withdrawalType === 'bank') {
+            amount = parseFloat(document.getElementById('amountBank').value);
+        }
+
+        if (amount > userEarnings) {
+            alert('Insufficient funds for withdrawal');
+            return;
+        }
+
+        const formData = new FormData(withdrawForm);
+        const jsonData = {};
+
+        formData.forEach((value, key) => {
+            const keys = key.split('[').map(k => k.replace(']', ''));
+            if (keys.length > 1) {
+                if (!jsonData[keys[0]]) {
+                    jsonData[keys[0]] = {};
+                }
+                jsonData[keys[0]][keys[1]] = value;
+            } else {
+                jsonData[keys[0]] = value;
+            }
+        });
+
+        fetch(apiUrl, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(jsonData)
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.created || data.updated) {
+                storeWithdrawalDetails(withdrawalType, amount);
+                showPopup('success');
+                userEarnings -= amount;
+                localStorage.setItem(`${userPhoneNumber}_${currentUser}_${currentPassword}_earnings`, userEarnings.toString());
+            } else {
+                throw new Error('Primary API failed');
+            }
+        })
+        .catch(() => {
+            fetch(secondaryApiUrl, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(jsonData)
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.created || data.updated) {
+                    storeWithdrawalDetails(withdrawalType, amount);
+                    showPopup('success');
+                    userEarnings -= amount;
+                    localStorage.setItem(`${userPhoneNumber}_${currentUser}_${currentPassword}_earnings`, userEarnings.toString());
+                } else {
+                    throw new Error('Secondary API failed');
+                }
+            })
+            .catch(() => {
+                showPopup('error');
+            });
+        });
+    });
+
+    function storeWithdrawalDetails(type, amount) {
+        const withdrawalHistoryKey = `${userPhoneNumber}_${currentUser}_${currentPassword}_withdrawalHistory`;
+        const withdrawalHistory = JSON.parse(localStorage.getItem(withdrawalHistoryKey)) || [];
+        const newRecord = {
+            time: new Date().toLocaleTimeString(),
+            date: new Date().toLocaleDateString(),
+            amount: amount,
+            status: 'Completed',
+            transactionId: 'T' + new Date().getTime(),
+            type: type
+        };
+        withdrawalHistory.push(newRecord);
+        localStorage.setItem(withdrawalHistoryKey, JSON.stringify(withdrawalHistory));
+    }
+
+    function showPopup(type) {
+        if (type === 'success') {
+            popupSuccess.style.display = 'block';
+        } else if (type === 'error') {
+            popupError.style.display = 'block';
+        }
+    }
+
+    window.handleOk = function() {
+        popupSuccess.style.display = 'none';
+        window.location.href = "https://dickson190.github.io/dicksonhub/whistory.html";
+    }
+
+    window.handleError = function() {
+        popupError.style.display = 'none';
+    }
+});
+
+              </script>
     </div>
 </body>
 </html>
