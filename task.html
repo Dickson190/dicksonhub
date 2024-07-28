@@ -17,6 +17,17 @@
             font-size: 24px;
             z-index: 1000;
         }
+        .image-upload-button {
+            margin-top: 10px;
+            display: inline-block;
+            padding: 10px 15px;
+            background-color: #4CAF50;
+            color: white;
+            text-align: center;
+            cursor: pointer;
+            border-radius: 5px;
+            text-decoration: none;
+        }
     </style>
 </head>
 <body>
@@ -30,326 +41,210 @@
     <section id="social-tasks" class="task-section">
         <!-- Existing Social Tasks Here -->
         
-        <div class="task" id="social-task-1" onclick="toggleTaskDetails('social', 1)">
-            <div class="task-title">Like, Comment, and Share on Facebook</div>
-            <div class="task-details" id="social-task-details-1">
-                <div class="task-description">
-                    <img src="Famsup.png" alt="Facebook Icon" class="task-icon">
-                    <p>Like, comment, and share a post on Facebook to earn ₦50.</p>
-                    <p class="task-amount">Reward: ₦50</p>
-                </div>
-                <form class="submit-form" onsubmit="submitTask(event, 'social', 'social-task-1', 'Like, Comment, and Share on Facebook')">
-                    <label for="fbUsername1">Your Facebook Username</label>
-                    <input type="text" id="fbUsername1" name="userName" required>
-                    
-                    <label for="fbPostLink1">Your Facebook Post Link</label>
-                    <input type="url" id="fbPostLink1" name="link" required>
-                    
-                    <label for="screenshot1">Upload Screenshot</label>
-                    <input type="file" id="screenshot1" name="screenshot" accept="image/*" required>
-                    
-                    <!-- Hidden input to store the image or screenshot URL -->
-                    <input type="hidden" name="screenshotUrl" id="imageUrl1">
-
-                    <input type="hidden" id="userCode1" name="uniqueCode">
-                    <input type="hidden" name="taskType" value="social">
-                    <input type="hidden" name="taskTitle" value="Like, Comment, and Share on Facebook">
-                    <button type="submit">Submit Task</button>
-                </form>
-            </div>
-        </div>
+    
         
-        <div class="task" id="social-task-703" onclick="toggleTaskDetails('social', 703)">
-            <div class="task-title">Share DicksonHub app</div>
-            <div class="task-details" id="social-task-details-703">
-                <div class="task-description">
-                    <img src="Dig1.png" alt="Share DicksonHub app Icon" class="task-icon">
-                    <p>Ensure you tell others about DicksonHub. Create an interesting content about DicksonHub platform and ensure you include this link in your Post or content.<br>
-Share post to 100 groups or platforms </p>
-                    <p class="task-amount">Reward: ₦100</p>
-                </div>
-                <form class="submit-form" onsubmit="submitTask(event, 'social', 'social-task-703', 'Share DicksonHub app')">
-                    <label for="sharedPostLink703">Your Shared Post Link</label>
-                    <input type="url" id="sharedPostLink703" name="link" required>
-                
-                    <label for="screenshot703">Your Screenshots</label>
-                    <input type="file" id="screenshot703" name="screenshot" required>
-                    
-                    <!-- Hidden input to store the image or screenshot URL -->
-                    <input type="hidden" name="screenshotUrl" id="imageUrl703">
-
-                    <input type="hidden" id="userCode703" name="uniqueCode">
-                    <input type="hidden" name="taskType" value="social">
-                    <input type="hidden" name="taskTitle" value="Share DicksonHub app">
-                    <button type="submit">Submit Task</button>
-                </form>
-            </div>
+       
+<div class="task" id="social-task-task-1722086415586-562" onclick="toggleTaskDetails('social', 'task-1722086415586-562')">
+    <div class="task-title">Share App</div>
+    <div class="task-details" id="social-task-details-task-1722086415586-562">
+        <div class="task-description">
+            <img src="dig1.png" alt="Share App Icon" class="task-icon">
+            <p>Ensure let others know about DicksonHub. Create an interesting content about DicksonHub platform and ensure you include this link in your Post or content.
+Share post to 100 groups or platforms</p>
+            <p><strong>Proof:</strong>  
+            <br>
+            - You must have 100 likes on post
+<br>
+- You must share content to 100 groups or platforms
+<br>
+- Ensure you copy the link of your post or content and paste here
+<br>
+- Screenshot your shared posts
+<br>
+- Type Facebook username below
+</p>
+            <p class="task-amount">Reward: ₦100</p>
         </div>
-        
-        <div class="task" id="social-task-2" onclick="toggleTaskDetails('social', 2)">
-            <div class="task-title">Follow and Retweet on Twitter</div>
-            <div class="task-details" id="social-task-details-2">
-                <div class="task-description">
-                    <img src="twitter-icon.png" alt="Twitter Icon" class="task-icon">
-                    <p>Follow and retweet a tweet on Twitter to earn ₦30.</p>
-                    <p class="task-amount">Reward: ₦30</p>
-                </div>
-                <form class="submit-form" onsubmit="submitTask(event, 'social', 'social-task-2', 'Follow and Retweet on Twitter')">
-                    <label for="twitterUsername">Your Twitter Username</label>
-                    <input type="text" id="twitterUsername" name="userName" required>
-                    
-                    <label for="tweetLink">Tweet Link</label>
-                    <input type="url" id="tweetLink" name="link" required>
-                    
-                    <label for="screenshot2">Upload Screenshot</label>
-                    <input type="file" id="screenshot2" name="screenshot" accept="image/*" required>
-                    
-                    <!-- Hidden input to store the image or screenshot URL -->
-                    <input type="hidden" name="screenshotUrl" id="imageUrl2">
+        <form class="submit-form" onsubmit="submitTask(event, 'social', 'social-task-task-1722086415586-562', 'Share App')">
+            <label for="username">Your Username</label><input type="text" id="username" name="userName" required>
+<label for="link">Link</label><input type="url" id="link" name="link" required>
+<label for="screenshot">Screenshot URL</label><input type="url" id="screenshot" name="screenshot" required onclick="redirectToImageUpload('screenshot')">
 
-                    <input type="hidden" id="userCode2" name="uniqueCode">
-                    <input type="hidden" name="taskType" value="social">
-                    <input type="hidden" name="taskTitle" value="Follow and Retweet on Twitter">
-                    <button type="submit">Submit Task</button>
-                </form>
-            </div>
-        </div>
-        
-        <div class="task" id="social-task-914" onclick="toggleTaskDetails('social', 914)">
-            <div class="task-title">Like For</div>
-            <div class="task-details" id="social-task-details-914">
-                <div class="task-description">
-                    <img src="https://hun.com" alt="Like For Icon" class="task-icon">
-                    <p>Ghgvvvvg</p>
-                    <p class="task-amount">Reward: ₦600</p>
-                </div>
-                <form class="submit-form" onsubmit="submitTask(event, 'social', 'social-task-914', 'Like For')">
-                    <label for="username914">Your Username</label>
-                    <input type="text" id="username914" name="userName" required>
-                
-                    <label for="screenshot914">Your Screenshot</label>
-                    <input type="file" id="screenshot914" name="screenshot" required>
-                    
-                    <!-- Hidden input to store the image or screenshot URL -->
-                    <input type="hidden" name="screenshotUrl" id="imageUrl914">
-
-                    <input type="hidden" id="userCode914" name="uniqueCode">
-                    <input type="hidden" name="taskType" value="social">
-                    <input type="hidden" name="taskTitle" value="Like For">
-                    <button type="submit">Submit Task</button>
-                </form>
-            </div>
-        </div>
-        
-        <div class="task" id="social-task-3" onclick="toggleTaskDetails('social', 3)">
-            <div class="task-title">Watch and Like YouTube Video</div>
-            <div class="task-details" id="social-task-details-3">
-                <div class="task-description">
-                    <img src="youtube-icon.jpg" alt="YouTube Icon" class="task-icon">
-                    <p>Watch and like a YouTube video to earn ₦20.</p>
-                    <p class="task-amount">Reward: ₦20</p>
-                </div>
-                <form class="submit-form" onsubmit="submitTask(event, 'social', 'social-task-3', 'Watch and Like YouTube Video')">
-                    <label for="youtubeUsername">Your YouTube Username</label>
-                    <input type="text" id="youtubeUsername" name="userName" required>
-                    
-                    <label for="youtubeVideoLink">YouTube Video Link</label>
-                    <input type="url" id="youtubeVideoLink" name="link" required>
-                    
-                    <label for="screenshot3">Upload Screenshot</label>
-                    <input type="file" id="screenshot3" name="screenshot" accept="image/*" required>
-                    
-                    <!-- Hidden input to store the image or screenshot URL -->
-                    <input type="hidden" name="screenshotUrl" id="imageUrl3">
-
-                    <input type="hidden" id="userCode3" name="uniqueCode">
-                    <input type="hidden" name="taskType" value="social">
-                    <input type="hidden" name="taskTitle" value="Watch and Like YouTube Video">
-                    <button type="submit">Submit Task</button>
-                </form>
-            </div>
-        </div>
+            <input type="hidden" id="uniqueCodetask-1722086415586-562" name="uniqueCode">
+            <input type="hidden" name="taskType" value="social">
+            <input type="hidden" name="taskTitle" value="Share App">
+            <button type="submit">Submit Task</button>
+        </form>
+    </div>
+</div>
     </section>
     
     <section id="business-tasks" class="task-section" style="display: none;">
         <!-- Business Tasks Here -->
         
-        <div class="task" id="business-task-1" onclick="toggleTaskDetails('business', 1)">
+           <div class="task" id="business-task-task-1722084953253-153" onclick="toggleTaskDetails('business', 'task-1722084953253-153')">
     <div class="task-title">Register with my link</div>
-    <div class="task-details" id="business-task-details-1">
+    <div class="task-details" id="business-task-details-task-1722084953253-153">
         <div class="task-description">
-            <img src="palmpay-icon.jpg" alt="Palmpay Icon" class="task-icon">
-            <p>Use my link or my code <strong> "UJYN3922"</strong> to join and get ₦1000 welcome bonus. <a href="https://link.palmpay.com/T2BjH">Tap Here</a>. Ensure you verify your account.</p>
+            <img src="palmpay.jpg" alt="Register with my link Icon" class="task-icon">
+            <p>Use my link or my code "UJYN3922" to join and get ₦1000 welcome bonus. <a href=" https://link.palmpay.com/T2BjH">Tap Here</a>. Ensure you verify your account.</p>
+            <p><strong>Proof:</strong> Send screenshot of your profile 
+<br>
+Type your username </p>
             <p class="task-amount">Reward: ₦150</p>
-            <p class="task-approval-time">Approval Time: 12 hours</p>
         </div>
-        <form class="submit-form" onsubmit="submitTask(event, 'business', 'business-task-1', 'Register with my link')">
-            <label for="palmpayUsername">Your Palmpay Username</label>
-            <input type="text" id="palmpayUsername" name="userName" required>
-            
-            <label for="profileScreenshot">Upload Screenshot of Profile</label>
-            <input type="file" id="profileScreenshot" name="screenshot" accept="image/*" required>
-            
-            <!-- Hidden input to store the image or screenshot URL -->
-            <input type="hidden" name="screenshotUrl" id="imageUrlBusiness1">
+        <form class="submit-form" onsubmit="submitTask(event, 'business', 'business-task-task-1722084953253-153', 'Register with my link')">
+            <label for="username">Your Username</label><input type="text" id="username" name="userName" required>
+<label for="screenshot">Screenshot URL</label><input type="url" id="screenshot" name="screenshot" required onclick="redirectToImageUpload('screenshot')">
 
-            <input type="hidden" id="userCodeBusiness1" name="uniqueCode">
+            <input type="hidden" id="uniqueCodetask-1722084953253-153" name="uniqueCode">
             <input type="hidden" name="taskType" value="business">
             <input type="hidden" name="taskTitle" value="Register with my link">
             <button type="submit">Submit Task</button>
         </form>
     </div>
 </div>
-
-
-<div class="task" id="business-task-2" onclick="toggleTaskDetails('business', 2)">
-    <div class="task-title">Sign on Website</div>
-    <div class="task-details" id="business-task-details-2">
+        
+        
+<div class="task" id="business-task-task-1722085630052-473" onclick="toggleTaskDetails('business', 'task-1722085630052-473')">
+    <div class="task-title">Sign up on website </div>
+    <div class="task-details" id="business-task-details-task-1722085630052-473">
         <div class="task-description">
-            <p>Use my <a href="https://surveyflix.org/Account/Index?refCode=YHVX7HX">Referral link</a> to sign up on the specified website. Make sure to complete the sign-up process.</p>
-            <p class="task-amount">Reward: ₦20</p>
-            <p class="task-approval-time">Approval Time: 12 hours</p>
-        </div>
-        <form class="submit-form" onsubmit="submitTask(event, 'business', 'business-task-2', 'Sign on Website')">
-            <label for="usernameWebsite">Your Username</label>
-            <input type="text" id="usernameWebsite" name="userName" required>
-            
-            <label for="homepageScreenshot">Upload Screenshot of Homepage</label>
-            <input type="file" id="homepageScreenshot" name="screenshot" accept="image/*" required>
-            
-            <!-- Hidden input to store the image or screenshot URL -->
-            <input type="hidden" name="screenshotUrl" id="imageUrlBusiness2">
+            <img src="Surveyflix.jpg" alt="Sign up on website  Icon" class="task-icon">
+            <p>Use my <a href=" https://surveyflix.org/Account/Index?refCode=YHVX7HX">Referral link </a> to sign up on the specified website. Make sure to complete the sign-up process.
 
-            <input type="hidden" id="userCodeBusiness2" name="uniqueCode">
+</p>
+            <p><strong>Proof:</strong> Screenshot of your profile and type the username you used to sign up</p>
+            <p class="task-amount">Reward: ₦20</p>
+        </div>
+        <form class="submit-form" onsubmit="submitTask(event, 'business', 'business-task-task-1722085630052-473', 'Sign up on website ')">
+            <label for="username">Your Username</label><input type="text" id="username" name="userName" required>
+<label for="screenshot">Screenshot URL</label><input type="url" id="screenshot" name="screenshot" required onclick="redirectToImageUpload('screenshot')">
+
+            <input type="hidden" id="uniqueCodetask-1722085630052-473" name="uniqueCode">
             <input type="hidden" name="taskType" value="business">
-            <input type="hidden" name="taskTitle" value="Sign on Website">
+            <input type="hidden" name="taskTitle" value="Sign up on website ">
             <button type="submit">Submit Task</button>
         </form>
     </div>
 </div>
+    
+        
 
+        
+        
+        
         
     </section>
 </div>
 
+<!-- Loading Indicator -->
+<div class="loading-indicator" id="loading-indicator">
+    <b>Submitting...</b>
+</div>
+
 <!-- Notification Box -->
-<div id="notification-box" class="notification-box" style="display: none;">
+<div id="notification-box" class="notification-box">
     <span class="message"></span>
     <button onclick="closeNotification()">Close</button>
 </div>
 
-<!-- Loading Indicator -->
-<div id="loading-indicator" class="loading-indicator">
-    <i class="fa fa-spinner fa-spin"></i> Submitting...
-</div>
-
+ <div class="bottom-nav">
+        <a href="app.html" class="nav-item"><i class="fa fa-home"></i><span>Home</span></a>
+        <a href="gift.html" class="nav-item"><i class="fa fa-gift"></i><span>Claim Code</span></a>
+        <a href="news.html" class="nav-item"><i class="fa fa-bell"></i><span>Notifications</span></a>
+        <a href="profile.html" class="nav-item"><i class="fa fa-user"></i><span>Profile</span></a>
+    </div>
+   
 <!-- JavaScript -->
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const userCode = localStorage.getItem('userCode');
-        const formElements = document.querySelectorAll('input[name="uniqueCode"]');
-        formElements.forEach(element => element.value = userCode);
+document.addEventListener('DOMContentLoaded', function () {
+    const userCode = localStorage.getItem('uniqueCode');
+    const formElements = document.querySelectorAll('input[name="uniqueCode"]');
+    formElements.forEach(element => element.value = userCode);
 
-        const taskIds = ['social-task-1', 'social-task-2', 'social-task-3', 'social-task-703', 'social-task-914', 'business-task-1', 'business-task-2', 'business-task-3'];
-        taskIds.forEach(taskId => checkTaskCompletion(taskId));
+    const taskIds = [ 'social-task-task-1722086415586-562', 'social-task-703', 'business-task-task-1722084953253-153'];
+    taskIds.forEach(taskId => checkTaskCompletion(taskId));
+});
+
+function checkTaskCompletion(taskId) {
+    const taskCompleted = localStorage.getItem(taskId);
+    if (taskCompleted === 'true') {
+        document.getElementById(taskId).style.display = 'none';
+    }
+}
+
+function showTasks(taskType) {
+    const socialTasks = document.getElementById('social-tasks');
+    const businessTasks = document.getElementById('business-tasks');
+
+    if (taskType === 'social') {
+        socialTasks.style.display = 'block';
+        businessTasks.style.display = 'none';
+    } else if (taskType === 'business') {
+        socialTasks.style.display = 'none';
+        businessTasks.style.display = 'block';
+    }
+}
+
+function toggleTaskDetails(taskType, taskId) {
+    const taskDetails = document.getElementById(`${taskType}-task-details-${taskId}`);
+    const allDetails = document.querySelectorAll('.task-details');
+    allDetails.forEach(details => details.style.display = 'none');
+    taskDetails.style.display = 'block';
+}
+
+function closeNotification() {
+    const notificationBox = document.getElementById('notification-box');
+    notificationBox.style.display = 'none';
+}
+
+async function submitTask(event, taskType, taskId, taskTitle) {
+    event.preventDefault();
+
+    const loadingIndicator = document.getElementById('loading-indicator');
+    loadingIndicator.style.display = 'block';
+
+    const form = event.target;
+    const formData = new FormData(form);
+
+    const response = await fetch('https://sheetdb.io/api/v1/73cgrsajk741e', {
+        method: 'POST',
+        body: formData
     });
 
-    function checkTaskCompletion(taskId) {
-        const taskCompleted = localStorage.getItem(taskId);
-        if (taskCompleted === 'true') {
-            document.getElementById(taskId).style.display = 'none';
+    loadingIndicator.style.display = 'none';
+
+    if (response.ok) {
+        localStorage.setItem(taskId, 'true');
+        document.getElementById(taskId).style.display = 'none';
+        showNotification('Task submitted successfully!');
+    } else {
+        showNotification('Failed to submit task.');
+    }
+}
+
+function showNotification(message) {
+    const notificationBox = document.getElementById('notification-box');
+    const messageSpan = notificationBox.querySelector('.message');
+    messageSpan.textContent = message;
+    notificationBox.style.display = 'block';
+}
+
+let imageUploadRedirected = false;
+
+function redirectToImageUpload(inputId) {
+    if (!imageUploadRedirected) {
+        if (confirm('You will be redirected to an external page to upload your image. Continue?')) {
+            window.location.href = 'https://freeimage.host/';
+            imageUploadRedirected = true;
         }
     }
+}
 
-    function showTasks(taskType) {
-        const socialTasks = document.getElementById('social-tasks');
-        const businessTasks = document.getElementById('business-tasks');
-
-        if (taskType === 'social') {
-            socialTasks.style.display = 'block';
-            businessTasks.style.display = 'none';
-        } else if (taskType === 'business') {
-            socialTasks.style.display = 'none';
-            businessTasks.style.display = 'block';
-        }
-    }
-
-    function toggleTaskDetails(taskType, taskId) {
-        const taskDetails = document.getElementById(`${taskType}-task-details-${taskId}`);
-        const allDetails = document.querySelectorAll('.task-details');
-        allDetails.forEach(details => details.style.display = 'none');
-        taskDetails.style.display = 'block';
-    }
-
-    function closeNotification() {
-        const notificationBox = document.getElementById('notification-box');
-        notificationBox.style.display = 'none';
-    }
-
-    async function submitTask(event, taskType, taskId, taskTitle) {
-        event.preventDefault();
-
-        // Show loading indicator
-        const loadingIndicator = document.getElementById('loading-indicator');
-        loadingIndicator.style.display = 'block';
-        
-        const form = event.target;
-        const formData = new FormData(form);
-        const screenshotFile = formData.get('screenshot');
-
-        if (screenshotFile) {
-            const imgbbResponse = await uploadScreenshotToImgbb(screenshotFile);
-            if (imgbbResponse.success) {
-                document.getElementById(`imageUrl${taskId.split('-').pop()}`).value = imgbbResponse.data.url;
-            } else {
-                showNotification('Failed to upload screenshot.');
-                loadingIndicator.style.display = 'none';  // Hide loading indicator
-                return;
-            }
-        }
-
-        formData.delete('screenshot');
-        
-        const response = await fetch('https://sheetdb.io/api/v1/73cgrsajk741e', {
-            method: 'POST',
-            body: formData
-        });
-
-        loadingIndicator.style.display = 'none';  // Hide loading indicator
-
-        if (response.ok) {
-            localStorage.setItem(taskId, 'true');
-            document.getElementById(taskId).style.display = 'none';
-            showNotification('Task submitted successfully!');
-        } else {
-            showNotification('Failed to submit task.');
-        }
-    }
-
-    async function uploadScreenshotToImgbb(file) {
-        const formData = new FormData();
-        formData.append('image', file);
-
-        const response = await fetch('https://api.imgbb.com/1/upload?key=2ff35d435f55b2ba82776a8d23bc26a3', {
-            method: 'POST',
-            body: formData
-        });
-
-        return response.json();
-    }
-
-    function showNotification(message) {
-        const notificationBox = document.getElementById('notification-box');
-        const messageSpan = notificationBox.querySelector('.message');
-        messageSpan.textContent = message;
-        notificationBox.style.display = 'block';
-    }
 </script>
 </body>
 </html>
-
-
-
 
 <!-- Use this API key instead of the formsubt API. Use this properly into the code :
  https://sheetdb.io/api/v1/73cgrsajk741e -->

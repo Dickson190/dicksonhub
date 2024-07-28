@@ -117,14 +117,26 @@
             <div class="bubble"></div>
             <div class="bubble"></div>
             <div class="pot"></div>
+            <div class="handle"></div>
+            <div class="steam"></div>
         </div>
     </div>
 
     <script src="load.js"></script>
     <script src="sidenav.js"></script>
+    <script src="profile.js"></script> <!-- Ensure to include the script containing your existing JavaScript here --> 
     
-  <script> document.addEventListener('DOMContentLoaded', function () {
-  const profileForm = document.getElementById('profile-form');
+    <div id="notification" class="notification">
+  <span id="notification-message"></span>
+  <button id="notification-button" style="display: none;">Close</button>
+</div>
+<div id="progress-bar" class="progress-bar" style="display: none;">
+  <!-- Progress bar implementation here -->
+</div>
+    
+    <script>
+document.addEventListener('DOMContentLoaded', function () {
+  const profileForm = document.getElementById('profileForm');
   const notificationBox = document.getElementById('notification');
   const notificationMessage = document.getElementById('notification-message');
   const notificationButton = document.getElementById('notification-button');
@@ -140,13 +152,15 @@
   const bankNameField = document.getElementById('bankName');
   const ageField = document.getElementById('age');
   const stateField = document.getElementById('state');
+  const emailField = document.getElementById('email');
+  const firstNameField = document.getElementById('firstName');
+  const lastNameField = document.getElementById('lastName');
+  const genderField = document.getElementById('gender');
+  const networkField = document.getElementById('network');
 
   let usersData = [];
 
-  const apiUrls = [
-    'https://sheetdb.io/api/v1/op1g6xcfghwt6',
-    'https://sheetdb.io/api/v1/yqjwwro2ogq7u'
-  ];
+  const primaryApiUrl = 'https://sheetdb.io/api/v1/05zo2s09gbz5x';
 
   function fetchData(apiUrl) {
     return fetch(apiUrl)
@@ -158,9 +172,9 @@
   }
 
   function loadData() {
-    return Promise.all(apiUrls.map(fetchData))
-      .then(results => {
-        usersData = results.flat();
+    return fetchData(primaryApiUrl)
+      .then(result => {
+        usersData = result;
         console.log('Fetched user data:', usersData);
       })
       .catch(error => {
@@ -169,141 +183,188 @@
   }
 
   function showNotification(message, isSuccess = false) {
-    notificationMessage.textContent = message;
-    notificationBox.className = `notification ${isSuccess ? 'success' : 'error'}`;
-    notificationBox.style.display = 'block';
-    notificationButton.style.display = isSuccess ? 'inline-block' : 'none';
-    if (isSuccess) {
-      notificationButton.addEventListener('click', () => {
-        notificationBox.style.display = 'none';
-      });
-    } else {
-      setTimeout(() => {
-        notificationBox.style.display = 'none';
-      }, 3000);
+    if (notificationMessage) {
+      notificationMessage.textContent = message;
+      notificationBox.className = `notification ${isSuccess ? 'success' : 'error'}`;
+      notificationBox.style.display = 'block';
+      notificationButton.style.display = isSuccess ? 'inline-block' : 'none';
+      if (isSuccess) {
+        notificationButton.addEventListener('click', () => {
+          notificationBox.style.display = 'none';
+        });
+      } else {
+        setTimeout(() => {
+          notificationBox.style.display = 'none';
+        }, 3000);
+      }
     }
-  }
-
-  function showProgressBar(message) {
-    notificationMessage.textContent = message;
-    notificationBox.className = 'notification';
-    notificationBox.style.display = 'block';
-    progressBar.style.display = 'block';
-  }
-
-  function hideProgressBar() {
-    notificationBox.style.display = 'none';
-    progressBar.style.display = 'none';
   }
 
   function populateFieldsFromLocalStorage() {
-    const username = localStorage.getItem('username');
-    const password = localStorage.getItem('password');
-    const uniqueCode = localStorage.getItem('uniqueCode');
-    const phoneNumber = localStorage.getItem('phoneNumber');
-    const lga = localStorage.getItem('lga');
-    const accountName = localStorage.getItem('accountName');
-    const accountNumber = localStorage.getItem('accountNumber');
-    const bankName = localStorage.getItem('bankName');
-    const age = localStorage.getItem('age');
-    const state = localStorage.getItem('state');
+    const fields = ['username', 'password', 'uniqueCode', 'phoneNumber', 'lga', 'accountName', 'accountNumber', 'bankName', 'age', 'state', 'email', 'firstName', 'lastName', 'gender', 'network'];
+    const fieldElements = {
+      username: usernameField,
+      password: passwordField,
+      uniqueCode: uniqueCodeField,
+      phoneNumber: phoneNumberField,
+      lga: lgaField,
+      accountName: accountNameField,
+      accountNumber: accountNumberField,
+      bankName: bankNameField,
+      age: ageField,
+      state: stateField,
+      email: emailField,
+      firstName: firstNameField,
+      lastName: lastNameField,
+      gender: genderField,
+      network: networkField
+    };
 
-    if (username) {
-      usernameField.value = username;
-    }
-    if (password) {
-      passwordField.value = password;
-    }
-    if (uniqueCode) {
-      uniqueCodeField.value = uniqueCode;
-    }
-    if (phoneNumber) {
-      phoneNumberField.value = phoneNumber;
-    }
-    if (lga) {
-      lgaField.value = lga;
-    }
-    if (accountName) {
-      accountNameField.value = accountName;
-    }
-    if (accountNumber) {
-      accountNumberField.value = accountNumber;
-    }
-    if (bankName) {
-      bankNameField.value = bankName;
-    }
-    if (age) {
-      ageField.value = age;
-    }
-    if (state) {
-      stateField.value = state;
-    }
+    fields.forEach(field => {
+      const value = localStorage.getItem(field);
+      if (value && fieldElements[field]) {
+        fieldElements[field].value = value;
+      }
+    });
 
-    return { username, password, uniqueCode, phoneNumber, lga, accountName, accountNumber, bankName, age, state };
+    return fields.reduce((obj, field) => {
+      obj[field] = localStorage.getItem(field);
+      return obj;
+    }, {});
   }
 
   function storeAdditionalDataToLocalStorage(user) {
-    if (user['uniqueCode']) {
-      localStorage.setItem('uniqueCode', user['uniqueCode']);
-      uniqueCodeField.value = user['uniqueCode'];
-    }
-    if (user['phoneNumber']) {
-      localStorage.setItem('phoneNumber', user['phoneNumber']);
-      phoneNumberField.value = user['phoneNumber'];
-    }
-    if (user['lga']) {
-      localStorage.setItem('lga', user['lga']);
-      lgaField.value = user['lga'];
-    }
-    if (user['accountName']) {
-      localStorage.setItem('accountName', user['accountName']);
-      accountNameField.value = user['accountName'];
-    }
-    if (user['accountNumber']) {
-      localStorage.setItem('accountNumber', user['accountNumber']);
-      accountNumberField.value = user['accountNumber'];
-    }
-    if (user['bankName']) {
-      localStorage.setItem('bankName', user['bankName']);
-      bankNameField.value = user['bankName'];
-    }
-    if (user['age']) {
-      localStorage.setItem('age', user['age']);
-      ageField.value = user['age'];
-    }
-    if (user['state']) {
-      localStorage.setItem('state', user['state']);
-      stateField.value = user['state'];
-    }
+    const fields = ['uniqueCode', 'phoneNumber', 'lga', 'accountName', 'accountNumber', 'bankName', 'age', 'state', 'email', 'firstName', 'lastName', 'gender', 'network'];
+    const fieldElements = {
+      uniqueCode: uniqueCodeField,
+      phoneNumber: phoneNumberField,
+      lga: lgaField,
+      accountName: accountNameField,
+      accountNumber: accountNumberField,
+      bankName: bankNameField,
+      age: ageField,
+      state: stateField,
+      email: emailField,
+      firstName: firstNameField,
+      lastName: lastNameField,
+      gender: genderField,
+      network: networkField
+    };
+
+    fields.forEach(field => {
+      if (user[field]) {
+        localStorage.setItem(field, user[field]);
+        if (fieldElements[field]) {
+          fieldElements[field].value = user[field];
+        }
+      }
+    });
   }
 
   function retrieveAndVerifyUserData(username) {
-    const user = usersData.find(user => user['name'] === username);
+    const user = usersData.find(user => user['username'] === username);
     if (user) {
       storeAdditionalDataToLocalStorage(user);
-      showNotification('Data restored successfully.', true);
+      showNotification('User data verified successfully.', true);
+      return user;
     } else {
-      showNotification('User data could not be verified.');
+      showNotification('User data not found. Please fill out the form manually.');
+      return null;
     }
   }
 
-  function initializeProfile() {
-    const { username, password, uniqueCode, phoneNumber, lga, accountName, accountNumber, bankName, age, state } = populateFieldsFromLocalStorage();
+  function updateProfile(formData) {
+    const updateUrl = `${primaryApiUrl}/username/${formData.username}`;
+    return fetch(updateUrl, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(formData)
+    })
+      .then(response => response.json())
+      .then(data => {
+        showNotification('Profile updated successfully.', true);
+        storeAdditionalDataToLocalStorage(formData);
+        return data;
+      })
+      .catch(error => {
+        console.error('Error updating profile:', error);
+        showNotification('Failed to update profile. Please try again.');
+      });
+  }
 
-    if (!uniqueCode || !phoneNumber || !lga || !accountName || !accountNumber || !bankName || !age || !state) {
-      showProgressBar('Restoring data. Please wait...');
-      loadData().then(() => {
-        retrieveAndVerifyUserData(username);
-        hideProgressBar();
+  function addProfile(formData) {
+    const addUrl = primaryApiUrl;
+    return fetch(addUrl, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(formData)
+    })
+      .then(response => response.json())
+      .then(data => {
+        showNotification('Profile submitted successfully.', true);
+        storeAdditionalDataToLocalStorage(formData);
+        return data;
+      })
+      .catch(error => {
+        console.error('Error adding profile:', error);
+        showNotification('Failed to submit profile. Please try again.');
+      });
+  }
+
+  // Event listener for form submission
+  profileForm.addEventListener('submit', function (event) {
+    event.preventDefault();
+
+    const formData = {
+      username: usernameField.value,
+      password: passwordField.value,
+      uniqueCode: uniqueCodeField.value,
+      email: emailField.value,
+      firstName: firstNameField.value,
+      lastName: lastNameField.value,
+      age: ageField.value,
+      gender: genderField.value,
+      state: stateField.value,
+      phoneNumber: phoneNumberField.value,
+      network: networkField.value,
+      bankName: bankNameField.value,
+      accountName: accountNameField.value,
+      accountNumber: accountNumberField.value,
+      lga: lgaField.value
+    };
+
+    // Check if the user already exists in the database
+    const user = retrieveAndVerifyUserData(formData.username);
+    if (user) {
+      // Update existing user data
+      updateProfile(formData).then(updatedData => {
+        if (updatedData) {
+          usersData = usersData.map(u => (u.username === updatedData.username ? updatedData : u));
+        }
+      });
+    } else {
+      // Add new user data
+      addProfile(formData).then(newData => {
+        if (newData) {
+          usersData.push(newData);
+        }
       });
     }
-  }
+  });
 
-  initializeProfile();
+  populateFieldsFromLocalStorage();
+  loadData();
 });
-</script>
-</body>
+</script>        
+        
+        </body>
 </html>
 <!-- API keys -->
 <!-- https://sheetdb.io/api/v1/05zo2s09gbz5x -->
 <!-- https://sheetdb.io/api/v1/mw7e3hg45k2qt -->
+
+
