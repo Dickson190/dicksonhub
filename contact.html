@@ -1,114 +1,165 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Coming Soon</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        /* General Styles */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f0f2f5;
+            margin: 0;
+            padding: 0;
+            color: #333;
+        }
 
-     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-<link rel="stylesheet" href="sidenav.css">
-<link rel="stylesheet" href="watermark.css">
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 30px;
+            background: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin-top: 40px;
+            transition: box-shadow 0.3s ease;
+        }
+
+        .container:hover {
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        h1 {
+            font-size: 36px;
+            margin-bottom: 20px;
+            color: #333;
+            text-align: center;
+            font-weight: 600;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #666;
+        }
+
+        input, textarea {
+            width: 100%;
+            padding: 14px;
+            margin-top: 5px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            box-sizing: border-box;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        input:focus, textarea:focus {
+            border-color: #007bff;
+            outline: none;
+            box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+        }
+
+        button {
+            width: 100%;
+            padding: 14px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+            transform: translateY(-2px);
+        }
+
+        button:active {
+            background-color: #004085;
+            transform: translateY(0);
+        }
+
+        .footer {
+            background-color: #ffffff;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
+            color: #666;
+            margin-top: 40px;
+        }
+
+        .footer a {
+            color: #007bff;
+            text-decoration: none;
+            margin: 0 10px;
+            font-size: 14px;
+        }
+
+        .footer a:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+                margin: 20px;
+            }
+
+            input, textarea {
+                padding: 12px;
+            }
+
+            button {
+                padding: 12px;
+            }
+        }
+    </style>
 </head>
 <body>
-
-<!-- Simulate a smartphone / tablet -->
-    <div class="mobile-container">
-
-    <!-- Side Navigation -->
-    <div id="sidenav" class="sidenav">
-      <a href="javascript:void(0)" class="closebtn" onclick="toggleNav()">&times;</a>
-          <a href="app.html">Home</a>
-      <a href="earn.html">Offerwall</a>
-      <a href="task.html">Task</a>
-      <a href="bean.html" class="active">Upgrade Account</a>
-      <a href="shop.html">Shop</a>
-      <a href="news.html">New Features/Updates</a>
-      <a href="withdraw.html">Withdraw</a>
-      <a href="whistory.html">Withdrawal History</a>
-      <a href="about.html">About Us</a>
+    <div class="container">
+        <h1>Contact Us</h1>
+        <form id="contact-form">
+            <div class="form-group">
+                <label for="name">Name</label>
+                <input type="text" id="name" name="name" required>
+            </div>
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" required>
+            </div>
+            <div class="form-group">
+                <label for="message">Message</label>
+                <textarea id="message" name="message" rows="6" required></textarea>
+            </div>
+            <button type="submit">Send Message</button>
+        </form>
     </div>
-    
 
-    <a href="javascript:void(0);" class="icon" onclick="toggleNav()">
-      <i class="fa fa-bars"></i>
-    </a>
-    
-    
-<style>
-  body {
-    margin: 0;
-    padding: 0;
-    font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-  }
-  .container {
-    text-align: center;
-  }
-  .logo {
-    width: 150px;
-    height: auto;
-    margin-bottom: 20px;
-  }
-  h1 {
-    color: #333;
-    font-size: 36px;
-    margin-bottom: 10px;
-  }
-  p {
-    color: #666;
-    font-size: 18px;
-    margin-bottom: 20px;
-  }
-  .countdown {
-    color: #555;
-    font-size: 24px;
-    margin-bottom: 20px;
-  }
-</style>
-</head>
-<body>
+    <footer class="footer">
+        <p>&copy; 2024 DicksonHub. All rights reserved.</p>
+        <nav>
+            <a href="app.html">Home</a>
+            <a href="#">Contact Us</a>
+            <a href="earn.html">Earn</a>
+        </nav>
+    </footer>
 
-<div class="container">
-<marquee>  <img src="Dig1.png" alt="DicksonHub" class="logo"></marquee>
-  <h1>Coming Soon</h1>
-  <p>We're working hard to bring you something awesome. Stay tuned!</p>
-  <div id="countdown" class="countdown"></div>
-</div>
-</div>
-
-<script>
-// Set the countdown date (YYYY/MM/DD HH:MM:SS)
-var countdownDate = new Date("2024/08/01 12:00:00").getTime();
-
-// Update the countdown every 1 second
-var countdownInterval = setInterval(function() {
-  // Get the current date and time
-  var now = new Date().getTime();
-
-  // Calculate the remaining time
-  var timeRemaining = countdownDate - now;
-
-  // Calculate days, hours, minutes, and seconds
-  var days = Math.floor(timeRemaining / (1000 * 60 * 60 * 24));
-  var hours = Math.floor((timeRemaining % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-  var minutes = Math.floor((timeRemaining % (1000 * 60 * 60)) / (1000 * 60));
-  var seconds = Math.floor((timeRemaining % (1000 * 60)) / 1000);
-
-  // Display the countdown
-  var countdownElement = document.getElementById("countdown");
-  countdownElement.innerHTML = "Coming in " + days + "d " + hours + "h " + minutes + "m " + seconds + "s";
-
-  // If the countdown is over, display a message
-  if (timeRemaining < 0) {
-    clearInterval(countdownInterval);
-    countdownElement.innerHTML = "We're live now!";
-  }
-}, 1000); // Update every 1 second
-</script>
-<script src="sidenav.js"></script>
+    <script>
+        document.getElementById('contact-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+            alert('Message sent successfully!');
+            // You can add actual form submission logic here
+        });
+    </script>
 </body>
 </html>

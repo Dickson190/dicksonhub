@@ -3,53 +3,64 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Reviewing Quiz Response</title>
-
+    <title>Quiz Result Page</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="load.css">
 </head>
-<link rel="stylesheet" href="result.css">
-<link rel="stylesheet" href="sidenav.css">
- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
- 
 <body>
     <div class="mobile-container">
 
-    <!-- Side Navigation -->
-    <div id="sidenav" class="sidenav">
-      <a href="javascript:void(0)" class="closebtn" onclick="toggleNav()">&times;</a>
-          <a href="app.html">Home</a>
-      <a href="earn.html">Offerwall</a>
-      <a href="task.html">Task</a>
-      <a href="bean.html" class="active">Upgrade Account</a>
-      <a href="shop.html">Shop</a>
-      <a href="news.html">New Features/Updates</a>
-      <a href="withdraw.html">Withdraw</a>
-      <a href="whistory.html">Withdrawal History</a>
-      <a href="about.html">About Us</a>
-    </div>
-    
-
-    <a href="javascript:void(0);" class="icon" onclick="toggleNav()">
-      <i class="fa fa-bars"></i>
-    </a>
-    
-    <header class="header">
-        <img src="Dig1.png" alt="Logo" width="120px" height="100px" class="logo">
-    </header>
-    <div class="content">
-        <h1>Quiz Result Page</h1>
-        <p>Welcome Member! Your results will be posted here once reviewed.</p>
-    </div>
-  
-    <div class="loader" id="loader">
-        <div class="cooking">
-            <div class="bubble"></div>
-            <div class="bubble"></div>
-            <div class="bubble"></div>
-            <div class="bubble"></div>
-            <div class="pot"></div>
+        <!-- Side Navigation -->
+        <div id="sidenav" class="sidenav">
+            <a href="javascript:void(0)" class="closebtn" onclick="toggleNav()">&times;</a>
+            <a href="app.html">Home</a>
+            <a href="earn.html">Offerwall</a>
+            <a href="task.html">Task</a>
+            <a href="bean.html" class="active">Upgrade Account</a>
+            <a href="shop.html">Shop</a>
+            <a href="news.html">New Features/Updates</a>
+            <a href="withdraw.html">Withdraw</a>
+            <a href="whistory.html">Withdrawal History</a>
+            <a href="conversion.html">Convert Airtime/Data</a>
+            <a href="about.html">About Us</a>
         </div>
+
+        <a href="javascript:void(0);" class="icon" onclick="toggleNav()">
+            <i class="fa fa-bars"></i>
+        </a>
+
+        <header class="header">
+            <img src="Dig1.png" alt="Logo" class="logo">
+        </header>
+
+        <div class="content">
+            <h1>Quiz Result Page</h1>
+            <p>Welcome Member! Your results will be posted here once reviewed.</p>
+        </div>
+
+        <div class="loader" id="loader">
+            <div class="cooking">
+                <div class="bubble"></div>
+                <div class="bubble"></div>
+                <div class="bubble"></div>
+                <div class="bubble"></div>
+                <div class="pot"></div>
+            </div>
+        </div>
+
+        <footer class="footer">
+            <p>&copy; 2024 DicksonHub. All rights reserved.</p>
+            <nav>
+                <a href="app.html" class="footer-link">Home</a>
+                <a href="#" class="footer-link">Contact Us</a>
+                <a href="earn.html" class="footer-link">Earn</a>
+            </nav>
+        </footer>
+
     </div>
- <script src="sidenav.js"></script>
+    <script src="load.js"></script>
+    <script src="sidenav.js"></script>
     <script>
         window.onload = function() {
             setTimeout(() => {
@@ -68,14 +79,5 @@
             });
         });
     </script>
-    <footer class="footer">
-        <p>&copy; 2024 DicksonHub. All rights reserved.</p>
-        <nav>
-            <a href="app.html" class="footer-link">Home</a>
-            <a href="#" class="footer-link">Contact Us</a>
-            <a href="earn.html" class="footer-link">Earn</a>
-        </nav>
-    </footer>
-
 </body>
 </html>

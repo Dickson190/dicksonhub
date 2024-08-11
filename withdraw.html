@@ -7,6 +7,9 @@
     <link rel="stylesheet" href="withdraw.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="sidenav.css">
+    <style>
+ 
+    </style>
 </head>
 <body>
     <div class="mobile-container">
@@ -21,6 +24,7 @@
             <a href="news.html">New Features/Updates</a>
             <a href="withdraw.html">Withdraw</a>
             <a href="whistory.html">Withdrawal History</a>
+             <a href="conversion.html">Convert Airtime/Data </a>
             <a href="about.html">About Us</a>
         </div>
 
@@ -96,26 +100,32 @@
             <h2>Withdrawal failed. Please try again.</h2>
             <button onclick="handleError()">OK</button>
         </div>
-
-        <script src="sidenav.js"></script>
-       
-   
-
-        
+       <div id="notification-container"></div>
+        <script src="sidenav.js"></script>    
         <script>
       document.addEventListener('DOMContentLoaded', function () {
     const withdrawalTypeElement = document.getElementById('withdrawalType');
     const airtimeFields = document.getElementById('airtimeFields');
     const bankFields = document.getElementById('bankFields');
     const withdrawForm = document.getElementById('withdrawForm');
-    const popupSuccess = document.getElementById('popup-success');
-    const popupError = document.getElementById('popup-error');
+    const notificationContainer = document.getElementById('notification-container');
 
     const userPhoneNumber = localStorage.getItem('phoneNumber');
     const currentUser = localStorage.getItem('username');
     const currentPassword = localStorage.getItem('password');
     let userEarnings = parseFloat(localStorage.getItem(`${userPhoneNumber}_${currentUser}_${currentPassword}_earnings`)) || 0;
 
+    const activeCardKey = `${userPhoneNumber}_${currentUser}_${currentPassword}_activeCard`;
+    const activeCard = JSON.parse(localStorage.getItem(activeCardKey));
+
+    // Threshold settings based on membership plan
+    const thresholdMap = {
+        'Free Membership': 200,
+        'Bronze Membership': 100,
+        'Premium Membership': 50,
+        'Gold Membership': 50
+    };
+    
     // Retrieve stored user details for Airtime and Bank fields
     document.getElementById('network').value = localStorage.getItem('network') || '';
     document.getElementById('phoneNumber').value = localStorage.getItem('phoneNumber') || '';
@@ -149,8 +159,6 @@
         event.preventDefault();
         let amount;
         const withdrawalType = withdrawalTypeElement.value;
-        const apiUrl = "https://sheetdb.io/api/v1/wjwgv7t6ub8mq";
-        const secondaryApiUrl = "https://sheetdb.io/api/v1/wjwgv7t6ub8mq";
 
         if (withdrawalType === 'airtime') {
             amount = parseFloat(document.getElementById('amountAirtime').value);
@@ -159,9 +167,20 @@
         }
 
         if (amount > userEarnings) {
-            alert('Insufficient funds for withdrawal');
+            showNotification('Insufficient funds for withdrawal', 'error');
             return;
         }
+
+        const userPlanName = activeCard ? activeCard.planName : 'Free Membership';
+        const threshold = thresholdMap[userPlanName];
+
+        if (amount < threshold) {
+            showNotification(`Your plan requires a minimum withdrawal of ₦${threshold}. Please enter a higher amount.`, 'error');
+            return;
+        }
+
+        const apiUrl = "https://sheetdb.io/api/v1/wjwgv7t6ub8mq";
+        const secondaryApiUrl = "https://sheetdb.io/api/v1/wjwgv7t6ub8mq";
 
         const formData = new FormData(withdrawForm);
         const jsonData = {};
@@ -189,9 +208,12 @@
         .then(data => {
             if (data.created || data.updated) {
                 storeWithdrawalDetails(withdrawalType, amount);
-                showPopup('success');
+                showNotification('Withdrawal successful!', 'success');
                 userEarnings -= amount;
                 localStorage.setItem(`${userPhoneNumber}_${currentUser}_${currentPassword}_earnings`, userEarnings.toString());
+                setTimeout(() => {
+                    window.location.href = 'whistory.html'; // Redirect to the desired page after successful submission
+                }, 5000); // Redirect after 5 seconds
             } else {
                 throw new Error('Primary API failed');
             }
@@ -208,15 +230,18 @@
             .then(data => {
                 if (data.created || data.updated) {
                     storeWithdrawalDetails(withdrawalType, amount);
-                    showPopup('success');
+                    showNotification('Withdrawal successful!', 'success');
                     userEarnings -= amount;
                     localStorage.setItem(`${userPhoneNumber}_${currentUser}_${currentPassword}_earnings`, userEarnings.toString());
+                    setTimeout(() => {
+                        window.location.href = 'whistory.html'; // Redirect to the desired page after successful submission
+                    }, 5000); // Redirect after 5 seconds
                 } else {
                     throw new Error('Secondary API failed');
                 }
             })
             .catch(() => {
-                showPopup('error');
+                showNotification('An error occurred. Please try again later.', 'error');
             });
         });
     });
@@ -236,25 +261,27 @@
         localStorage.setItem(withdrawalHistoryKey, JSON.stringify(withdrawalHistory));
     }
 
-    function showPopup(type) {
-        if (type === 'success') {
-            popupSuccess.style.display = 'block';
-        } else if (type === 'error') {
-            popupError.style.display = 'block';
-        }
-    }
+    function showNotification(message, type) {
+        const notificationBox = document.createElement('div');
+        notificationBox.className = `notification ${type}`;
+        notificationBox.innerHTML = `
+            <div class="notification-content">
+                <span class="icon">${type === 'success' ? '✔️' : type === 'error' ? '❌' : 'ℹ️'}</span>
+                <span class="message">${message}</span>
+                <button class="close-btn" onclick="this.parentElement.parentElement.style.display='none';">OK</button>
+            </div>
+        `;
 
-    window.handleOk = function() {
-        popupSuccess.style.display = 'none';
-        window.location.href = "https://dickson190.github.io/dicksonhub/whistory.html";
-    }
+        notificationContainer.appendChild(notificationBox);
 
-    window.handleError = function() {
-        popupError.style.display = 'none';
-    }
-});
+        notificationBox.style.display = 'block';
+        notificationBox.style.animation = 'slideDown 0.5s ease';
 
-              </script>
+        setTimeout(() => {
+            notificationBox.style.display = 'none';
+        }, 5000); // Hide after 5 seconds
+    }
+});              </script>
     </div>
 </body>
 </html>

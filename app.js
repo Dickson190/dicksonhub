@@ -24,7 +24,8 @@ document.addEventListener('DOMContentLoaded', function () {
         greetingElement.textContent = greeting + ', ';
     }
 
-    alert("Welcome member to DicksonHub earning platform. Start earning by clicking the earn button.");
+    // Show notification instead of alert
+    showNotification("Welcome user to DicksonHub earning platform. Start earning by performing simple task.");
 
     const earningsElement = document.getElementById('userEarnings');
     if (earningsElement) {
@@ -69,4 +70,15 @@ function myFunction() {
     } else {
         x.className = "topnav";
     }
+}
+
+// Function to show notification
+function showNotification(message) {
+    const notificationBox = document.getElementById('notificationBox');
+    notificationBox.textContent = message;
+    notificationBox.style.display = 'block';
+
+    setTimeout(function() {
+        notificationBox.style.display = 'none';
+    }, 8000); // Adjust this timeout duration as needed
 }

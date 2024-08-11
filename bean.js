@@ -67,7 +67,8 @@ document.addEventListener('DOMContentLoaded', function () {
         const planNames = {
             1: 'Free Membership',
             2: 'Bronze Membership',
-            3: 'Premium Membership'
+            3: 'Premium Membership',
+            4: 'Gold Membership'
         };
 
         const planName = planNames[planId];

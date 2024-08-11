@@ -4,26 +4,24 @@ body {
   padding: 0;
   overflow-x: hidden; /* Prevent horizontal scrolling */
   box-sizing: border-box; /* Include padding and border in element's total width and height */
+  font-family: 'Lato', sans-serif; /* Consistent font across the page */
 }
 
 /* Ensure containers fit within the viewport */
 .container, .mobile-container {
-  width: 100%; /* Ensure containers are full width */
-  max-width: 100%; /* Prevent overflow */
-  margin: 0 auto; /* Center containers */
-  box-sizing: border-box; /* Include padding and border in element's total width and height */
+  width: 100%;
+  max-width: 100%;
+  margin: 0 auto;
+  box-sizing: border-box;
   padding-bottom: 40px;
 }
 
 .container {
-  margin-top: 10px; /* Adjust the margin to account for the fixed navbar */
+  margin-top: 60px; /* Adjust to fit with fixed navbar */
   text-align: center;
 }
 
-.buttons {
-  margin-top: 20px;
-}
-
+/* Button styles */
 button {
   padding: 10px 20px;
   font-size: 16px;
@@ -32,23 +30,24 @@ button {
   border: none;
   border-radius: 5px;
   cursor: pointer;
-  margin: 10px 10px;
+  margin: 10px;
+  transition: background-color 0.3s ease;
 }
 
 button:hover {
   background-color: #0056b3;
 }
 
+/* Navbar styles */
 .topnav {
   overflow: hidden;
-  background-color: #0d3b4e; /* Make the navbar transparent */
-  position: fixed; /* Make the navbar fixed */
-  top: 0; /* Fixed at the top of the viewport */
+  background-color: #0d3b4e;
+  position: fixed;
+  top: 0;
   width: 100%;
-  
-  z-index: 1000; /* Ensure this is higher than the slideshow */
-  margin: 0; /* Remove margin */
-  padding: 0; /* Remove padding */
+  z-index: 1000;
+  margin: 0;
+  padding: 0;
 }
 
 .topnav #myLinks {
@@ -57,18 +56,11 @@ button:hover {
 
 .topnav a {
   color: white;
-  padding: 9px 6px;
+  padding: 10px;
   text-decoration: none;
   font-size: 17px;
   display: block;
-}
-
-.topnav a.icon {
-  background: black;
-  display: block;
-  position: absolute;
-  right: 0;
-  top: 0;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 .topnav a:hover {
@@ -76,25 +68,18 @@ button:hover {
   color: black;
 }
 
-.active {
-  background-color: transparent; /* Make the active link background transparent */
-  color: white;
-}
-
+/* Content styles */
 #content {
-  margin-top: 90px; /* Adjust the value as needed */
+  margin-top: 90px; /* Adjust based on navbar height */
   color: blueviolet;
 }
 
 .buttons button a {
   text-decoration: none;
-  color: white; /* Set the text color to white */
+  color: white;
 }
 
-img[src="https://www.000webhost.com/static/default.000webhost.com/images/powered-by-000webhost.png"] {
-  display: none;
-}
-
+/* Loader styles */
 .loader {
   position: fixed;
   top: 0;
@@ -109,14 +94,11 @@ img[src="https://www.000webhost.com/static/default.000webhost.com/images/powered
 }
 
 .loader .cooking {
-  position: relative;
   width: 100px;
   height: 100px;
 }
 
 .loader .pot {
-  position: absolute;
-  bottom: 0;
   width: 100px;
   height: 60px;
   background: #ff6347;
@@ -124,8 +106,6 @@ img[src="https://www.000webhost.com/static/default.000webhost.com/images/powered
 }
 
 .loader .bubble {
-  position: absolute;
-  bottom: 50px;
   width: 15px;
   height: 15px;
   background: #ff6347;
@@ -134,36 +114,17 @@ img[src="https://www.000webhost.com/static/default.000webhost.com/images/powered
   animation: bubble 2s infinite;
 }
 
-.loader .bubble:nth-child(2) {
-  left: 25px;
-  animation-delay: 0.5s;
-}
-
-.loader .bubble:nth-child(3) {
-  left: 50px;
-  animation-delay: 1s;
-}
-
-.loader .bubble:nth-child(4) {
-  left: 75px;
-  animation-delay: 1.5s;
-}
+.loader .bubble:nth-child(2) { animation-delay: 0.5s; }
+.loader .bubble:nth-child(3) { animation-delay: 1s; }
+.loader .bubble:nth-child(4) { animation-delay: 1.5s; }
 
 @keyframes bubble {
-  0% {
-    transform: translateY(0);
-    opacity: 0.6;
-  }
-  50% {
-    transform: translateY(-30px);
-    opacity: 1;
-  }
-  100% {
-    transform: translateY(-60px);
-    opacity: 0;
-  }
+  0% { transform: translateY(0); opacity: 0.6; }
+  50% { transform: translateY(-30px); opacity: 1; }
+  100% { transform: translateY(-60px); opacity: 0; }
 }
 
+/* Media query for smaller screens */
 @media (max-width: 768px) {
   .earnings-section {
     background-color: #f9f9f9;
@@ -171,7 +132,6 @@ img[src="https://www.000webhost.com/static/default.000webhost.com/images/powered
     border-radius: 8px;
     padding: 20px;
     margin: 20px auto;
-    text-align: center;
     max-width: 600px;
   }
 
@@ -186,23 +146,19 @@ img[src="https://www.000webhost.com/static/default.000webhost.com/images/powered
     margin: 10px 0;
   }
 
-  .withdraw-button {
+  .withdraw-button, .copy-button {
     background-color: #4CAF50;
     color: white;
     border: none;
     padding: 10px 20px;
     font-size: 16px;
-    cursor: pointer;
     border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
   }
 
-  .withdraw-button:hover {
+  .withdraw-button:hover, .copy-button:hover {
     background-color: #45a049;
-  }
-
-  .buttons a {
-    text-decoration: none;
-    color: white;
   }
 
   .unique-code {
@@ -211,91 +167,120 @@ img[src="https://www.000webhost.com/static/default.000webhost.com/images/powered
     margin: 20px 0;
   }
 
-  .copy-button {
-    background-color: #333;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    font-size: 16px;
-    cursor: pointer;
-    border-radius: 5px;
+  .button-icon {
+    text-decoration: none;
+    color: inherit;
+    margin-bottom: 20px;
   }
 
-  .copy-button:hover {
-    background-color: #555;
+  .button-icon i {
+    font-size: 2em;
+    margin-bottom: 5px;
   }
 }
 
+/* Card styles */
 .card {
   background-color: #ffffff;
   border: 1px solid #ddd;
   border-radius: 8px;
   padding: 20px;
   margin: 20px auto;
-  text-align: center;
   max-width: 600px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-.user-code-card {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.user-code {
-  font-size: 18px;
-  font-weight: bold;
-}
-
-.copy-button {
-  background-color: #007bff;
-  color: white;
-  border: none;
-  padding: 10px 20px;
-  font-size: 16px;
-  cursor: pointer;
-  border-radius: 5px;
-}
-
-.copy-button:hover {
-  background-color: #0056b3;
-}
-
-.button-icon {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 10px 20px;
-  background-color: #007bff;
-  color: white;
-  text-decoration: none;
-  border-radius: 5px;
-  margin: 10px;
-}
-
-.button-icon i {
-  margin-right: 5px;
-}
-
+/* Bottom Navigation */
 .bottom-nav {
   position: fixed;
   bottom: 0;
   width: 100%;
-  background-color: #0d3b4e;
+  background-color: #1f1f1f;
   display: flex;
   justify-content: space-around;
+  align-items: center;
   padding: 10px 0;
+  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
 }
 
 .nav-item {
   color: white;
-  text-decoration: none;
   text-align: center;
-  padding: 10px;
+  text-decoration: none;
+  flex: 1;
+  transition: background-color 0.3s ease;
 }
 
-.nav-item i {
+.nav-item:hover {
+  background-color: #333;
+}
+
+/* Sidenav styles */
+.sidenav {
+  height: 100%;
+  width: 0;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-color: #111;
+  overflow-y: auto;
+  transition: 0.5s;
+  padding-top: 60px;
+  opacity: 0;
+}
+
+.sidenav a {
+  padding: 8px 32px;
+  text-decoration: none;
+  font-size: 25px;
+  color: #818181;
   display: block;
-  margin-bottom: 5px;
+  transition: 0.3s;
 }
 
+.sidenav a:hover {
+  color: #f1f1f1;
+}
+
+.sidenav .closebtn {
+  position: absolute;
+  top: 0;
+  right: 25px;
+  font-size: 36px;
+}
+
+.hamburger {
+  font-size: 30px;
+  cursor: pointer;
+}
+
+.icon {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  color: white;
+  background-color: black;
+  padding: 10px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+/* Notification box */
+.notification-box {
+  display: none;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #007BFF;
+  color: white;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.2);
+  z-index: 1000;
+  font-size: 18px;
+  text-align: center;
+  width: 80%;
+  max-width: 500px;
+}

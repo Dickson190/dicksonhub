@@ -10,7 +10,29 @@
     <link rel="stylesheet" href="fixed.css">
     <link rel="stylesheet" href="gift.css">
     <title>Claim Gift</title>
-    
+    <style>
+        .notification-box {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #4CAF50; /* Green background */
+    color: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+    text-align: center;
+    width: 80%;
+    max-width: 300px;
+    font-size: 18px;
+}
+
+.notification-box.error {
+    background-color: #f44336; /* Red background for error */
+}
+    </style>
 </head>
 <body>
     <div class="container">
@@ -26,6 +48,7 @@
                 <a href="news.html">New Features/Updates</a>
                 <a href="withdraw.html">Withdraw</a>
                 <a href="whistory.html">Withdrawal History</a>
+                 <a href="conversion.html">Convert Airtime/Data </a>
                 <a href="about.html">About Us</a>
             </div>
             <a href="javascript:void(0);" class="icon" onclick="toggleNav()">
@@ -59,43 +82,64 @@
         </div>
     </div>
     
+    <!-- Notification Box -->
+<div id="notificationBox" class="notification-box">
+    <span id="notificationMessage"></span>
+</div>
     
     <script>
-    function claimGift() {
-        const claimCode = document.getElementById('claimCode').value.trim();
-        const phoneNumber = localStorage.getItem('phoneNumber');
-        const currentUser = localStorage.getItem('username');
-        const password = localStorage.getItem('password');
-        const userClaimKey = `${phoneNumber}_${currentUser}_${password}_claimedCodes`;
+  function showNotification(message, type = 'success') {
+    const notificationBox = document.getElementById('notificationBox');
+    const notificationMessage = document.getElementById('notificationMessage');
 
-        const claimedCodes = JSON.parse(localStorage.getItem(userClaimKey)) || [];
-
-        if (claimedCodes.includes(claimCode)) {
-            alert("You have already claimed a gift with this code. Check again next week!");
-            return;
-        }
-
-        const validClaimCodes = ["DicksonHub", "19026144Hub", "OwnerHub", "ReferHub"];
-
-        if (validClaimCodes.includes(claimCode)) {
-            const userEarningsKey = `${phoneNumber}_${currentUser}_${password}_earnings`;
-            let userEarnings = parseFloat(localStorage.getItem(userEarningsKey)) || 0;
-            userEarnings += 50; // Change the amount to ₦50
-            localStorage.setItem(userEarningsKey, userEarnings);
-
-            claimedCodes.push(claimCode);
-            localStorage.setItem(userClaimKey, JSON.stringify(claimedCodes));
-
-            const transactionDetails = `Claim Code: ${claimCode}`;
-            if (window.addTransaction) {
-                window.addTransaction('Gift Claim', '₦50', transactionDetails);
-            }
-
-            alert("Congratulations! Your earnings have been updated with ₦50.");
-        } else {
-            alert("Invalid claim code. Please try again.");
-        }
+    notificationMessage.innerText = message;
+    notificationBox.classList.remove('error');
+    if (type === 'error') {
+        notificationBox.classList.add('error');
     }
+    
+    notificationBox.style.display = 'block';
+
+    setTimeout(() => {
+        notificationBox.style.display = 'none';
+    }, 3000); // Auto-hide after 3 seconds
+}
+
+function claimGift() {
+    const claimCode = document.getElementById('claimCode').value.trim();
+    const phoneNumber = localStorage.getItem('phoneNumber');
+    const currentUser = localStorage.getItem('username');
+    const password = localStorage.getItem('password');
+    const userClaimKey = `${phoneNumber}_${currentUser}_${password}_claimedCodes`;
+
+    const claimedCodes = JSON.parse(localStorage.getItem(userClaimKey)) || [];
+
+    if (claimedCodes.includes(claimCode)) {
+        showNotification("You have already claimed a gift with this code. Check again next week!", 'error');
+        return;
+    }
+
+    const validClaimCodes = ["DicksonHub", "19026144Hub", "OwnerHub", "ReferHub","August"];
+
+    if (validClaimCodes.includes(claimCode)) {
+        const userEarningsKey = `${phoneNumber}_${currentUser}_${password}_earnings`;
+        let userEarnings = parseFloat(localStorage.getItem(userEarningsKey)) || 0;
+        userEarnings += 50; // Change the amount to ₦50
+        localStorage.setItem(userEarningsKey, userEarnings);
+
+        claimedCodes.push(claimCode);
+        localStorage.setItem(userClaimKey, JSON.stringify(claimedCodes));
+
+        const transactionDetails = `Claim Code: ${claimCode}`;
+        if (window.addTransaction) {
+            window.addTransaction('Gift Claim', '₦50', transactionDetails);
+        }
+
+        showNotification("Congratulations! Your earnings have been updated with ₦50.");
+    } else {
+        showNotification("Invalid claim code. Please try again.", 'error');
+    }
+}
 </script>
     <script src="sidenav.js"></script>
     <script src="load.js"></script>

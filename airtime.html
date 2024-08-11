@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Airtime to Cash</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="image.css">
+    <link rel="stylesheet" href="airtime.css">
+ 
+</head>
+<body>
+    <div class="container">
+        <div class="logo">
+            <img src="Dig1.png" alt="Logo">
+        </div>
+
+        
+
+        <h2>Airtime to Cash</h2>
+        
+        <!-- Information about the charge -->
+        <div class="info-box">
+            <p><strong>Note:</strong> We charge an 80% fee for airtime conversion.</p>
+        </div>
+        
+        <form id="airtimeForm">
+            <div class="form-group">
+                <label for="name">Name</label>
+                <input type="text" id="name" name="data[name]" readonly>
+            </div>
+            <div class="form-group">
+                <label for="phoneNumber">Phone Number</label>
+                <input type="text" id="phoneNumber" name="data[phoneNumber]" readonly>
+            </div>
+            <div class="form-group">
+                <label for="network">Network</label>
+                <input type="text" id="network" name="data[network]" readonly>
+            </div>
+            <div class="form-group">
+                <label for="amount">Amount (₦)</label>
+                <input type="number" id="amount" name="data[amount]" min="100" required>
+                <div class="error" id="amountError">Only premium and gold membership users can convert amounts above ₦6000.</div>
+            </div>
+            <div class="form-group">
+                <label for="type">Type</label>
+                <input type="text" id="type" name="data[type]" value="Airtime to Cash" readonly>
+            </div>
+            <div class="form-group">
+                <label for="screenshot">Screenshot URL</label>
+                <input type="text" id="screenshot" name="data[screenshot]" required>
+                <a href="https://freeimage.host/" target="_blank" class="screenshot-btn">Upload Screenshot</a>
+            </div>
+            <div class="form-group">
+                <label for="date">Date and Time</label>
+                <input type="text" id="date" name="data[date]" readonly>
+            </div>
+            <div class="form-group">
+                <label for="uniqueCode">User Code</label>
+                <input type="text" id="uniqueCode" name="data[uniqueCode]" readonly>
+            </div>
+            <button type="submit" class="submit-btn">Submit</button>
+        </form>
+    </div>
+
+    <div class="notification-box" id="notificationBox">
+        <p id="notificationMessage"></p>
+    </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+    const firstName = localStorage.getItem('firstName');
+    const phoneNumber = localStorage.getItem('phoneNumber');
+    const network = localStorage.getItem('network');
+    const uniqueCode = localStorage.getItem('uniqueCode');
+    const activeCard = JSON.parse(localStorage.getItem(`${phoneNumber}_${localStorage.getItem('username')}_${localStorage.getItem('password')}_activeCard`));
+    
+    document.getElementById('name').value = firstName || '';
+    document.getElementById('phoneNumber').value = phoneNumber || '';
+    document.getElementById('network').value = network || '';
+    document.getElementById('uniqueCode').value = uniqueCode || '';
+    document.getElementById('date').value = new Date().toLocaleString();
+
+    const amountInput = document.getElementById('amount');
+    const amountError = document.getElementById('amountError');
+    
+    amountInput.addEventListener('input', function () {
+        if (activeCard && 
+            (activeCard.planName.toLowerCase() !== 'premium membership' && 
+            activeCard.planName.toLowerCase() !== 'gold membership') && 
+            this.value > 6000) {
+            amountError.style.display = 'block';
+            this.value = 6000;
+        } else {
+            amountError.style.display = 'none';
+        }
+    });
+
+    function showNotification(message) {
+        const notificationBox = document.getElementById('notificationBox');
+        const notificationMessage = document.getElementById('notificationMessage');
+        notificationMessage.textContent = message;
+        notificationBox.style.display = 'block';
+        setTimeout(() => {
+            notificationBox.style.display = 'none';
+        }, 3000);
+    }
+
+    document.getElementById('airtimeForm').addEventListener('submit', function (e) {
+        e.preventDefault();
+        const formData = new FormData(this);
+        const data = {};
+
+        // Reformat the formData to match the expected structure
+        formData.forEach((value, key) => {
+            const keys = key.split('[').map(k => k.replace(']', ''));
+            if (keys.length === 2) {
+                if (!data[keys[0]]) data[keys[0]] = {};
+                data[keys[0]][keys[1]] = value;
+            } else {
+                data[key] = value;
+            }
+        });
+
+        fetch('https://sheetdb.io/api/v1/kfay4jalobhwh', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ data })
+        }).then(response => response.json())
+        .then(data => {
+            showNotification('Submission successful!');
+            setTimeout(() => {
+                window.location.href = 'conversion.html';
+            }, 3000);
+        }).catch(error => {
+            showNotification('There was an error submitting your form. Please try again.');
+        });
+    });
+});
+</script>
+<script src="image.js"></script>
+</body>
+</html>
+
+
+
+<!-- SHEETDB API 
+https://sheetdb.io/api/v1/kfay4jalobhwh
+
+Image link
+https://freeimage.host/ -->

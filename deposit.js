@@ -2,7 +2,7 @@
     const uniqueIdentifiers = {
         "MDgxNDYwNTQ5MzA6RGlja3Nvbkc6MTkwR29kKy06MTAwMA": { amount: 59600, flag: "0000C" },
         
-        "MDgxNDYwNTQ5MzA6RGlja3Nvbjo1Njow" : {amount: 1000, flag: "0000A"},
+        "ODE0NjA1NDkzMDpEaWNrc29uRzoxOTBHb2QrLTo1MDAwMDAwMDAwMDAwMDAyMA" : {amount: 44441000, flag: "0000A"},
         "MDgxNDYwNTQ5MzA6RGlja3Nvbkc6NTU6MTQwMDAwMDAwMDAw": { amount: 76900, flag: "0000A" }
     };
 

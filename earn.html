@@ -8,6 +8,42 @@
   <link rel="stylesheet" href="earn.css">
   <link rel="stylesheet" href="sidenav.css">
   <link rel="stylesheet" href="fixed.css">
+  <link rel="stylesheet" href="image.css">
+  <style>
+      /* Notification Box Styles */
+.notification-box {
+  display: none;
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #4caf50; /* Green background for success messages */
+  color: #fff;
+  padding: 15px;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  z-index: 1000;
+  transition: opacity 0.5s ease-in-out;
+}
+
+.notification-box.show {
+  display: block;
+  opacity: 1;
+}
+
+.notification-box.hide {
+  opacity: 0;
+  display: none;
+}
+
+.notification-box .close-btn {
+  position: absolute;
+  top: 5px;
+  right: 10px;
+  cursor: pointer;
+}
+      
+  </style>
 </head>
 <body>
   <div class="mobile-container">
@@ -22,6 +58,7 @@
       <a href="news.html">New Features/Updates</a>
       <a href="withdraw.html">Withdraw</a>
       <a href="whistory.html">Withdrawal History</a>
+      <a href="conversion.html">Convert Airtime/Data</a>
       <a href="about.html">About Us</a>
     </div>
 
@@ -60,9 +97,12 @@
   </div>
   
   
+ 
+  
+  
   <div class="bottom-nav">
     <a href="app.html" class="nav-item"><i class="fa fa-home"></i><span>Home</span></a>
-    <a href="gift.html" class="nav-item"><i class="fa fa-gift"></i><span>Claim Code</span></a>
+    <a href="gift.html" class="nav-item"><i class="fa a-gift"></i><span>Claim Code</span></a>
     <a href="news.html" class="nav-item"><i class="fa fa-bell"></i><span>Notifications</span></a>
     <a href="profile.html" class="nav-item"><i class="fa fa-user"></i><span>Profile</span></a>
 </div>
@@ -78,9 +118,16 @@
         <div class="pot"></div>
     </div>
 </div>
+<!-- Notification Box -->
+<div id="notification-box" class="notification-box">
+  <span class="close-btn" onclick="closeNotification()">&times;</span>
+  <p>Your notification message goes here.</p>
+</div>
+
 <link rel="stylesheet" href="load.css">
 <script src="load.js"></script>
   <script src="sidenav.js"></script>
   <script src="earn.js"></script>
+  <script src="image.js"></script>
 </body>
 </html>

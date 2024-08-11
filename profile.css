@@ -1,101 +1,126 @@
-/* Modify CSS here */
+/* General Styling */
 body {
-    font-family: Arial, sans-serif;
-    background: linear-gradient(to bottom right, #f8b500, #fceabb);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(to bottom right, #e0e0e0, #ffffff);
     margin: 0;
     padding: 0;
+    color: #333;
 }
 
 .container {
     background-color: #ffffff;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    margin: 50px auto;
-    width: 400px;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    margin: 20px auto;
+    max-width: 600px;
+    width: 90%;
+    transition: box-shadow 0.3s ease;
+}
+
+.container:hover {
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
 }
 
 h1 {
     text-align: center;
-    color: #333;
+    color: #444;
+    font-size: 26px;
+    margin-bottom: 20px;
+    font-weight: 600;
 }
 
+/* Form Group Styling */
 .form-group {
-    margin-bottom: 15px;
+    margin-bottom: 20px;
 }
 
 label {
     display: block;
-    margin-bottom: 5px;
-    color: #333;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #666;
+    font-size: 14px;
 }
 
 input, select {
     width: 100%;
-    padding: 8px;
+    padding: 14px;
     margin-top: 5px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 16px;
+    box-sizing: border-box;
+    transition: border-color 0.3s ease;
 }
 
+input:focus, select:focus {
+    border-color: #007bff;
+    outline: none;
+    box-shadow: 0 0 4px rgba(0, 123, 255, 0.5);
+}
+
+/* Button Styling */
 button {
     width: 100%;
-    padding: 10px;
+    padding: 14px;
     background-color: #007bff;
     color: white;
     border: none;
-    border-radius: 4px;
+    border-radius: 8px;
     cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
 button:hover {
     background-color: #0056b3;
-}
-/* Ensure the form container fills the viewport */
-.container {
-    width: 100%;
-    max-width: 800px; /* Adjust the maximum width as needed */
-    margin: 0 auto;
-    padding: 20px;
-    box-sizing: border-box;
+    transform: translateY(-2px);
 }
 
-/* Make the form inputs responsive */
-input[type="text"],
-input[type="password"],
-select {
-    width: 100%;
-    padding: 10px;
-    margin-bottom: 20px;
-    box-sizing: border-box;
+button:active {
+    background-color: #004085;
+    transform: translateY(0);
 }
 
-/* Add media query for smaller screens */
+/* Responsive Design */
 @media (max-width: 768px) {
     .container {
-        padding: 10px;
+        padding: 20px;
     }
-    .notification {
+    input, select {
+        padding: 12px;
+    }
+}
+
+/* Notification Styling */
+.notification {
     position: fixed;
     top: 20px;
     right: 20px;
     padding: 15px;
-    border-radius: 5px;
+    border-radius: 8px;
     color: #fff;
     display: flex;
     align-items: center;
     z-index: 1000;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    transition: opacity 0.3s ease, transform 0.3s ease;
 }
 
 .notification.success {
-    background-color: #4CAF50;
+    background-color: #28a745;
 }
 
 .notification.error {
-    background-color: #f44336;
+    background-color: #dc3545;
 }
 
 .notification i {
-    margin-right: 10px;
+    margin-right: 12px;
 }
+
+.notification.hide {
+    opacity: 0;
+    transform: translateX(20px);
 }

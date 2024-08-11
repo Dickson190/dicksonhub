@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Conversion Page</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <link rel="stylesheet" href="sidenav.css">
+    <link rel="stylesheet" href="fixed.css">
+    <link rel="stylesheet" href="load.css">
+    <link rel="stylesheet" href="image.css">
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Roboto', sans-serif;
+            background-color: #f4f4f4;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: #333;
+        }
+
+        .header {
+            width: 100%;
+            padding: 20px 0;
+            background-color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .header img {
+            max-width: 150px;
+            filter: brightness(0) invert(1);
+        }
+
+        .container {
+            width: 90%;
+            max-width: 600px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .instructions {
+            background-color: white;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            line-height: 1.6;
+        }
+
+        .instructions b {
+            color: #e74c3c;
+            font-size: 1.2em;
+        }
+
+        .instructions p {
+            font-size: 1.5em;
+            margin-top: 15px;
+        }
+
+        .card {
+            background-color: white;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            width: 100%;
+            margin: 15px 0;
+            padding: 20px;
+            text-align: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        .card h2 {
+            margin: 0;
+            font-size: 1.5em;
+            color: #333;
+            font-weight: 500;
+        }
+
+        .card .info {
+            display: none;
+            margin-top: 15px;
+            font-size: 1em;
+            color: #555;
+        }
+
+        .card.active .info {
+            display: block;
+        }
+
+        .bottom-nav {
+            width: 100%;
+            background-color: #333;
+            display: flex;
+            justify-content: space-around;
+            padding: 15px 0;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            box-shadow: 0 -4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .nav-item {
+            text-decoration: none;
+            color: white;
+            font-size: 0.9em;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .nav-item i {
+            font-size: 1.2em;
+            margin-bottom: 5px;
+        }
+
+        .loader {
+            display: none;
+            justify-content: center;
+            align-items: center;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 9999;
+        }
+
+        .loader .cooking {
+            position: relative;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: #e74c3c;
+            box-shadow: 0 0 0 10px #333, 0 0 0 20px #666;
+            animation: cooking 2s linear infinite;
+        }
+
+        @keyframes cooking {
+            0%,
+            100% {
+                transform: rotate(0deg);
+            }
+
+            50% {
+                transform: rotate(360deg);
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Side Navigation -->
+    <div id="sidenav" class="sidenav">
+        <a href="javascript:void(0)" class="closebtn" onclick="toggleNav()">&times;</a>
+        <a href="app.html">Home</a>
+        <a href="earn.html">Offerwall</a>
+        <a href="task.html">Task</a>
+        <a href="bean.html" class="active">Upgrade Account</a>
+        <a href="shop.html">Shop</a>
+        <a href="news.html">New Features/Updates</a>
+        <a href="withdraw.html">Withdraw</a>
+        <a href="whistory.html">Withdrawal History</a>
+        <a href="conversion.html">Convert Airtime/Data</a>
+        <a href="about.html">About Us</a>
+    </div>
+
+    <a href="javascript:void(0);" class="icon" onclick="toggleNav()">
+        <i class="fa fa-bars"></i>
+    </a>
+
+    <div class="header">
+        <img src="Dig1.png" alt="Logo">
+    </div>
+
+    <div class="container">
+        <div class="instructions">
+            <b>Please be informed that all conversions are done in MTN network Only. The other networks conversion will
+                be incorporated soon.
+                <br> ALL TRANSACTIONS ARE TO BE DONE TO THIS MTN NUMBER BELOW:
+            </b>
+            <p>+2348146054930</p>
+        </div>
+
+        <div class="card" onclick="toggleCard(this, 'airtime.html')">
+            <h2>Airtime to Cash</h2>
+            <div class="info">
+                <p>Convert your airtime to cash quickly and securely. We offer the best rates for your conversion needs.</p>
+            </div>
+        </div>
+        <div class="card" onclick="toggleCard(this, 'data.html')">
+            <h2>Data to Airtime</h2>
+            <div class="info">
+                <p>Exchange your data for airtime instantly. Enjoy fast service and competitive exchange rates.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bottom Navigation -->
+    
+    <div class="loader" id="loader">
+        <div class="cooking">
+            <div class="bubble"></div>
+            <div class="bubble"></div>
+            <div class="bubble"></div>
+            <div class="bubble"></div>
+            <div class="pot"></div>
+        </div>
+    </div>
+
+    <script>
+        function toggleNav() {
+            const sidenav = document.getElementById("sidenav");
+            sidenav.style.width = sidenav.style.width === "250px" ? "0" : "250px";
+        }
+
+        function toggleCard(card, url) {
+            card.classList.toggle("active");
+            setTimeout(() => {
+                window.location.href = url;
+            }, 1000);
+        }
+    </script>
+
+</body>
+
+</html>
+  
+
+    <script>
+        function toggleCard(element, redirectUrl) {
+            const isActive = element.classList.contains('active');
+            const cards = document.querySelectorAll('.card');
+            cards.forEach(card => card.classList.remove('active'));
+            if (!isActive) {
+                element.classList.add('active');
+            } else {
+                window.location.href = redirectUrl;
+            }
+        }
+    </script>
+    <script src="load.js"></script>
+    <script src="sidenav.js"></script>
+    <script src="image.js"></script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- SHEETDB API 
+https://sheetdb.io/api/v1/kfay4jalobhwh
+
+Image link
+https://freeimage.host/ -->

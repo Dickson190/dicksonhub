@@ -8,6 +8,17 @@
   <link rel="stylesheet" href="news.css">
   <link rel="stylesheet" href="fixed.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <style>
+    /* Disable right-click context menu on images */
+    img {
+      pointer-events: none;
+      user-select: none;
+      -webkit-user-drag: none;
+      -webkit-touch-callout: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+    }
+  </style>
 </head>
 <body>
   <!-- Simulate a smartphone / tablet -->
@@ -16,7 +27,7 @@
     <!-- Side Navigation -->
     <div id="sidenav" class="sidenav">
       <a href="javascript:void(0)" class="closebtn" onclick="toggleNav()">&times;</a>
-          <a href="app.html">Home</a>
+      <a href="app.html">Home</a>
       <a href="earn.html">Offerwall</a>
       <a href="task.html">Task</a>
       <a href="bean.html" class="active">Upgrade Account</a>
@@ -24,9 +35,9 @@
       <a href="news.html">New Features/Updates</a>
       <a href="withdraw.html">Withdraw</a>
       <a href="whistory.html">Withdrawal History</a>
+      <a href="conversion.html">Convert Airtime/Data</a>
       <a href="about.html">About Us</a>
     </div>
-    
 
     <a href="javascript:void(0);" class="icon" onclick="toggleNav()">
       <i class="fa fa-bars"></i>
@@ -38,18 +49,36 @@
         <h1>Latest News and Updates</h1>
         <center>
           <div class="news-item">
+            <img class="news-image" src="connect.jpeg" alt="News Image">
+            <div>
+              <h2>Stay Connected! Stay Informed! 📱💻</h2>
+              <p class="date">Posted on August 06, 2024</p>
+              <p>
+                ★ Follow DicksonHub on Facebook to stay up-to-date with the latest news, updates, and features about our app! 📢<br>
+                ★ Get exclusive insights, tips, and behind-the-scenes peeks into our latest developments. 🤔<br>
+                ★ Join our community today and be the first to know what's new and what's next! 📈
+              </p>
+            </div>
+          </div>
+        </center>
+        
+        <div class="spacer"></div> <!-- Spacer between news items -->
+        
+        <center>
+          <div class="news-item">
             <img class="news-image" src="lady.jpg" alt="News Image">
             <div>
               <h2>The New DicksonHub</h2>
               <p class="date">Posted on May 18, 2024</p>
-              <b>Exciting News!</b>
+              <p><b>Exciting News!</b></p>
               <p>DicksonHub is introducing new ways to earn money in Nigeria! 💸 You can now earn by performing simple tasks such as:</p>
-              <b>- Liking a post 👍<br>- Commenting 💬<br>- And lots more! </b>🤩
+              <p><b>- Liking a post 👍<br>- Commenting 💬<br>- And lots more! </b>🤩</p>
               <p>Plus, we'll add a Quiz section where you can answer questions and get paid between <b>₦50 - ₦250!</b> 🤔</p>
-              <p>This quiz feature will be available on our website and app in soon ! 🕒</p>
+              <p>This quiz feature will be available on our website and app soon! 🕒</p>
               <p>Stay tuned for more updates and get ready to earn big! 💥</p>
             </div>
           </div>
+
           <div class="spacer"></div> <!-- Spacer between news items -->
 
           <div class="news-item">
@@ -57,7 +86,7 @@
             <div>
               <h2>Important Announcement</h2>
               <p class="date">Posted on April 28, 2024</p>
-              <p>Dear Members, We're experiencing issues in processing BANK withdrawals, resulting in slower payment rates. Rest assured, we're actively working to resolve this issue. Withdrawals may take up to 10 days to process, but this delay is TEMPORARY and we expect to return to normal fast payment within 10 days. DicksonHub is always safe to use; we've always prioritized timely payments. All pending withdrawals will be processed promptly once the issue is resolved. Thank you</p>
+              <p>Dear Members, we're experiencing issues in processing BANK withdrawals, resulting in slower payment rates. Rest assured, we're actively working to resolve this issue. Withdrawals may take up to 10 days to process, but this delay is TEMPORARY, and we expect to return to normal fast payment within 10 days. DicksonHub is always safe to use; we've always prioritized timely payments. All pending withdrawals will be processed promptly once the issue is resolved. Thank you.</p>
             </div>
           </div>
 
@@ -68,7 +97,7 @@
             <div>
               <h2>Exciting News</h2>
               <p class="date">Posted on April 27, 2024</p>
-              <p>One user can now own more than one link; a user can refer himself/herself multiple times and earn cash bonuses. Exciting right? Thanks to our new database system 🙂</p>
+              <p>One user can now own more than one link; a user can refer themselves multiple times and earn cash bonuses. Exciting, right? Thanks to our new database system 🙂</p>
             </div>
           </div>
 
@@ -79,13 +108,18 @@
             <div>
               <h2>New Update</h2>
               <p class="date">Posted on April 25, 2024</p>
-              <p>★ We have improved the timers and made them more stable and accurate.<br>★ A navigation bar has been added to enhance user interaction.<br>★ New sections have been added; Earning section to display how much you've made so far, Boost Packs to earn faster, and so on. Explore those sections now! Happy Refreshing!</p>
+              <p>
+                ★ We have improved the timers and made them more stable and accurate.<br>
+                ★ A navigation bar has been added to enhance user interaction.<br>
+                ★ New sections have been added: an Earning section to display how much you've made so far, Boost Packs to earn faster, and more. Explore those sections now! Happy Refreshing!
+              </p>
             </div>
           </div>
         </center>
       </div>
     </div>
   </div>
+
   
   
   <div class="bottom-nav">
@@ -108,5 +142,12 @@
 <link rel="stylesheet" href="load.css">
 <script src="load.js"></script>
   <script src="sidenav.js"></script>
+  <script>
+  document.addEventListener('contextmenu', function(e) {
+    if (e.target.tagName === 'IMG') {
+      e.preventDefault();
+    }
+  });
+</script>
 </body>
 </html>

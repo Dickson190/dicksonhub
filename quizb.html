@@ -1,27 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interesting Quiz</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="form.css">
+    <link rel="stylesheet" href="watermark.css">
+    <link rel="stylesheet" href="load.css">
+    </head>
+<body>
+
+    <div class="timer" id="timer"></div>
+
+    <div class="container">
+        <img src="Dig1.png" alt="Logo" class="logo">
+        <h1><i class="fas fa-question-circle"></i> Bronze Membership Quiz</h1>
+        <form id="quizForm" method="post" action="https://sheetdb.io/api/v1/g365f08c476j3">
+            <input type="hidden" name="_next" value="https://dickson190.github.io/dicksonhub/premium.html">
+            <div id="questionsContainer"></div>
+            <label for="name"><i class="fas fa-user"></i> Full Name</label>
+            <input type="text" id="name" name="name" readonly />
+            <label for="email"><i class="fas fa-envelope"></i> Email</label>
+            <input type="email" id="email" name="email" readonly required />
+            <label for="code"><i class="fas fa-key"></i> Unique Code</label>
+            <input type="text" id="code" name="code" readonly />
+            <label for="phone"><i class="fas fa-phone"></i> Phone Number</label>
+            <input type="text" id="phone" name="phone" readonly />
+            <input type="hidden" id="password" name="password" readonly/>
+            <label for="network"><i class="fas fa-network-wired"></i> Network</label>
+            <input type="text" id="network" name="network" readonly />
+            <button type="submit"><i class="fas fa-paper-plane"></i> Submit</button>
+        </form>
+    </div>
+    
+    <!-- Notification Container for showing notifications -->
+    <div id="notificationContainer"></div>
+
+    <div class="loader" id="loader">
+        <div class="cooking">
+            <div class="bubble"></div>
+            <div class="bubble"></div>
+            <div class="bubble"></div>
+            <div class="bubble"></div>
+            <div class="pot"></div>
+        </div>
+    </div>
+
+ 
+    <script src="load.js"></script>
+   
+   <script>
 document.addEventListener("DOMContentLoaded", function() {
     var today = new Date().toISOString().split('T')[0];
-    var nextParticipationDate = new Date('2024-06-17').toISOString().split('T')[0];
-    var hasParticipated = localStorage.getItem("Participat");
-    var participationDate = localStorage.getItem("pationDat");
+    var nextParticipationDate = new Date('2024-08-01').toISOString().split('T')[0];
+    var hasParticipated = localStorage.getItem("hasParticipated");
+    var participationDate = localStorage.getItem("participationDate");
     var userAllowed = !hasParticipated || (hasParticipated && participationDate && participationDate < nextParticipationDate && today >= nextParticipationDate);
 
-    function showNotification(message) {
+    function showNotification(message, isError = false) {
         var notificationContainer = document.getElementById("notificationContainer");
         var notification = document.createElement("div");
         notification.className = "notification";
+        if (isError) {
+            notification.classList.add("error");
+        }
         notification.textContent = message;
 
         notificationContainer.appendChild(notification);
+        notification.style.display = 'block'; // Show the notification
 
         // Remove notification after the animation ends
         notification.addEventListener("animationend", function() {
             notification.remove();
         });
+
+        return new Promise(resolve => {
+            setTimeout(() => {
+                resolve();
+            }, 15000); // Show notification for 15 seconds
+        });
     }
 
     if (!userAllowed) {
-        showNotification("You have already participated in the quiz today or the appointed date has not been reached. Please wait for the next time.");
-        window.location.href = "premium.html";
+        showNotification("You have already participated in the quiz today or the appointed date has not been reached. Please wait for the next time.")
+            .then(() => {
+                window.location.href = "premium.html";
+            });
         return;
     }
 
@@ -43,54 +109,33 @@ document.addEventListener("DOMContentLoaded", function() {
 
     var questions = [
         {
-            question: "What is the capital of France?",
-            options: ["Paris", "London", "Berlin", "NONE"]
+            question: "What is the largest ocean on Earth?",
+            options: ["Pacific", "Atlantic", "Indian", "Arctic"]
         },
         {
-            question: "Which planet is known as the Red Planet?",
-            options: ["Mars", "Venus", "Jupiter", "NONE"]
+            question: "Which planet is closest to the Sun?",
+            options: ["Mercury", "Venus", "Mars", "Jupiter"]
         },
         {
-            question: "What is the capital of Australia?",
-            options: ["Sydney", "Melbourne", "Canberra", "Perth"]
+            question: "What is the square root of 64?",
+            options: ["6", "7", "8", "9"]
         },
         {
-            question: "Which planet is the hottest in our solar system?",
-            options: ["Mars", "Mercury", "Venus", "Earth"]
+            question: "What is the capital of Italy?",
+            options: ["Rome", "Milan", "Venice", "Naples"]
         },
         {
-            question: "Which of these elements is a noble gas?",
-            options: ["Oxygen", "Helium", "Hydrogen", "Nitrogen"]
+            question: "Which fruit is known as the king of fruits?",
+            options: ["Mango", "Apple", "Banana", "Grapes"]
         },
         {
-            question: "In which country is the tallest building in the world located?",
-            options: ["China", "Saudi Arabia", "United Arab Emirates", "USA"]
+            question: "Which gas do plants absorb from the atmosphere?",
+            options: ["Carbon Dioxide", "Oxygen", "Nitrogen", "Hydrogen"]
         },
         {
-            question: "Which of the following numbers is a prime number?",
-            options: ["15", "21", "29", "35"]
-        },
-        {
-            question: "Which language has the most native speakers?",
-            options: ["English", "Hindi", "Mandarin", "Spanish"]
-        },
-        {
-            question: "What is the chemical symbol for gold?",
-            options: ["Au", "Ag", "Pb", "Fe"]
-        },
-        {
-            question: "Which famous artist cut off his own ear?",
-            options: ["Pablo Picasso", "Leonardo da Vinci", "Vincent van Gogh", "Claude Monet"]
-        },
-        {
-            question: "Which country has the longest coastline in the world?",
-            options: ["Russia", "Australia", "Canada", "Brazil"]
-        },
-        {
-            question: "What is the main ingredient in traditional hummus?",
-            options: ["Chickpeas", "Lentils", "Beans", "Peas"]
+            question: "What is the boiling point of water?",
+            options: ["100°C", "90°C", "110°C", "80°C"]
         }
-  
     ];
 
     var questionsContainer = document.getElementById("questionsContainer");
@@ -129,7 +174,7 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 
     var timerElement = document.getElementById("timer");
-    var timeLeft = 45;
+    var timeLeft = 30;
 
     function updateTimer() {
         timerElement.textContent = `Time Left: ${timeLeft} seconds`;
@@ -170,35 +215,31 @@ document.addEventListener("DOMContentLoaded", function() {
 
             var correctAnswer;
             switch (index) {
-                case 0: correctAnswer = "Paris"; break;
-                case 1: correctAnswer = "Mars"; break;
-                case 2: correctAnswer = "Canberra"; break;
-                case 3: correctAnswer = "Venus"; break;
-                case 4: correctAnswer = "Helium"; break;
-                case 5: correctAnswer = "United Arab Emirates"; break;
-                case 6: correctAnswer = "29"; break;
-                case 7: correctAnswer = "Mandarin"; break;
-                case 8: correctAnswer = "Au"; break;
-                case 9: correctAnswer = "Vincent van Gogh"; break;
-                case 10: correctAnswer = "Canada"; break;
-                case 11: correctAnswer = "Chickpeas"; break;
+                case 0: correctAnswer = "Pacific"; break;
+                case 1: correctAnswer = "Mercury"; break;
+                case 2: correctAnswer = "8"; break;
+                case 3: correctAnswer = "Rome"; break;
+                case 4: correctAnswer = "Mango"; break;
+                case 5: correctAnswer = "Carbon Dioxide"; break;
+                case 6: correctAnswer = "100°C"; break;
             }
 
             if (userAnswer === correctAnswer) {
-                totalScore += 8.3;
+                totalScore += 14.3;
             }
         });
 
         formData.append("score", totalScore.toFixed(1));  // Convert to one decimal place
         formData.append("username", document.getElementById("name").value);
         formData.append("phoneNumber", document.getElementById("phone").value);
+        formData.append("status", "BRONZE");  // Add default status
 
         var xhr = new XMLHttpRequest();
         xhr.open("POST", "https://sheetdb.io/api/v1/g365f08c476j3", true);
         xhr.onload = function () {
             if (xhr.status >= 200 && xhr.status < 300) {
-                localStorage.setItem("hasParticipat", true);
-                localStorage.setItem("participationDat", today);
+                localStorage.setItem("hasParticipated", true);
+                localStorage.setItem("participationDate", today);
                 window.location.href = "https://dickson190.github.io/dicksonhub/premium.html";
             } else {
                 showNotification("There was an error submitting your quiz. Please try again.");
@@ -210,3 +251,8 @@ document.addEventListener("DOMContentLoaded", function() {
         xhr.send(formData);
     }
 });
+
+</script>   
+        
+</body>
+</html>

@@ -53,5 +53,22 @@
       window.location.href = destination;
     }
     
-    alert("Please be informed that your earnings from these sites can not be transferred to your DicksonHub account automatically. You make withdrawals from the site's dashboard.")
-  
+   // Function to show the notification box
+function showNotification(message) {
+  const notificationBox = document.getElementById('notification-box');
+  notificationBox.querySelector('p').textContent = message;
+  notificationBox.classList.add('show');
+  setTimeout(() => {
+    notificationBox.classList.remove('show');
+  }, 15000); // Show for 5 seconds
+}
+
+// Function to close the notification box
+function closeNotification() {
+  document.getElementById('notification-box').classList.remove('show');
+}
+
+// Example usage
+document.addEventListener('DOMContentLoaded', () => {
+  showNotification("Please be informed that your earnings from these sites cannot be transferred to your DicksonHub account automatically. You make withdrawals from the site's dashboard.");
+});

@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Conversion</title>
+    <link rel="stylesheet" href="data.css">
+    <link rel="stylesheet" href="image.css">
+    
+</head>
+<body>
+    <header>
+        <img src="Dig4.png" alt="Dig1 Logo" class="logo">
+        <h1>Data Conversion</h1>
+    </header>
+    <main>
+        <form id="dataForm">
+            <label for="network">Network:</label>
+            <input type="text" id="network" name="network" readonly>
+            
+            <label for="phoneNumber">Phone Number:</label>
+            <input type="text" id="phoneNumber" name="phoneNumber" readonly>
+            
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name" readonly>
+            
+            <label for="uniqueCode">User Code:</label>
+            <input type="text" id="uniqueCode" name="uniqueCode" readonly>
+            
+            <label for="type">Type:</label>
+            <input type="text" id="type" name="type" value="Data to Airtime" readonly>
+            
+            <label for="date">Date:</label>
+            <input type="datetime-local" id="date" name="date" readonly>
+            
+            <label for="convert">Convert to:</label>
+            <select id="convert" name="convert" required>
+                <!-- Options will be populated by JavaScript -->
+            </select>
+            
+            <label for="dataSize">Data Size:</label>
+            <select id="dataSize" name="size" required>
+                <option value="50MB">50MB</option>
+                <option value="100MB">100MB</option>
+                <option value="150MB">150MB</option>
+                <option value="200MB">200MB</option>
+                <option value="250MB">250MB</option>
+                <option value="300MB">300MB</option>
+                <option value="350MB">350MB</option>
+                <option value="400MB">400MB</option>
+                <option value="450MB">450MB</option>
+                <option value="500MB">500MB</option>
+                <option value="1GB">1GB</option>
+                <option value="1.5GB">1.5GB</option>
+                <option value="2GB">2GB</option>
+                <option value="2.5GB">2.5GB</option>
+                <option value="3GB">3GB</option>
+                <option value="3.5GB">3.5GB</option>
+                <option value="4GB">4GB</option>
+                <option value="5GB">5GB</option>
+                <option value="6GB">6GB</option>
+                <option value="7GB">7GB</option>
+                <option value="8GB">8GB</option>
+                <option value="9GB">9GB</option>
+                <option value="10GB">10GB</option>
+            </select>
+            
+            <label for="amount">Amount:</label>
+            <input type="number" id="amount" name="amount" readonly>
+            
+            <label for="screenshot">Screenshot URL:</label>
+            <input type="text" id="screenshot" name="screenshot">
+            <button type="button" id="uploadButton">Upload Screenshot</button>
+            
+            <button type="submit">Submit</button>
+        </form>
+        <div id="notificationBox" class="notification-box">
+            <p id="notificationMessage"></p>
+        </div>
+    </main>
+   <script>
+document.addEventListener('DOMContentLoaded', function () {
+    const firstName = localStorage.getItem('firstName');
+    const phoneNumber = localStorage.getItem('phoneNumber');
+    const network = localStorage.getItem('network');
+    const uniqueCode = localStorage.getItem('uniqueCode');
+    const activeCard = JSON.parse(localStorage.getItem(`${phoneNumber}_${localStorage.getItem('username')}_${localStorage.getItem('password')}_activeCard`));
+
+    document.getElementById('name').value = firstName || '';
+    document.getElementById('phoneNumber').value = phoneNumber || '';
+    document.getElementById('network').value = network || '';
+    document.getElementById('uniqueCode').value = uniqueCode || '';
+    document.getElementById('date').value = new Date().toISOString().slice(0, 16);
+
+    const convertSelect = document.getElementById('convert');
+    const dataSizeSelect = document.getElementById('dataSize');
+    const amountInput = document.getElementById('amount');
+
+    const plans = {
+        'gold membership': ['Sme/Cooperate data', 'Social data', 'General data plan'],
+        'premium membership': ['Sme/Cooperate data', 'Social data', 'General data plan'],
+        'bronze membership': ['Sme/Cooperate data', 'Social data'],
+        'free membership': ['Sme/Cooperate data']
+    };
+
+    const planOptions = plans[activeCard?.planName.toLowerCase()] || [];
+    
+    planOptions.forEach(option => {
+        const opt = document.createElement('option');
+        opt.value = option;
+        opt.textContent = option;
+        convertSelect.appendChild(opt);
+    });
+
+    function showNotification(message, redirect = false) {
+        const notificationBox = document.getElementById('notificationBox');
+        const notificationMessage = document.getElementById('notificationMessage');
+        notificationMessage.textContent = message;
+        notificationBox.style.display = 'block';
+        setTimeout(() => {
+            notificationBox.style.display = 'none';
+            if (redirect) {
+                window.location.href = 'app.html';
+            }
+        }, 5000);
+    }
+
+    function uploadImage() {
+        window.open('https://freeimage.host/', '_blank');
+    }
+
+    document.getElementById('uploadButton').addEventListener('click', uploadImage);
+
+    const dataPrices = {
+        'Social data': {
+            '150MB': 60,
+            '300MB': 90,
+            '500MB': 190,
+            '1GB': 240,
+            '2GB': 490,
+            '3GB': 600,
+        },
+        'General data plan': {
+            '50MB': 40,
+            '100MB': 90,
+            '200MB': 180,
+            '300MB': 280,
+            '1GB': 300,
+            '2GB': 480,
+            '3GB': 700,
+        },
+        'Sme/Cooperate data': {
+            '100MB': 70,
+            '250MB': 80,
+            '1GB': 260,
+            '2GB': 520,
+            '3GB': 780,
+            '4GB': 1040,
+            '5GB': 1300,
+            '6GB': 1560,
+            '7GB': 1820,
+            '8GB': 2080,
+            '9GB': 2340,
+            '10GB': 2600,
+        }
+    };
+
+    function updateDataSizeOptions(planType) {
+        dataSizeSelect.innerHTML = ''; // Clear previous options
+        const sizes = dataPrices[planType] || {};
+        
+        for (const size in sizes) {
+            const opt = document.createElement('option');
+            opt.value = size;
+            opt.textContent = size;
+            dataSizeSelect.appendChild(opt);
+        }
+    }
+
+    convertSelect.addEventListener('change', function () {
+        const selectedPlan = this.value;
+        updateDataSizeOptions(selectedPlan);
+        amountInput.value = '';
+    });
+
+    function calculateAmount(size, planType) {
+        const prices = dataPrices[planType] || {};
+        return prices[size] !== undefined ? prices[size] : 'UNAVAILABLE';
+    }
+
+    dataSizeSelect.addEventListener('change', function () {
+        const selectedSize = this.value;
+        const selectedPlan = convertSelect.value;
+        const amount = calculateAmount(selectedSize, selectedPlan);
+        amountInput.value = amount !== 'UNAVAILABLE' ? amount.toFixed(2) : amount;
+    });
+
+    document.getElementById('dataForm').addEventListener('submit', function (e) {
+        e.preventDefault();
+        const formData = new FormData(this);
+        const data = {};
+
+        formData.forEach((value, key) => {
+            data[key] = value;
+        });
+
+        fetch('https://sheetdb.io/api/v1/kfay4jalobhwh', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data),
+        })
+        .then(response => response.json())
+        .then(result => {
+            console.log(result);
+            if (result && result.created) {
+                showNotification('Conversion submitted successfully. Please wait, you are being redirected...', true);
+            } else {
+                showNotification('There was an error with your submission.');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            showNotification('There was an error with your submission.');
+        });
+    });
+
+});
+</script>
+<script src="image.js"></script>
+
+</body>
+</html>

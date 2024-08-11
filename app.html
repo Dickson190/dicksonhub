@@ -9,33 +9,15 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick-theme.min.css">
-  <link rel="stylesheet" href="fixed.css">
+  <link rel="stylesheet" href="image.css">
   <link rel="stylesheet" href="app.css">
   <link rel="stylesheet" href="slides.css">
-  <link rel="stylesheet" href="app2.css">
+<<link rel="stylesheet" href="app2.css">
   <link rel="stylesheet" href="sidenav.css">
   <link rel="stylesheet" href="load.css">
   <link rel="stylesheet" href="wapp.css"> 
-
-  <style>
-    .withdraw-button {
-      display: inline-block;
-      padding: 10px 20px;
-      background-color: #007BFF;
-      color: white;
-      text-decoration: none;
-      border: none;
-      border-radius: 5px;
-      font-size: 16px;
-      text-align: center;
-      cursor: pointer;
-    }
-
-    .withdraw-button:hover {
-      background-color: #0056b3;
-    }
-  </style>
-</head>
+   
+  </head>
 <body>
   <!-- Side Navigation -->
   <div id="sidenav" class="sidenav">
@@ -47,6 +29,7 @@
     <a href="shop.html">Shop</a>
     <a href="withdraw.html">Withdraw</a>
     <a href="whistory.html">Withdrawal History</a>
+    <a href="conversion.html">Convert Airtime/Data </a>
     <a href="about.html">About Us</a>
   </div>
 
@@ -57,12 +40,16 @@
       <i class="fa fa-bars"></i>
     </a>
   </div>
+  
+    <div id="notificationBox" class="notification-box"></div>
+
 
   <div id="content" style="padding-top: 10px;">
     <div class="container">
       <h1>Welcome to Your Dashboard, <span id="username"></span>!</h1>
       <p id="greeting"></p>
 
+     
       <!-- Earnings Section -->
       <div class="card">
         <h2>Your Earnings</h2>
@@ -76,26 +63,26 @@
         <p id="userDeposit">₦0.00</p>
       </div>
 
-<!-- Transaction History Section -->
-<div class="table-container">
-  <table id="transactionTable">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Time</th>
-        <th>Date</th>
-        <th>Amount</th>
-        <th>Details</th>
-      </tr>
-    </thead>
-    <tbody id="transactionTableBody">
-      <!-- Transactions will be dynamically inserted here -->
-    </tbody>
-  </table>
-  <button id="viewMoreButton">View More</button>
-</div>
+      <!-- Transaction History Section -->
+      <div class="table-container">
+        <table id="transactionTable">
+          <thead>
+            <tr>
+              <th>Type</th>
+              <th>Time</th>
+              <th>Date</th>
+              <th>Amount</th>
+              <th>Details</th>
+            </tr>
+          </thead>
+          <tbody id="transactionTableBody">
+            <!-- Transactions will be dynamically inserted here -->
+          </tbody>
+        </table>
+        <button id="viewMoreButton">View More</button>
+      </div>
 
-
+      <!-- Action Buttons -->
       <div class="buttons">
         <a href="earn.html" class="button-icon">
           <i class="fa fa-shapes"></i>
@@ -142,6 +129,8 @@
       <div class="pot"></div>
     </div>
   </div>
+  
+
 
   <!-- Scripts -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
@@ -152,5 +141,6 @@
   <script src="implement.js"></script>
   <script src="deposit.js"></script>
   <script src="wapp.js"></script>
+  <script src="image.js"></script>
 </body>
 </html>

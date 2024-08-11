@@ -2,7 +2,6 @@ document.addEventListener('DOMContentLoaded', function() {
     const transactionsPerPage = 5;
     let showingAllTransactions = false;
 
-    // Function to update the transaction table
     function updateTransactionTable() {
         const transactionTable = document.getElementById('transactionTableBody');
         transactionTable.innerHTML = ''; // Clear existing rows
@@ -32,7 +31,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // Function to add a transaction
     function addTransaction(type, amount, details) {
         const transactions = JSON.parse(localStorage.getItem('transactions')) || [];
         const now = new Date();
@@ -46,7 +44,6 @@ document.addEventListener('DOMContentLoaded', function() {
         updateTransactionTable();
     }
 
-    // Function to get withdrawal history
     function getWithdrawalHistory() {
         const userPhoneNumber = localStorage.getItem('phoneNumber');
         const currentUser = localStorage.getItem('username');
@@ -55,14 +52,11 @@ document.addEventListener('DOMContentLoaded', function() {
         const withdrawalHistory = JSON.parse(localStorage.getItem(withdrawalHistoryKey)) || [];
 
         return withdrawalHistory.map(record => {
-            // Attempt to parse date and time
             let fullDate = null;
             try {
                 if (record.date && record.time) {
-                    // Try parsing with a comma-separated format
                     fullDate = new Date(`${record.date}, ${record.time}`);
                     if (isNaN(fullDate)) {
-                        // Try parsing with a different separator or format if the first attempt fails
                         fullDate = new Date(`${record.date} ${record.time}`);
                     }
                     if (isNaN(fullDate)) {
@@ -73,7 +67,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             } catch (error) {
                 console.error(`Error parsing withdrawal record: ${JSON.stringify(record)} - ${error.message}`);
-                fullDate = new Date(); // Fallback to current date/time
+                fullDate = new Date();
             }
 
             return {
@@ -87,7 +81,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // Function to get deposit history
     function getDepositHistory() {
         const userPhoneNumber = localStorage.getItem('phoneNumber');
         const currentUser = localStorage.getItem('username');
@@ -96,14 +89,11 @@ document.addEventListener('DOMContentLoaded', function() {
         const depositHistory = JSON.parse(localStorage.getItem(depositHistoryKey)) || [];
 
         return depositHistory.map(record => {
-            // Attempt to parse date and time
             let fullDate = null;
             try {
                 if (record.date && record.time) {
-                    // Try parsing with a comma-separated format
                     fullDate = new Date(`${record.date}, ${record.time}`);
                     if (isNaN(fullDate)) {
-                        // Try parsing with a different separator or format if the first attempt fails
                         fullDate = new Date(`${record.date} ${record.time}`);
                     }
                     if (isNaN(fullDate)) {
@@ -114,7 +104,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             } catch (error) {
                 console.error(`Error parsing deposit record: ${JSON.stringify(record)} - ${error.message}`);
-                fullDate = new Date(); // Fallback to current date/time
+                fullDate = new Date();
             }
 
             return {
@@ -128,15 +118,12 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // Add event listener to the "View More" button
     document.getElementById('viewMoreButton').addEventListener('click', function() {
         showingAllTransactions = !showingAllTransactions;
         updateTransactionTable();
     });
 
-    // Initial call to update the table on page load
     updateTransactionTable();
 
-    // Expose addTransaction to global scope if needed
-    window.addTransaction = addTransaction;
+    window.addTransaction = addTransaction; // Make addTransaction globally accessible
 });

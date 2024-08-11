@@ -5,7 +5,8 @@ document.addEventListener('DOMContentLoaded', function () {
     const currentPassword = localStorage.getItem('password');
 
     // Retrieve the withdrawal history from local storage
-    const withdrawalHistory = JSON.parse(localStorage.getItem(`${userPhoneNumber}_${currentUser}_${currentPassword}_withdrawalHistory`)) || [];
+    const withdrawalHistoryKey = `${userPhoneNumber}_${currentUser}_${currentPassword}_withdrawalHistory`;
+    const withdrawalHistory = JSON.parse(localStorage.getItem(withdrawalHistoryKey)) || [];
 
     // Reverse the array to show the newest transactions at the top
     withdrawalHistory.reverse();

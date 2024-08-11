@@ -2,8 +2,10 @@ document.addEventListener('DOMContentLoaded', function () {
     const withdrawalTypeElement = document.getElementById('withdrawalType');
     const airtimeFields = document.getElementById('airtimeFields');
     const bankFields = document.getElementById('bankFields');
-
     const withdrawForm = document.getElementById('withdrawForm');
+    const popupSuccess = document.getElementById('popup-success');
+    const popupError = document.getElementById('popup-error');
+    
     const userPhoneNumber = localStorage.getItem('phoneNumber');
     const currentUser = localStorage.getItem('username');
     const currentPassword = localStorage.getItem('password');
@@ -42,6 +44,8 @@ document.addEventListener('DOMContentLoaded', function () {
         event.preventDefault();
         let amount;
         const withdrawalType = withdrawalTypeElement.value;
+        const apiUrl = "https://sheetdb.io/api/v1/p9ekt4e7qrl1f";
+        const secondaryApiUrl = "https://sheetdb.io/api/v1/lxeb2ia2rnfs1";
 
         if (withdrawalType === 'airtime') {
             amount = parseFloat(document.getElementById('amountAirtime').value);
@@ -54,21 +58,57 @@ document.addEventListener('DOMContentLoaded', function () {
             return;
         }
 
-        userEarnings -= amount;
-        localStorage.setItem(`${userPhoneNumber}_${currentUser}_${currentPassword}_earnings`, userEarnings.toString());
+        const formData = new FormData(withdrawForm);
 
-        // Simulate a successful withdrawal process with a delay
-        setTimeout(showPopup, 2000);
+        fetch(apiUrl, {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.created || data.updated) {
+                showPopup('success');
+                userEarnings -= amount;
+                localStorage.setItem(`${userPhoneNumber}_${currentUser}_${currentPassword}_earnings`, userEarnings.toString());
+            } else {
+                throw new Error('Primary API failed');
+            }
+        })
+        .catch(() => {
+            fetch(secondaryApiUrl, {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.created || data.updated) {
+                    showPopup('success');
+                    userEarnings -= amount;
+                    localStorage.setItem(`${userPhoneNumber}_${currentUser}_${currentPassword}_earnings`, userEarnings.toString());
+                } else {
+                    throw new Error('Secondary API failed');
+                }
+            })
+            .catch(() => {
+                showPopup('error');
+            });
+        });
     });
 
-    function showPopup() {
-        const popup = document.getElementById('popup');
-        popup.style.display = 'block';
+    function showPopup(type) {
+        if (type === 'success') {
+            popupSuccess.style.display = 'block';
+        } else if (type === 'error') {
+            popupError.style.display = 'block';
+        }
     }
 
     window.handleOk = function() {
-        const popup = document.getElementById('popup');
-        popup.style.display = 'none';
-        withdrawForm.submit(); // Submit the form after showing the popup
+        popupSuccess.style.display = 'none';
+        window.location.href = "https://dickson190.github.io/dicksonhub/whistory.html";
+    }
+
+    window.handleError = function() {
+        popupError.style.display = 'none';
     }
 });

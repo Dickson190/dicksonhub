@@ -3,142 +3,218 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Create Task</title>
+    <title>Task Creator 2000</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <style>
         body {
             font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
             margin: 0;
-            padding: 0;
-            background-color: #f8f9fa;
-            color: #343a40;
+            padding: 20px;
         }
         .container {
             max-width: 800px;
-            margin: 50px auto;
+            margin: 0 auto;
+            background: #fff;
             padding: 20px;
-            background-color: #fff;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
         }
         h1 {
             text-align: center;
-            margin-bottom: 20px;
+            color: #333;
         }
-        form {
-            display: flex;
-            flex-direction: column;
+        .form-group {
+            margin-bottom: 15px;
         }
         label {
-            font-weight: bold;
-            margin: 10px 0 5px;
+            display: block;
+            margin-bottom: 5px;
+            color: #555;
         }
-        input, select, textarea {
+        input, textarea, select, button {
+            width: 100%;
             padding: 10px;
-            margin-bottom: 20px;
-            border: 1px solid #ced4da;
-            border-radius: 5px;
-            font-size: 16px;
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
         }
         button {
-            background-color: #007bff;
+            cursor: pointer;
+            background-color: #28a745;
             color: #fff;
             border: none;
-            padding: 12px 20px;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 16px;
-            transition: background-color 0.3s ease;
         }
-        button:hover {
-            background-color: #0056b3;
+        .result, .notification {
+            margin-top: 20px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            background-color: #f9f9f9;
         }
-        pre {
-            background-color: #f1f1f1;
-            padding: 20px;
-            border-radius: 5px;
-            white-space: pre-wrap;
-            word-wrap: break-word;
+        .notification {
+            background-color: #ffeb3b;
+        }
+        .copy-btn {
+            margin-top: 10px;
+            background-color: #007bff;
+        }
+        .task-container {
+            padding: 10px;
+            border: 1px solid #ddd;
+            background-color: #fff;
+            border-radius: 4px;
+            margin-top: 10px;
+        }
+        .task-icon {
+            width: 50px;
+            height: 50px;
+            margin-right: 10px;
+            float: left;
+        }
+        .task-title {
+            font-size: 18px;
+            font-weight: bold;
+        }
+        .task-details {
+            margin-top: 10px;
+            display: none;
+        }
+        .task-description p {
+            margin: 5px 0;
+        }
+        .task-amount {
+            color: #28a745;
+            font-weight: bold;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Create Task</h1>
-        <form id="taskForm">
-            <label for="taskType">Task Type:</label>
-            <select id="taskType" required>
-                <option value="social">Social</option>
-                <option value="business">Business</option>
-            </select>
-            
-            <label for="taskTitle">Task Title:</label>
-            <input type="text" id="taskTitle" required>
-            
-            <label for="taskDescription">Task Description:</label>
-            <textarea id="taskDescription" rows="3" required></textarea>
-            
-            <label for="taskIcon">Task Icon (URL):</label>
-            <input type="url" id="taskIcon" required>
-            
-            <label for="taskReward">Task Reward (₦):</label>
-            <input type="number" id="taskReward" required>
-            
-            <label for="inputFields">Input Fields (comma separated, e.g., Username, Post Link, Screenshot):</label>
-            <input type="text" id="inputFields" required>
-            
-            <button type="submit">Generate Task Code</button>
-        </form>
-        
-        <h2>Generated Code:</h2>
-        <pre id="generatedCode"></pre>
+
+<div class="container">
+    <h1>Task Creator 2000</h1>
+    <div class="form-group">
+        <label for="taskType">Task Type</label>
+        <select id="taskType">
+            <option value="business">Business</option>
+            <option value="social">Social</option>
+        </select>
+    </div>
+    <div class="form-group">
+        <label for="taskTitle">Task Title</label>
+        <input type="text" id="taskTitle">
+    </div>
+    <div class="form-group">
+        <label for="taskIcon">Task Icon URL</label>
+        <input type="text" id="taskIcon">
+    </div>
+    <div class="form-group">
+        <label for="taskInstructions">Instructions</label>
+        <textarea id="taskInstructions"></textarea>
+    </div>
+    <div class="form-group">
+        <label for="taskProof">Proof</label>
+        <textarea id="taskProof"></textarea>
+    </div>
+    <div class="form-group">
+        <label for="approvalTime">Reward</label>
+        <input type="text" id="approvalTime">
+    </div>
+    <div class="form-group">
+        <label for="fields">Choose Additional Fields</label>
+        <div>
+            <label><input type="checkbox" id="fieldScreenshot"> Screenshot URL</label><br>
+            <label><input type="checkbox" id="fieldUsername"> Username</label><br>
+            <label><input type="checkbox" id="fieldLink"> Link</label><br>
+            <label><input type="checkbox" id="fieldMessage"> Message</label><br>
+        </div>
+    </div>
+    <button onclick="generateTaskCode()">Generate Task Code</button>
+
+    <div class="result" id="result" style="display:none;">
+        <h2>Generated Task Code</h2>
+        <pre id="taskCode"></pre>
+        <button class="copy-btn" onclick="copyToClipboard()">Copy to Clipboard</button>
     </div>
 
-    <script>
-        document.getElementById('taskForm').addEventListener('submit', function(event) {
-            event.preventDefault();
-            
-            const taskType = document.getElementById('taskType').value;
-            const taskTitle = document.getElementById('taskTitle').value;
-            const taskDescription = document.getElementById('taskDescription').value;
-            const taskIcon = document.getElementById('taskIcon').value;
-            const taskReward = document.getElementById('taskReward').value;
-            const inputFields = document.getElementById('inputFields').value.split(',').map(field => field.trim());
-            
-            const taskId = `${taskType}-task-${Math.floor(Math.random() * 1000)}`;
-            
-            let inputFieldsHtml = '';
-            inputFields.forEach((field, index) => {
-                const fieldId = `${taskType}${taskId}-field${index + 1}`;
-                inputFieldsHtml += `
-                    <label for="${fieldId}">Your ${field}</label>
-                    <input type="text" id="${fieldId}" name="${fieldId}" required>
-                `;
-            });
-            
-            const generatedCode = `
-<div class="task" id="${taskId}" onclick="toggleTaskDetails('${taskType}', '${taskId}')">
+    <div class="notification" id="notification" style="display:none;">
+        <p>Reminder: Ensure the new task ID is added to the JavaScript code!</p>
+    </div>
+</div>
+
+<script>
+function generateUniqueId() {
+    const timestamp = new Date().getTime();
+    const randomNum = Math.floor(Math.random() * 1000);
+    return `task-${timestamp}-${randomNum}`;
+}
+
+function generateTaskCode() {
+    const taskType = document.getElementById('taskType').value;
+    const taskTitle = document.getElementById('taskTitle').value;
+    const taskIcon = document.getElementById('taskIcon').value;
+    const taskInstructions = document.getElementById('taskInstructions').value;
+    const taskProof = document.getElementById('taskProof').value;
+    const approvalTime = document.getElementById('approvalTime').value;
+    const taskId = generateUniqueId();
+
+    const fields = {
+        screenshot: document.getElementById('fieldScreenshot').checked,
+        username: document.getElementById('fieldUsername').checked,
+        link: document.getElementById('fieldLink').checked,
+        message: document.getElementById('fieldMessage').checked,
+    };
+
+    let formFields = '';
+    if (fields.username) formFields += '<label for="username">Your Username</label><input type="text" id="username" name="userName" required>\n';
+    if (fields.link) formFields += '<label for="link">Link</label><input type="url" id="link" name="link" required>\n';
+    if (fields.screenshot) formFields += '<label for="screenshot">Screenshot URL</label><input type="url" id="screenshot" name="screenshot" required onclick="redirectToImageUpload(\'screenshot\')">\n';
+    if (fields.message) formFields += '<label for="message">Message</label><textarea id="message" name="message" required></textarea>\n';
+
+    const taskCode = `
+<div class="task" id="${taskType}-task-${taskId}" onclick="toggleTaskDetails('${taskType}', '${taskId}')">
     <div class="task-title">${taskTitle}</div>
     <div class="task-details" id="${taskType}-task-details-${taskId}">
         <div class="task-description">
             <img src="${taskIcon}" alt="${taskTitle} Icon" class="task-icon">
-            <p>${taskDescription}</p>
-            <p class="task-amount">Reward: ₦${taskReward}</p>
+            <p>${taskInstructions}</p>
+            <p><strong>Proof:</strong> ${taskProof}</p>
+            <p class="task-amount">Reward: ${approvalTime}</p>
         </div>
-        <form method="post" action="https://formsubmit.co/your-form-id" class="submit-form" onsubmit="submitTask(event, '${taskId}')">
-            <input type="text" name="_honey" style="display: none;">
-            <input type="hidden" name="_captcha" value="false">
-            <input type="hidden" name="_next" value="https://dickson190.github.io/dicksonhub/premium.html">
-            ${inputFieldsHtml}
-            <input type="hidden" id="userCode${taskId}" name="userCode${taskId}">
+        <form class="submit-form" onsubmit="submitTask(event, '${taskType}', '${taskType}-task-${taskId}', '${taskTitle}')">
+            ${formFields}
+            <input type="hidden" id="uniqueCode${taskId}" name="uniqueCode">
+            <input type="hidden" name="taskType" value="${taskType}">
+            <input type="hidden" name="taskTitle" value="${taskTitle}">
             <button type="submit">Submit Task</button>
         </form>
     </div>
 </div>
-            `;
-            
-            document.getElementById('generatedCode').textContent = generatedCode;
-        });
-    </script>
+    `;
+
+    document.getElementById('result').style.display = 'block';
+    document.getElementById('taskCode').textContent = taskCode;
+
+    const taskIds = JSON.parse(localStorage.getItem('taskIds')) || [];
+    taskIds.push(taskId);
+    localStorage.setItem('taskIds', JSON.stringify(taskIds));
+
+    document.getElementById('notification').style.display = 'block';
+}
+
+function copyToClipboard() {
+    const taskCode = document.getElementById('taskCode').textContent;
+    navigator.clipboard.writeText(taskCode).then(() => {
+        alert('Task code copied to clipboard!');
+    });
+}
+
+function redirectToImageUpload(inputId) {
+    if (confirm('You will be redirected to an external page to upload your image. Continue?')) {
+        window.location.href = 'https://freeimage.host/';
+    }
+}
+</script>
+
 </body>
 </html>

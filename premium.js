@@ -14,7 +14,13 @@ document.addEventListener('DOMContentLoaded', function () {
             premiumButton.style.cursor = 'pointer';
             premiumButton.style.pointerEvents = 'auto';
             premiumButton.onclick = function() {
-                window.location.href = 'quiz.html';
+                if (activeCard.planName.toLowerCase() === 'premium membership') {
+                    window.location.href = 'quizp.html';
+                } else if (activeCard.planName.toLowerCase() === 'bronze membership') {
+                    window.location.href = 'quizb.html';
+                } else {
+                    window.location.href = 'quiz.html';
+                }
             };
         } else {
             premiumButton.innerText = 'Premium Quiz';

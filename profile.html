@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>User Profile</title>
-    <link rel="stylesheet" href="load.css">
     <link rel="stylesheet" href="profile.css">
     <link rel="stylesheet" href="sidenav.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -17,11 +16,12 @@
       <a href="app.html">Home</a>
       <a href="earn.html">Offerwall</a>
       <a href="task.html">Task</a>
-      <a href="bean.html" class="active">Upgrade Account</a>
+      <a href="bean.html">Upgrade Account</a>
       <a href="shop.html">Shop</a>
       <a href="news.html">New Features/Updates</a>
       <a href="withdraw.html">Withdraw</a>
       <a href="whistory.html">Withdrawal History</a>
+      <a href="conversion.html">Convert Airtime/Data </a>
       <a href="about.html">About Us</a>
     </div>
 
@@ -34,38 +34,37 @@
         <form id="profileForm">
             <div class="form-group">
                 <label for="username">Username:</label>
-                <input type="text" id="username" disabled required>
+                <input type="text" id="username" disabled>
             </div>
             <div class="form-group">
                 <label for="password">Password:</label>
-                <input type="password" id="password" disabled required>
+                <input type="password" id="password" disabled>
             </div>
             <div class="form-group">
                 <label for="uniqueCode">Unique Code:</label>
-                <input type="text" id="uniqueCode" disabled required>
+                <input type="text" id="uniqueCode" disabled>
             </div>
             <div class="form-group">
                 <label for="email">Email:</label>
-                <input type="email" id="email" required>
+                <input type="email" id="email">
             </div>
             <div class="form-group">
                 <label for="firstName">First Name:</label>
-                <input type="text" id="firstName" required>
+                <input type="text" id="firstName">
             </div>
             <div class="form-group">
                 <label for="lastName">Last Name:</label>
-                <input type="text" id="lastName" required>
+                <input type="text" id="lastName">
             </div>
             <div class="form-group">
                 <label for="age">Age:</label>
-                <select id="age" required>
+                <select id="age">
                     <option value="">Select Age</option>
-                    <!-- Populate ages dynamically -->
                 </select>
             </div>
             <div class="form-group">
                 <label for="gender">Gender:</label>
-                <select id="gender" required>
+                <select id="gender">
                     <option value="">Select Gender</option>
                     <option value="Male">Male</option>
                     <option value="Female">Female</option>
@@ -74,15 +73,15 @@
             </div>
             <div class="form-group">
                 <label for="state">State:</label>
-                <input type="text" id="state" required>
+                <input type="text" id="state">
             </div>
             <div class="form-group">
                 <label for="phoneNumber">Phone Number:</label>
-                <input type="tel" id="phoneNumber" required>
+                <input type="tel" id="phoneNumber">
             </div>
             <div class="form-group">
                 <label for="network">Network:</label>
-                <select id="network" required>
+                <select id="network">
                     <option value="">Select Network</option>
                     <option value="MTN">MTN</option>
                     <option value="Glo">Glo</option>
@@ -92,272 +91,298 @@
             </div>
             <div class="form-group">
                 <label for="bankName">Bank Name:</label>
-                <input type="text" id="bankName" required>
+                <input type="text" id="bankName">
             </div>
             <div class="form-group">
                 <label for="accountName">Account Name:</label>
-                <input type="text" id="accountName" required>
+                <input type="text" id="accountName">
             </div>
             <div class="form-group">
                 <label for="accountNumber">Account Number:</label>
-                <input type="text" id="accountNumber" required>
+                <input type="text" id="accountNumber">
             </div>
             <div class="form-group">
                 <label for="lga">LGA:</label>
-                <input type="text" id="lga" required>
+                <input type="text" id="lga">
             </div>
             <button type="submit">Submit</button>
         </form>
     </div>
 
-    <div class="loader" id="loader">
-        <div class="cooking">
-            <div class="bubble"></div>
-            <div class="bubble"></div>
-            <div class="bubble"></div>
-            <div class="bubble"></div>
-            <div class="pot"></div>
-            <div class="handle"></div>
-            <div class="steam"></div>
-        </div>
-    </div>
+    <div id="notification" class="notification"></div>
+  </div>
 
-    <script src="load.js"></script>
-    <script src="sidenav.js"></script>
-    <script src="profile.js"></script> <!-- Ensure to include the script containing your existing JavaScript here --> 
-    
-    <div id="notification" class="notification">
-  <span id="notification-message"></span>
-  <button id="notification-button" style="display: none;">Close</button>
-</div>
-<div id="progress-bar" class="progress-bar" style="display: none;">
-  <!-- Progress bar implementation here -->
-</div>
+  <script src="sidenav.js"></script>
+
     
     <script>
+        
 document.addEventListener('DOMContentLoaded', function () {
-  const profileForm = document.getElementById('profileForm');
-  const notificationBox = document.getElementById('notification');
-  const notificationMessage = document.getElementById('notification-message');
-  const notificationButton = document.getElementById('notification-button');
-  const progressBar = document.getElementById('progress-bar');
+    const profileForm = document.getElementById('profileForm');
+    const notificationBox = document.getElementById('notification');
+    const notificationMessage = document.getElementById('notification-message');
+    const notificationButton = document.getElementById('notification-button');
+    const progressBar = document.getElementById('progress-bar');
 
-  const usernameField = document.getElementById('username');
-  const passwordField = document.getElementById('password');
-  const uniqueCodeField = document.getElementById('uniqueCode');
-  const phoneNumberField = document.getElementById('phoneNumber');
-  const lgaField = document.getElementById('lga');
-  const accountNameField = document.getElementById('accountName');
-  const accountNumberField = document.getElementById('accountNumber');
-  const bankNameField = document.getElementById('bankName');
-  const ageField = document.getElementById('age');
-  const stateField = document.getElementById('state');
-  const emailField = document.getElementById('email');
-  const firstNameField = document.getElementById('firstName');
-  const lastNameField = document.getElementById('lastName');
-  const genderField = document.getElementById('gender');
-  const networkField = document.getElementById('network');
+    const usernameField = document.getElementById('username');
+    const passwordField = document.getElementById('password');
+    const uniqueCodeField = document.getElementById('uniqueCode');
+    const phoneNumberField = document.getElementById('phoneNumber');
+    const lgaField = document.getElementById('lga');
+    const accountNameField = document.getElementById('accountName');
+    const accountNumberField = document.getElementById('accountNumber');
+    const bankNameField = document.getElementById('bankName');
+    const ageField = document.getElementById('age');
+    const stateField = document.getElementById('state');
+    const emailField = document.getElementById('email');
+    const firstNameField = document.getElementById('firstName');
+    const lastNameField = document.getElementById('lastName');
+    const genderField = document.getElementById('gender');
+    const networkField = document.getElementById('network');
 
-  let usersData = [];
+    const primaryApiUrl = 'https://sheetdb.io/api/v1/05zo2s09gbz5x';
+    const maxEdits = 2;
+    let editCount = parseInt(localStorage.getItem('editCount') || '0');
 
-  const primaryApiUrl = 'https://sheetdb.io/api/v1/05zo2s09gbz5x';
+    function fetchData(apiUrl) {
+        return fetch(apiUrl)
+            .then(response => response.json())
+            .catch(error => {
+                console.error('Error fetching user data:', error);
+                return null;
+            });
+    }
 
-  function fetchData(apiUrl) {
-    return fetch(apiUrl)
-      .then(response => response.json())
-      .catch(error => {
-        console.error('Error fetching user data from', apiUrl, ':', error);
-        return null;
-      });
-  }
+    function loadData(username) {
+        if (localStorage.getItem('dataFetched')) return;
 
-  function loadData() {
-    return fetchData(primaryApiUrl)
-      .then(result => {
-        usersData = result;
-        console.log('Fetched user data:', usersData);
-      })
-      .catch(error => {
-        showNotification('An error occurred while fetching user data. Please try again.');
-      });
-  }
+        fetchData(primaryApiUrl)
+            .then(result => {
+                if (result) {
+                    const user = result.find(user => user.username === username);
+                    if (user) {
+                        storeUserDataToLocalStorage(user);
+                        populateFieldsFromLocalStorage();
+                        showNotification('User data fetched successfully.', true);
+                        localStorage.setItem('dataFetched', 'true');
+                    } else {
+                        showNotification('User not found. Please fill in the profile manually.');
+                        profileForm.addEventListener('submit', function(event) {
+                            event.preventDefault();
+                            const formData = collectFormData();
+                            addProfile(formData);
+                        });
+                    }
+                } else {
+                    showNotification('Failed to fetch data. Please check the console for errors.');
+                }
+            })
+            .catch(error => {
+                console.error('An error occurred while fetching user data:', error);
+                showNotification('An error occurred while fetching user data. Please try again.');
+            });
+    }
 
-  function showNotification(message, isSuccess = false) {
-    if (notificationMessage) {
-      notificationMessage.textContent = message;
-      notificationBox.className = `notification ${isSuccess ? 'success' : 'error'}`;
-      notificationBox.style.display = 'block';
-      notificationButton.style.display = isSuccess ? 'inline-block' : 'none';
-      if (isSuccess) {
-        notificationButton.addEventListener('click', () => {
-          notificationBox.style.display = 'none';
+    function showNotification(message, isSuccess = false) {
+        notificationMessage.textContent = message;
+        notificationBox.className = `notification ${isSuccess ? 'success' : 'error'}`;
+        notificationBox.style.display = 'block';
+        notificationButton.style.display = isSuccess ? 'inline-block' : 'none';
+        if (isSuccess) {
+            notificationButton.addEventListener('click', () => {
+                notificationBox.style.display = 'none';
+            });
+        } else {
+            setTimeout(() => {
+                notificationBox.style.display = 'none';
+            }, 3000);
+        }
+    }
+
+    function storeUserDataToLocalStorage(user) {
+        for (const key in user) {
+            if (user.hasOwnProperty(key)) {
+                localStorage.setItem(key, user[key]);
+            }
+        }
+    }
+
+    function populateFieldsFromLocalStorage() {
+        const fields = {
+            username: usernameField,
+            password: passwordField,
+            uniqueCode: uniqueCodeField,
+            phoneNumber: phoneNumberField,
+            lga: lgaField,
+            accountName: accountNameField,
+            accountNumber: accountNumberField,
+            bankName: bankNameField,
+            age: ageField,
+            state: stateField,
+            email: emailField,
+            firstName: firstNameField,
+            lastName: lastNameField,
+            gender: genderField,
+            network: networkField
+        };
+
+        for (const key in fields) {
+            if (fields.hasOwnProperty(key)) {
+                fields[key].value = localStorage.getItem(key) || '';
+            }
+        }
+    }
+
+    function populateAgeOptions() {
+        for (let i = 18; i <= 100; i++) {
+            const option = document.createElement('option');
+            option.value = i;
+            option.textContent = i;
+            ageField.appendChild(option);
+        }
+    }
+
+    function updateProfile(formData) {
+        const updateUrl = `${primaryApiUrl}/username/${formData.username}`;
+        console.log('Updating profile with data:', formData);
+        return fetch(updateUrl, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ data: [formData] })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.error) {
+                console.error('Profile update error:', data.error);
+                showNotification('Failed to update profile. Please try again.');
+            } else {
+                console.log('Profile update successful:', data);
+                showNotification('Profile updated successfully.', true);
+                storeUserDataToLocalStorage(formData);
+                incrementEditCount();
+            }
+        })
+        .catch(error => {
+            console.error('Error updating profile:', error);
+            showNotification('Failed to update profile. Please try again.');
         });
-      } else {
-        setTimeout(() => {
-          notificationBox.style.display = 'none';
-        }, 3000);
-      }
     }
-  }
 
-  function populateFieldsFromLocalStorage() {
-    const fields = ['username', 'password', 'uniqueCode', 'phoneNumber', 'lga', 'accountName', 'accountNumber', 'bankName', 'age', 'state', 'email', 'firstName', 'lastName', 'gender', 'network'];
-    const fieldElements = {
-      username: usernameField,
-      password: passwordField,
-      uniqueCode: uniqueCodeField,
-      phoneNumber: phoneNumberField,
-      lga: lgaField,
-      accountName: accountNameField,
-      accountNumber: accountNumberField,
-      bankName: bankNameField,
-      age: ageField,
-      state: stateField,
-      email: emailField,
-      firstName: firstNameField,
-      lastName: lastNameField,
-      gender: genderField,
-      network: networkField
-    };
+    function addProfile(formData) {
+        const addUrl = primaryApiUrl;
+        console.log('Adding profile with data:', formData);
+        return fetch(addUrl, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ data: [formData] })
+        })
+        .then(response => {
+            if (!response.ok) {
+                return response.json().then(err => Promise.reject(err));
+            }
+            return response.json();
+        })
+        .then(data => {
+            if (data.error) {
+                console.error('Profile add error:', data.error);
+                showNotification('Failed to submit profile. Please try again.');
+            } else {
+                console.log('Profile add successful:', data);
+                showNotification('Profile submitted successfully.', true);
+                storeUserDataToLocalStorage(formData);
+                incrementEditCount();
+            }
+        })
+        .catch(error => {
+            console.error('Error adding profile:', error);
+            showNotification('Failed to submit profile. Please try again.');
+        });
+    }
 
-    fields.forEach(field => {
-      const value = localStorage.getItem(field);
-      if (value && fieldElements[field]) {
-        fieldElements[field].value = value;
-      }
+    function collectFormData() {
+        return {
+            username: usernameField.value,
+            password: passwordField.value,
+            uniqueCode: uniqueCodeField.value,
+            email: emailField.value,
+            firstName: firstNameField.value,
+            lastName: lastNameField.value,
+            age: ageField.value,
+            gender: genderField.value,
+            state: stateField.value,
+            phoneNumber: phoneNumberField.value,
+            network: networkField.value,
+            bankName: bankNameField.value,
+            accountName: accountNameField.value,
+            accountNumber: accountNumberField.value,
+            lga: lgaField.value
+        };
+    }
+
+    function incrementEditCount() {
+        editCount++;
+        localStorage.setItem('editCount', editCount);
+        if (editCount >= maxEdits) {
+            lockFields();
+        }
+    }
+
+    function lockFields() {
+        const fields = [usernameField, passwordField, uniqueCodeField, phoneNumberField, lgaField, accountNameField, accountNumberField, bankNameField, ageField, stateField, emailField, firstNameField, lastNameField, genderField, networkField];
+        fields.forEach(field => field.setAttribute('disabled', 'disabled'));
+    }
+
+    profileForm.addEventListener('submit', function (event) {
+        event.preventDefault();
+
+        const formData = collectFormData();
+
+        console.log('FormData before submission:', formData);
+
+        if (localStorage.getItem('username') === usernameField.value) {
+            if (allFieldsPopulated()) {
+                updateProfile(formData);
+            } else {
+                addProfile(formData);
+            }
+        } else {
+            addProfile(formData);
+        }
     });
 
-    return fields.reduce((obj, field) => {
-      obj[field] = localStorage.getItem(field);
-      return obj;
-    }, {});
-  }
-
-  function storeAdditionalDataToLocalStorage(user) {
-    const fields = ['uniqueCode', 'phoneNumber', 'lga', 'accountName', 'accountNumber', 'bankName', 'age', 'state', 'email', 'firstName', 'lastName', 'gender', 'network'];
-    const fieldElements = {
-      uniqueCode: uniqueCodeField,
-      phoneNumber: phoneNumberField,
-      lga: lgaField,
-      accountName: accountNameField,
-      accountNumber: accountNumberField,
-      bankName: bankNameField,
-      age: ageField,
-      state: stateField,
-      email: emailField,
-      firstName: firstNameField,
-      lastName: lastNameField,
-      gender: genderField,
-      network: networkField
-    };
-
-    fields.forEach(field => {
-      if (user[field]) {
-        localStorage.setItem(field, user[field]);
-        if (fieldElements[field]) {
-          fieldElements[field].value = user[field];
+    function initialize() {
+        populateAgeOptions();
+        const storedUsername = localStorage.getItem('username');
+        if (storedUsername) {
+            populateFieldsFromLocalStorage();
+            if (allFieldsPopulated()) {
+                showNotification('User data loaded from local storage.');
+            } else {
+                loadData(storedUsername);
+            }
+        } else {
+            showNotification('No stored username found.');
         }
-      }
-    });
-  }
-
-  function retrieveAndVerifyUserData(username) {
-    const user = usersData.find(user => user['username'] === username);
-    if (user) {
-      storeAdditionalDataToLocalStorage(user);
-      showNotification('User data verified successfully.', true);
-      return user;
-    } else {
-      showNotification('User data not found. Please fill out the form manually.');
-      return null;
+        if (editCount >= maxEdits) {
+            lockFields();
+        }
     }
-  }
 
-  function updateProfile(formData) {
-    const updateUrl = `${primaryApiUrl}/username/${formData.username}`;
-    return fetch(updateUrl, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(formData)
-    })
-      .then(response => response.json())
-      .then(data => {
-        showNotification('Profile updated successfully.', true);
-        storeAdditionalDataToLocalStorage(formData);
-        return data;
-      })
-      .catch(error => {
-        console.error('Error updating profile:', error);
-        showNotification('Failed to update profile. Please try again.');
-      });
-  }
-
-  function addProfile(formData) {
-    const addUrl = primaryApiUrl;
-    return fetch(addUrl, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(formData)
-    })
-      .then(response => response.json())
-      .then(data => {
-        showNotification('Profile submitted successfully.', true);
-        storeAdditionalDataToLocalStorage(formData);
-        return data;
-      })
-      .catch(error => {
-        console.error('Error adding profile:', error);
-        showNotification('Failed to submit profile. Please try again.');
-      });
-  }
-
-  // Event listener for form submission
-  profileForm.addEventListener('submit', function (event) {
-    event.preventDefault();
-
-    const formData = {
-      username: usernameField.value,
-      password: passwordField.value,
-      uniqueCode: uniqueCodeField.value,
-      email: emailField.value,
-      firstName: firstNameField.value,
-      lastName: lastNameField.value,
-      age: ageField.value,
-      gender: genderField.value,
-      state: stateField.value,
-      phoneNumber: phoneNumberField.value,
-      network: networkField.value,
-      bankName: bankNameField.value,
-      accountName: accountNameField.value,
-      accountNumber: accountNumberField.value,
-      lga: lgaField.value
-    };
-
-    // Check if the user already exists in the database
-    const user = retrieveAndVerifyUserData(formData.username);
-    if (user) {
-      // Update existing user data
-      updateProfile(formData).then(updatedData => {
-        if (updatedData) {
-          usersData = usersData.map(u => (u.username === updatedData.username ? updatedData : u));
-        }
-      });
-    } else {
-      // Add new user data
-      addProfile(formData).then(newData => {
-        if (newData) {
-          usersData.push(newData);
-        }
-      });
+    function allFieldsPopulated() {
+        const fields = [
+            usernameField, passwordField, uniqueCodeField, phoneNumberField,
+            lgaField, accountNameField, accountNumberField, bankNameField,
+            ageField, stateField, emailField, firstNameField, lastNameField,
+            genderField, networkField
+        ];
+        return fields.every(field => field.value.trim() !== '');
     }
-  });
 
-  populateFieldsFromLocalStorage();
-  loadData();
+    initialize();
 });
 </script>        
         
