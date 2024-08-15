@@ -5,9 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Contact Us</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="styles.css">
     <style>
-        /* General Styles */
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: #f0f2f5;
@@ -24,19 +22,12 @@
             border-radius: 10px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             margin-top: 40px;
-            transition: box-shadow 0.3s ease;
-        }
-
-        .container:hover {
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
         }
 
         h1 {
             font-size: 36px;
             margin-bottom: 20px;
-            color: #333;
             text-align: center;
-            font-weight: 600;
         }
 
         .form-group {
@@ -53,18 +44,9 @@
         input, textarea {
             width: 100%;
             padding: 14px;
-            margin-top: 5px;
             border: 1px solid #ddd;
             border-radius: 8px;
             font-size: 16px;
-            box-sizing: border-box;
-            transition: border-color 0.3s ease, box-shadow 0.3s ease;
-        }
-
-        input:focus, textarea:focus {
-            border-color: #007bff;
-            outline: none;
-            box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
         }
 
         button {
@@ -76,52 +58,67 @@
             border-radius: 8px;
             cursor: pointer;
             font-size: 16px;
-            transition: background-color 0.3s ease, transform 0.2s ease;
+            transition: background-color 0.3s ease;
         }
 
         button:hover {
             background-color: #0056b3;
-            transform: translateY(-2px);
-        }
-
-        button:active {
-            background-color: #004085;
-            transform: translateY(0);
         }
 
         .footer {
-            background-color: #ffffff;
             padding: 20px;
             text-align: center;
-            box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
-            color: #666;
             margin-top: 40px;
         }
 
-        .footer a {
-            color: #007bff;
-            text-decoration: none;
-            margin: 0 10px;
-            font-size: 14px;
+        .notification-box {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            z-index: 1000;
+            width: 300px;
         }
 
-        .footer a:hover {
-            text-decoration: underline;
+        .notification-box.success {
+            border: 2px solid #28a745;
+            color: #28a745;
         }
 
-        @media (max-width: 768px) {
-            .container {
-                padding: 20px;
-                margin: 20px;
-            }
+        .notification-box.error {
+            border: 2px solid #dc3545;
+            color: #dc3545;
+        }
 
-            input, textarea {
-                padding: 12px;
-            }
+        .notification-box i {
+            font-size: 48px;
+            margin-bottom: 10px;
+        }
 
-            button {
-                padding: 12px;
-            }
+        .loader {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #007bff;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            z-index: 999;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
     </style>
 </head>
@@ -145,21 +142,88 @@
         </form>
     </div>
 
+    <div class="notification-box" id="notification">
+        <i class="fa"></i>
+        <p id="notification-message"></p>
+    </div>
+
+    <div class="loader" id="loader"></div>
+
     <footer class="footer">
         <p>&copy; 2024 DicksonHub. All rights reserved.</p>
-        <nav>
-            <a href="app.html">Home</a>
-            <a href="#">Contact Us</a>
-            <a href="earn.html">Earn</a>
-        </nav>
     </footer>
 
     <script>
         document.getElementById('contact-form').addEventListener('submit', function(event) {
             event.preventDefault();
-            alert('Message sent successfully!');
-            // You can add actual form submission logic here
+
+            // Show the loader
+            document.getElementById('loader').style.display = 'block';
+
+            // Form data to send
+            const formData = {
+                data: {
+                    name: document.getElementById('name').value,
+                    email: document.getElementById('email').value,
+                    message: document.getElementById('message').value
+                }
+            };
+
+            // Send data to the API
+            fetch('https://sheetdb.io/api/v1/329lgfmuxz0t9', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(formData)
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Hide the loader
+                document.getElementById('loader').style.display = 'none';
+
+                // Check if submission was successful
+                if (data.created) {
+                    showNotification('Message sent successfully!', 'success');
+                    clearFormFields();
+                } else {
+                    showNotification('Failed to send message. Please try again.', 'error');
+                }
+            })
+            .catch(error => {
+                // Hide the loader
+                document.getElementById('loader').style.display = 'none';
+                showNotification('An error occurred. Please try again.', 'error');
+            });
         });
+
+        function showNotification(message, type) {
+            const notification = document.getElementById('notification');
+            const notificationMessage = document.getElementById('notification-message');
+            const icon = notification.querySelector('i');
+
+            notificationMessage.textContent = message;
+            if (type === 'success') {
+                notification.classList.remove('error');
+                notification.classList.add('success');
+                icon.className = 'fa fa-check-circle';
+            } else if (type === 'error') {
+                notification.classList.remove('success');
+                notification.classList.add('error');
+                icon.className = 'fa fa-times-circle';
+            }
+
+            notification.style.display = 'block';
+            setTimeout(() => {
+                notification.style.display = 'none';
+            }, 5000);
+        }
+
+        function clearFormFields() {
+            document.getElementById('name').value = '';
+            document.getElementById('email').value = '';
+            document.getElementById('message').value = '';
+        }
     </script>
 </body>
 </html>

@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Send Data</title>
+    <style>
+        #notification {
+            display: none;
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 15px;
+            background-color: #f0f0f0;
+            border-radius: 5px;
+            box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
+            z-index: 1000;
+        }
+        .success { background-color: #d4edda; color: #155724; }
+        .error { background-color: #f8d7da; color: #721c24; }
+    </style>
+</head>
+<body>
+    <button id="sendDataBtn">Send Data</button>
+    <button id="viewUrlBtn">View API URL</button>
+
+    <div id="notification"></div>
+
+    <script>
+const apiUrl = 'https://sheetdb.io/api/v1/qw932qls70g5c';
+
+function showNotification(message, type) {
+    const notification = document.getElementById('notification');
+    notification.textContent = message;
+    notification.className = type;
+    notification.style.display = 'block';
+    setTimeout(() => {
+        notification.style.display = 'none';
+    }, 5000);
+}
+
+document.getElementById('sendDataBtn').addEventListener('click', () => {
+    const apiKeys = [
+        'editCount', 'airtimeData', 'dataConversionData', 'withdrawalsData', 
+        'taskData', 'depositData'
+    ];
+
+    const excludedKeys = [
+        'age', 'network', 'lga', 'bankName', 'state', 'phoneNumber', 
+        'uniqueCode', 'userProfile', 'gender', 'lastName', 'accountName', 
+        'password', 'email', 'firstName', 'others', 'dataFetched'
+    ];
+
+    let localStorageData = {};
+    for (let i = 0; i < localStorage.length; i++) {
+        let key = localStorage.key(i);
+        let value = localStorage.getItem(key);
+        localStorageData[key] = value;
+    }
+
+    let dataToSend = {};
+    let undefinedData = [];
+
+    apiKeys.forEach(key => {
+        if (localStorageData[key]) {
+            dataToSend[key] = localStorageData[key];
+        }
+    });
+
+    const username = localStorage.getItem('username');
+    if (username) {
+        console.log(`Username found in local storage: ${username}`);
+        dataToSend['username'] = username;
+    } else {
+        console.warn('Username not found in local storage.');
+        showNotification('Username is required!', 'error');
+        return;
+    }
+
+    for (let key in localStorageData) {
+        if (!apiKeys.includes(key) && !excludedKeys.includes(key) && key !== 'username') {
+            undefinedData.push(`(${key}, ${localStorageData[key]})`);
+        }
+    }
+
+    dataToSend['undefinedData'] = undefinedData.join(', ');
+
+    // Check if username exists in the database
+    fetch(`${apiUrl}/search?username=${username}`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`API request failed with status ${response.status}`);
+            }
+            return response.json();
+        })
+        .then(existingData => {
+            console.log('API Response:', existingData);
+
+            if (existingData.length > 0) {
+                console.log(`Username found in API: ${username}`);
+
+                // Proceed to update the record using username as the ID
+                fetch(`${apiUrl}/username/${username}`, {
+                    method: 'PATCH',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ data: dataToSend }),
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`Update failed with status ${response.status}`);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    console.log('Update Success:', data);
+                    showNotification('Data successfully updated!', 'success');
+                })
+                .catch(error => {
+                    console.error('Update Error:', error);
+                    showNotification(`Error updating data: ${error.message}`, 'error');
+                });
+            } else {
+                console.log('Username not found in API, proceeding with POST request.');
+
+                // Proceed to create a new record
+                fetch(apiUrl, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ data: dataToSend }),
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`Post failed with status ${response.status}`);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    console.log('Post Success:', data);
+                    showNotification('Data successfully sent!', 'success');
+                })
+                .catch(error => {
+                    console.error('Post Error:', error);
+                    showNotification(`Error sending data: ${error.message}`, 'error');
+                });
+            }
+        })
+        .catch(error => {
+            console.error('Fetch Error:', error);
+            showNotification(`Error checking username: ${error.message}`, 'error');
+        });
+});
+
+document.getElementById('viewUrlBtn').addEventListener('click', () => {
+    window.open(apiUrl, '_blank');
+});
+    </script>
+</body>
+</html>

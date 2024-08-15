@@ -7,7 +7,49 @@
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="image.css">
     <link rel="stylesheet" href="airtime.css">
- 
+    <style>
+        .loader {
+            display: none;
+            border: 8px solid #f3f3f3;
+            border-radius: 50%;
+            border-top: 8px solid #3498db;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 1000;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .notification-box {
+            display: none;
+            background-color: #333;
+            color: white;
+            padding: 15px;
+            border-radius: 5px;
+            text-align: center;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 1001;
+            width: 80%;
+            max-width: 400px;
+        }
+
+        #amountError {
+            display: none;
+            color: red;
+            margin-top: 10px;
+        }
+    </style>
 </head>
 <body>
     <div class="container">
@@ -15,13 +57,11 @@
             <img src="Dig1.png" alt="Logo">
         </div>
 
-        
-
         <h2>Airtime to Cash</h2>
         
         <!-- Information about the charge -->
         <div class="info-box">
-            <p><strong>Note:</strong> We charge an 80% fee for airtime conversion.</p>
+            <p><strong>Note:</strong> We charge an 80% fee for airtime conversion.<br> All airtime conversions are paid out to respective users every Friday.</p>
         </div>
         
         <form id="airtimeForm">
@@ -63,17 +103,24 @@
         </form>
     </div>
 
+    <div class="loader" id="loader"></div>
     <div class="notification-box" id="notificationBox">
         <p id="notificationMessage"></p>
     </div>
 
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
     const firstName = localStorage.getItem('firstName');
     const phoneNumber = localStorage.getItem('phoneNumber');
     const network = localStorage.getItem('network');
     const uniqueCode = localStorage.getItem('uniqueCode');
     const activeCard = JSON.parse(localStorage.getItem(`${phoneNumber}_${localStorage.getItem('username')}_${localStorage.getItem('password')}_activeCard`));
+
+    if (!activeCard || !['free membership', 'bronze membership', 'gold membership', 'premium membership'].includes(activeCard.planName.toLowerCase())) {
+        showNotification('You do not have a valid membership plan. Please acquire a valid plan to proceed.');
+        document.getElementById('airtimeForm').style.display = 'none'; // Hide the form
+        return; // Prevent further execution
+    }
     
     document.getElementById('name').value = firstName || '';
     document.getElementById('phoneNumber').value = phoneNumber || '';
@@ -106,8 +153,18 @@
         }, 3000);
     }
 
+    function showLoader() {
+        document.getElementById('loader').style.display = 'block';
+    }
+
+    function hideLoader() {
+        document.getElementById('loader').style.display = 'none';
+    }
+
     document.getElementById('airtimeForm').addEventListener('submit', function (e) {
         e.preventDefault();
+        showLoader();
+
         const formData = new FormData(this);
         const data = {};
 
@@ -130,20 +187,22 @@
             body: JSON.stringify({ data })
         }).then(response => response.json())
         .then(data => {
+            hideLoader();
             showNotification('Submission successful!');
+            document.getElementById('airtimeForm').reset();
             setTimeout(() => {
                 window.location.href = 'conversion.html';
             }, 3000);
         }).catch(error => {
+            hideLoader();
             showNotification('There was an error submitting your form. Please try again.');
         });
     });
 });
-</script>
-<script src="image.js"></script>
+    </script>
+    <script src="image.js"></script>
 </body>
 </html>
-
 
 
 <!-- SHEETDB API 
