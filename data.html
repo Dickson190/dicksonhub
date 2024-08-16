@@ -6,7 +6,25 @@
     <title>Data Conversion</title>
     <link rel="stylesheet" href="data.css">
     <link rel="stylesheet" href="image.css">
-    
+    <style>
+        .instruction-box {
+            background-color: #f0f4ff;
+            border-left: 5px solid #007bff;
+            padding: 15px;
+            margin: 20px 0;
+            font-family: Arial, sans-serif;
+            color: #333;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .instruction-box h2 {
+            margin-top: 0;
+            color: #007bff;
+        }
+        .instruction-box p {
+            margin: 10px 0;
+            line-height: 1.6;
+        }
+    </style>
 </head>
 <body>
     <header>
@@ -14,6 +32,11 @@
         <h1>Data Conversion</h1>
     </header>
     <main>
+        <div class="instruction-box">
+            <h2>Important Information</h2>
+            <p>All data conversion requests are processed and paid out every Friday. Please ensure your request is submitted in time to be included in the weekly payout schedule.</p>
+        </div>
+
         <form id="dataForm">
             <label for="network">Network:</label>
             <input type="text" id="network" name="network" readonly>

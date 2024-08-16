@@ -1,3 +1,4 @@
+// wapp.js
 document.addEventListener('DOMContentLoaded', function() {
     const transactionsPerPage = 5;
     let showingAllTransactions = false;
@@ -25,13 +26,13 @@ document.addEventListener('DOMContentLoaded', function() {
                 <td>${entry.time}</td>
                 <td>${entry.date}</td>
                 <td>${entry.amount}</td>
-                <td>${entry.details || entry.status || entry.bankName || ''}</td>
+                <td>${entry.details || 'CREDITED'}</td>
             `;
             transactionTable.appendChild(row);
         });
     }
 
-    function addTransaction(type, amount, details) {
+    function addTransaction(type, amount, details = 'CREDITED') {
         const transactions = JSON.parse(localStorage.getItem('transactions')) || [];
         const now = new Date();
         const time = now.toLocaleTimeString();

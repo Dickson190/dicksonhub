@@ -109,20 +109,24 @@
         </form>
     </div>
 
-    <div id="notification" class="notification"></div>
-  </div>
+    <div id="notification">
+    <span id="notification-message"></span>
+    <button id="notification-button">OK</button>
+</div>
+
+<div id="loader" style="display: none;">Loading...</div>
 
   <script src="sidenav.js"></script>
 
     
-    <script>
-        
+   <script>
 document.addEventListener('DOMContentLoaded', function () {
     const profileForm = document.getElementById('profileForm');
     const notificationBox = document.getElementById('notification');
     const notificationMessage = document.getElementById('notification-message');
     const notificationButton = document.getElementById('notification-button');
     const progressBar = document.getElementById('progress-bar');
+    const loader = document.getElementById('loader');
 
     const usernameField = document.getElementById('username');
     const passwordField = document.getElementById('password');
@@ -234,7 +238,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function populateAgeOptions() {
-        for (let i = 18; i <= 100; i++) {
+        for (let i = 13; i <= 100; i++) {
             const option = document.createElement('option');
             option.value = i;
             option.textContent = i;
@@ -385,7 +389,6 @@ document.addEventListener('DOMContentLoaded', function () {
     initialize();
 });
 </script>        
-        
         </body>
 </html>
 <!-- API keys -->
