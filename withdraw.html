@@ -8,7 +8,94 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="sidenav.css">
     <style>
- 
+        /* Notification Styles */
+        .notification {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            padding: 15px;
+            border-radius: 5px;
+            z-index: 1000;
+            display: none;
+            min-width: 200px;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .notification.success {
+            background-color: #d4edda;
+            color: #155724;
+        }
+
+        .notification.error {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+
+        .notification .notification-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .notification .icon {
+            font-size: 20px;
+            margin-right: 10px;
+        }
+
+        .notification .message {
+            flex-grow: 1;
+        }
+
+        .notification .close-btn {
+            background: none;
+            border: none;
+            font-size: 16px;
+            cursor: pointer;
+            margin-left: 10px;
+        }
+
+        /* Popup Styles */
+        .popup {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            background-color: #fff;
+            z-index: 1000;
+            display: none;
+            text-align: center;
+        }
+
+        .popup .checkmark svg {
+            width: 50px;
+            height: 50px;
+            margin-bottom: 10px;
+        }
+
+        .popup button {
+            padding: 10px 20px;
+            border: none;
+            background-color: #007bff;
+            color: #fff;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        /* Success Popup Specific Styles */
+        #popup-success {
+            background-color: #d4edda;
+            color: #155724;
+        }
+
+        /* Error Popup Specific Styles */
+        #popup-error {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
     </style>
 </head>
 <body>
@@ -24,16 +111,18 @@
             <a href="news.html">New Features/Updates</a>
             <a href="withdraw.html">Withdraw</a>
             <a href="whistory.html">Withdrawal History</a>
-             <a href="conversion.html">Convert Airtime/Data </a>
+            <a href="conversion.html">Convert Airtime/Data</a>
             <a href="about.html">About Us</a>
         </div>
 
         <a href="javascript:void(0);" class="icon" onclick="toggleNav()">
             <i class="fa fa-bars"></i>
         </a>
-    
+
         <div class="withdraw-container">
             <h1>Withdraw Funds</h1>
+            <div class="instruction" id="instruction">Please be informed that all withdrawals will be paid out within <b>6 - 48 hours</b>. Please also ensure you fill in the form properly. Thank you</div>
+            <br>
             <form id="withdrawForm" method="post">
                 <input type="hidden" name="_next" value="https://dickson190.github.io/dicksonhub/whistory.html">
 
@@ -42,50 +131,54 @@
                     <option value="airtime">Airtime</option>
                     <option value="bank">Bank Transfer</option>
                 </select>
-                
+
                 <!-- Airtime Withdrawal Fields -->
                 <div id="airtimeFields" style="display:none;">
                     <label for="nameAirtime">Name</label>
                     <input type="text" id="nameAirtime" name="data[Aname]" required />
-                    
+
                     <label for="network">Network</label>
                     <input type="text" id="network" name="data[network]" readonly/>
-                    
+
                     <label for="phoneNumber">Phone Number</label>
                     <input type="text" id="phoneNumber" name="data[phoneNumber]" readonly/>
-                    
+
                     <label for="uniqueCode">Unique Code</label>
                     <input type="text" id="uniqueCode" name="data[uniqueCode]" readonly />
-                    
+
                     <label for="amountAirtime">Amount</label>
                     <input type="number" id="amountAirtime" name="data[Aamount]" required />
                 </div>
-                
+
                 <!-- Bank Transfer Withdrawal Fields -->
                 <div id="bankFields" style="display:none;">
                     <p class="instruction">Note: A 10% fee will be charged for bank transfers.</p>
-                    
+
                     <label for="nameBank">Name</label>
                     <input type="text" id="nameBank" name="data[name]" required />
-            
+
                     <label for="bankName">Bank Name</label>
                     <input type="text" id="bankName" name="data[bankName]" />
-                    
+
                     <label for="accountName">Account Name</label>
                     <input type="text" id="accountName" name="data[accountName]" />
-                    
+
                     <label for="accountNumber">Account Number</label>
                     <input type="text" id="accountNumber" name="data[accountNumber]" />
-                    
+
                     <label for="amountBank">Amount</label>
                     <input type="number" id="amountBank" name="data[amount]" required />
                 </div>
-                
+
                 <button type="submit">Withdraw!</button>
             </form>
         </div>
 
-        <div id="popup-success" class="popup">
+        <!-- Notifications Container -->
+        <div id="notification-container"></div>
+
+        <!-- Success Popup -->
+        <div id="popup-success" class="popup" style="display: none;">
             <div class="checkmark">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">
                     <circle cx="26" cy="26" r="25" fill="none" />
@@ -96,19 +189,26 @@
             <button onclick="handleOk()">OK</button>
         </div>
 
-        <div id="popup-error" class="popup">
-            <h2>Withdrawal failed. Please try again.</h2>
-            <button onclick="handleError()">OK</button>
+        <!-- Error Popup -->
+        <div id="popup-error" class="popup" style="display: none;">
+            <p id="popup-error-message"></p>
+            <button onclick="handleError()">Close</button>
         </div>
-       <div id="notification-container"></div>
-        <script src="sidenav.js"></script>    
+    </div>
+
+
+        <script src="sidenav.js"></script> 
+      
         <script>
-      document.addEventListener('DOMContentLoaded', function () {
+            document.addEventListener('DOMContentLoaded', function () {
     const withdrawalTypeElement = document.getElementById('withdrawalType');
     const airtimeFields = document.getElementById('airtimeFields');
     const bankFields = document.getElementById('bankFields');
     const withdrawForm = document.getElementById('withdrawForm');
-    const notificationContainer = document.getElementById('notification-container');
+    const popupSuccess = document.getElementById('popup-success');
+    const popupError = document.getElementById('popup-error');
+    const popupSuccessMessage = document.getElementById('popup-success-message');
+    const popupErrorMessage = document.getElementById('popup-error-message');
 
     const userPhoneNumber = localStorage.getItem('phoneNumber');
     const currentUser = localStorage.getItem('username');
@@ -117,16 +217,14 @@
 
     const activeCardKey = `${userPhoneNumber}_${currentUser}_${currentPassword}_activeCard`;
     const activeCard = JSON.parse(localStorage.getItem(activeCardKey));
-
-    // Threshold settings based on membership plan
+    
     const thresholdMap = {
         'Free Membership': 200,
         'Bronze Membership': 100,
         'Premium Membership': 50,
         'Gold Membership': 50
     };
-    
-    // Retrieve stored user details for Airtime and Bank fields
+
     document.getElementById('network').value = localStorage.getItem('network') || '';
     document.getElementById('phoneNumber').value = localStorage.getItem('phoneNumber') || '';
     document.getElementById('uniqueCode').value = localStorage.getItem('uniqueCode') || '';
@@ -159,6 +257,8 @@
         event.preventDefault();
         let amount;
         const withdrawalType = withdrawalTypeElement.value;
+        const apiUrl = "https://sheetdb.io/api/v1/wjwgv7t6ub8mq";
+        const secondaryApiUrl = "https://sheetdb.io/api/v1/wjwgv7t6ub8mq";
 
         if (withdrawalType === 'airtime') {
             amount = parseFloat(document.getElementById('amountAirtime').value);
@@ -167,7 +267,7 @@
         }
 
         if (amount > userEarnings) {
-            showNotification('Insufficient funds for withdrawal', 'error');
+            showPopup('error', 'Insufficient funds for withdrawal.');
             return;
         }
 
@@ -175,45 +275,22 @@
         const threshold = thresholdMap[userPlanName];
 
         if (amount < threshold) {
-            showNotification(`Your plan requires a minimum withdrawal of ₦${threshold}. Please enter a higher amount.`, 'error');
+            showPopup('error', `Your plan requires a minimum withdrawal of ₦${threshold}. Please enter a higher amount.`);
             return;
         }
 
-        const apiUrl = "https://sheetdb.io/api/v1/wjwgv7t6ub8mq";
-        const secondaryApiUrl = "https://sheetdb.io/api/v1/wjwgv7t6ub8mq";
-
         const formData = new FormData(withdrawForm);
-        const jsonData = {};
-
-        formData.forEach((value, key) => {
-            const keys = key.split('[').map(k => k.replace(']', ''));
-            if (keys.length > 1) {
-                if (!jsonData[keys[0]]) {
-                    jsonData[keys[0]] = {};
-                }
-                jsonData[keys[0]][keys[1]] = value;
-            } else {
-                jsonData[keys[0]] = value;
-            }
-        });
 
         fetch(apiUrl, {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(jsonData)
+            body: formData
         })
         .then(response => response.json())
         .then(data => {
             if (data.created || data.updated) {
-                storeWithdrawalDetails(withdrawalType, amount);
-                showNotification('Withdrawal successful!', 'success');
+                showPopup('success', 'Withdrawal request submitted successfully.');
                 userEarnings -= amount;
                 localStorage.setItem(`${userPhoneNumber}_${currentUser}_${currentPassword}_earnings`, userEarnings.toString());
-                setTimeout(() => {
-                    window.location.href = 'whistory.html'; // Redirect to the desired page after successful submission
-                }, 5000); // Redirect after 5 seconds
             } else {
                 throw new Error('Primary API failed');
             }
@@ -221,67 +298,44 @@
         .catch(() => {
             fetch(secondaryApiUrl, {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(jsonData)
+                body: formData
             })
             .then(response => response.json())
             .then(data => {
                 if (data.created || data.updated) {
-                    storeWithdrawalDetails(withdrawalType, amount);
-                    showNotification('Withdrawal successful!', 'success');
+                    showPopup('success', 'Withdrawal request submitted successfully.');
                     userEarnings -= amount;
                     localStorage.setItem(`${userPhoneNumber}_${currentUser}_${currentPassword}_earnings`, userEarnings.toString());
-                    setTimeout(() => {
-                        window.location.href = 'whistory.html'; // Redirect to the desired page after successful submission
-                    }, 5000); // Redirect after 5 seconds
                 } else {
                     throw new Error('Secondary API failed');
                 }
             })
             .catch(() => {
-                showNotification('An error occurred. Please try again later.', 'error');
+                showPopup('error', 'Failed to submit withdrawal request. Please try again later.');
             });
         });
     });
 
-    function storeWithdrawalDetails(type, amount) {
-        const withdrawalHistoryKey = `${userPhoneNumber}_${currentUser}_${currentPassword}_withdrawalHistory`;
-        const withdrawalHistory = JSON.parse(localStorage.getItem(withdrawalHistoryKey)) || [];
-        const newRecord = {
-            time: new Date().toLocaleTimeString(),
-            date: new Date().toLocaleDateString(),
-            amount: amount,
-            status: 'Completed',
-            transactionId: 'T' + new Date().getTime(),
-            type: type
-        };
-        withdrawalHistory.push(newRecord);
-        localStorage.setItem(withdrawalHistoryKey, JSON.stringify(withdrawalHistory));
+    function showPopup(type, message) {
+        if (type === 'success') {
+            popupSuccessMessage.textContent = message;
+            popupSuccess.style.display = 'block';
+        } else if (type === 'error') {
+            popupErrorMessage.textContent = message;
+            popupError.style.display = 'block';
+        }
     }
 
-    function showNotification(message, type) {
-        const notificationBox = document.createElement('div');
-        notificationBox.className = `notification ${type}`;
-        notificationBox.innerHTML = `
-            <div class="notification-content">
-                <span class="icon">${type === 'success' ? '✔️' : type === 'error' ? '❌' : 'ℹ️'}</span>
-                <span class="message">${message}</span>
-                <button class="close-btn" onclick="this.parentElement.parentElement.style.display='none';">OK</button>
-            </div>
-        `;
-
-        notificationContainer.appendChild(notificationBox);
-
-        notificationBox.style.display = 'block';
-        notificationBox.style.animation = 'slideDown 0.5s ease';
-
-        setTimeout(() => {
-            notificationBox.style.display = 'none';
-        }, 5000); // Hide after 5 seconds
+    window.handleOk = function() {
+        popupSuccess.style.display = 'none';
+        window.location.href = "whistory.html";
     }
-});              </script>
+
+    window.handleError = function() {
+        popupError.style.display = 'none';
+    }
+});
+</script>
     </div>
 </body>
 </html>
