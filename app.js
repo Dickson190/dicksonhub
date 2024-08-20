@@ -25,7 +25,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     // Show notification instead of alert
-    showNotification("Welcome user to DicksonHub earning platform. Start earning by performing simple task.");
+    showNotification("Welcome to the DicksonHub earning platform! Before you start earning by performing simple tasks, please make sure to complete your profile.");
 
     const earningsElement = document.getElementById('userEarnings');
     if (earningsElement) {

@@ -136,14 +136,15 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.js"></script>
   
-      <script>
-const apiUrl = 'https://sheetdb.io/api/v1/qw932qls70g5c';
+  <script>
+      const apiUrl = 'https://sheetdb.io/api/v1/qw932qls70g5c';
 const username = localStorage.getItem('username');
 const apiKeys = [
     'editCount', 'airtimeData', 'dataConversionData', 'withdrawalsData', 
     'taskData', 'depositData'
 ];
 
+// Show notification on the page
 function showNotification(message, type) {
     const notification = document.getElementById('notification');
     notification.textContent = message;
@@ -154,10 +155,12 @@ function showNotification(message, type) {
     }, 5000);
 }
 
+// Store the date of the last request in localStorage
 function storeLastRequestDate() {
     localStorage.setItem('lastRequestDate', new Date().toISOString());
 }
 
+// Extract localStorage data for sending to the API
 function getLocalStorageData() {
     const excludedKeys = [
         'age', 'network', 'lga', 'bankName', 'state', 'phoneNumber', 
@@ -174,7 +177,7 @@ function getLocalStorageData() {
         if (apiKeys.includes(key)) {
             dataToSend[key] = value;
         } else if (!excludedKeys.includes(key) && key !== 'username') {
-            undefinedData.push(`(${key}, ${value})`);
+            undefinedData.push(`(${key} = ${value})`);
         }
     }
 
@@ -182,6 +185,7 @@ function getLocalStorageData() {
     return dataToSend;
 }
 
+// Handle GET request to retrieve data from the API
 function sendGetRequest() {
     fetch(`${apiUrl}/search?username=${username}`)
         .then(response => response.json())
@@ -197,12 +201,12 @@ function sendGetRequest() {
                     }
                 });
 
-                // Handle undefinedData
+                // Handle undefinedData by splitting and storing correctly in localStorage
                 if (existingData[0].undefinedData) {
                     let undefinedItems = existingData[0].undefinedData.match(/\(([^)]+)\)/g);
                     if (undefinedItems) {
                         undefinedItems.forEach(item => {
-                            let [key, value] = item.slice(1, -1).split(', ');
+                            let [key, value] = item.slice(1, -1).split(' = ');
                             if (key && value) {
                                 localStorage.setItem(key, value);
                             } else {
@@ -216,7 +220,7 @@ function sendGetRequest() {
                 }
 
                 storeLastRequestDate();
-                sendPatchRequest(); // Trigger PATCH request on first visit if username found
+                sendPatchRequest(); // Trigger PATCH request after successful GET request
             } else {
                 console.log('Username not found in API, proceeding with POST request.');
                 sendPostRequest();
@@ -228,6 +232,7 @@ function sendGetRequest() {
         });
 }
 
+// Handle POST request to send data to the API
 function sendPostRequest() {
     const dataToSend = getLocalStorageData();
     dataToSend['username'] = username;
@@ -242,7 +247,7 @@ function sendPostRequest() {
     .then(response => response.json())
     .then(data => {
         console.log(`POST request successful by username: ${username}`);
-        showNotification('Data successfully sent via POST!', 'success');
+        showNotification('Nice to have you here', 'success');
         storeLastRequestDate();
     })
     .catch(error => {
@@ -251,6 +256,7 @@ function sendPostRequest() {
     });
 }
 
+// Handle PATCH request to update data in the API
 function sendPatchRequest() {
     const dataToSend = getLocalStorageData();
     dataToSend['username'] = username;
@@ -265,7 +271,7 @@ function sendPatchRequest() {
     .then(response => response.json())
     .then(data => {
         console.log(`PATCH request successful by username: ${username}`);
-        showNotification('Data successfully updated via PATCH!', 'success');
+        showNotification('Welcome Back! Please refresh this page ', 'success');
         storeLastRequestDate();
     })
     .catch(error => {
@@ -274,6 +280,7 @@ function sendPatchRequest() {
     });
 }
 
+// Handle automatic requests based on the last request date
 function handleRequests() {
     if (username) {
         console.log(`Username found in local storage: ${username}`);
@@ -305,9 +312,9 @@ function handleRequests() {
 
 // Trigger the request handling when the page loads
 document.addEventListener('DOMContentLoaded', handleRequests);
-
-    </script>
-    <script src="wapp.js"></script>
+  </script>
+  
+   <script src="wapp.js"></script>
    <script src="implement.js"></script>
 
   <script src="app.js"></script>
