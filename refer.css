@@ -1,0 +1,372 @@
+/* General Styles */
+body {
+    font-family: 'Poppins', Arial, sans-serif;
+    background-color: #e9ecef;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    min-height: 100vh;
+    color: #343a40;
+    padding-bottom: 60px; /* Space for the fixed bottom navigation */
+}
+
+.dashboard-container {
+    background-color: #ffffff;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    width: 90%;
+    max-width: 450px;
+    text-align: center;
+    margin-top: 20px; /* Added margin to prevent overlapping with the bottom navigation */
+}
+
+/* Greeting Section */
+.greeting-section {
+    font-size: 1.8em;
+    margin-bottom: 20px;
+    color: #495057;
+    animation: fadeIn 1.5s ease-out;
+}
+
+/* Keyframes */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Referral & Stats Section */
+.referral-code-section,
+.referral-stats-section,
+.withdrawal-section {
+    margin-bottom: 25px;
+}
+
+.referral-code-container,
+.referral-stats-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #f8f9fa;
+    padding: 12px;
+    border-radius: 6px;
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+/* Copy Button */
+.copy-btn {
+    background-color: #007bff;
+    color: #ffffff;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.copy-btn:hover {
+    background-color: #0056b3;
+}
+
+/* Stats Container */
+.stats-container {
+    display: flex;
+    justify-content: space-around;
+    gap: 15px;
+}
+
+.stat-item {
+    font-size: 1.2em;
+    color: #6c757d;
+}
+
+/* Progress Bar */
+.progress-bar {
+    background-color: #dee2e6;
+    height: 12px;
+    border-radius: 6px;
+    margin-top: 10px;
+    position: relative;
+    overflow: hidden;
+}
+
+.progress-fill {
+    height: 100%;
+    background-color: #28a745;
+    border-radius: 6px;
+    width: 0;
+    transition: width 0.5s ease;
+}
+
+/* Withdrawal Button */
+.withdraw-btn {
+    background-color: #28a745;
+    color: #ffffff;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.withdraw-btn:hover {
+    background-color: #218838;
+}
+
+/* Popup Styles */
+.popup-overlay,
+.withdraw-popup,
+.payment-popup,
+.custom-alert {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.popup-overlay {
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.withdraw-popup,
+.payment-popup,
+.custom-alert {
+    background-color: #ffffff;
+    padding: 25px;
+    border-radius: 10px;
+    text-align: center;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+    width: 90%;
+    max-width: 400px;
+}
+
+.withdraw-popup p,
+.payment-popup p,
+.custom-alert p {
+    font-size: 16px;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.withdraw-popup button,
+.payment-popup button,
+.custom-alert-button {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.withdraw-popup button,
+.payment-popup button {
+    margin-bottom: 10px;
+    background-color: #007bff;
+    color: white;
+}
+
+.withdraw-popup button:last-child,
+.payment-popup button:last-child {
+    margin-bottom: 0;
+}
+
+.withdraw-popup button:hover,
+.payment-popup button:hover,
+.custom-alert-button:hover {
+    background-color: #0056b3;
+}
+
+#cancelPayment {
+    background-color: #dc3545;
+}
+
+#cancelPayment:hover {
+    background-color: #c82333;
+}
+
+/* Custom Alert Box Styles */
+.custom-alert-content {
+    padding: 20px;
+    text-align: center;
+    width: 300px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.custom-alert-button {
+    background-color: #007bff;
+    color: #fff;
+    padding: 10px 20px;
+}
+
+.custom-alert-button:focus {
+    outline: none;
+}
+
+/* External Button */
+.external-button-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+    position: absolute;
+    bottom: 10px;
+    width: 100%;
+}
+
+.styled-button {
+    background-color: #5597ff;
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s;
+}
+
+.styled-button:hover {
+    background-color: #45a049;
+}
+
+/* Alert Popup Styles */
+.alert-popup {
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 15px 25px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    color: #333;
+    font-size: 1em;
+    z-index: 1001;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.alert-popup::before {
+    content: '';
+    display: block;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background-color: #28a745;
+    margin-right: 10px;
+}
+
+.alert-popup.warning {
+    background-color: #ffc107;
+    color: #212529;
+}
+
+.alert-popup.warning::before {
+    background-color: #ffc107;
+}
+
+.alert-popup.error {
+    background-color: #dc3545;
+    color: #ffffff;
+}
+
+.alert-popup.error::before {
+    background-color: #dc3545;
+}
+
+.alert-popup.info {
+    background-color: #17a2b8;
+    color: #ffffff;
+}
+
+.alert-popup.info::before {
+    background-color: #17a2b8;
+}
+
+/* Bottom Navigation */
+.bottom-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background-color: #1f1f1f;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: 10px 0;
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+}
+
+.nav-item {
+    color: white;
+    text-align: center;
+    text-decoration: none;
+    flex: 1;
+}
+
+.nav-item i {
+    font-size: 24px;
+}
+
+.nav-item span {
+    display: block;
+    font-size: 12px;
+}
+
+.nav-item:hover {
+    background-color: #333;
+}
+
+/* Media Queries */
+@media (max-width: 768px) {
+    .dashboard-container {
+        width: 100%;
+        margin: 0 15px;
+        padding: 20px;
+    }
+
+    .popup-content,
+    .custom-alert-content {
+        padding: 20px;
+    }
+
+    .withdraw-btn,
+    .payment-popup button {
+        padding: 10px 20px;
+    }
+
+    .alert-popup {
+        width: 80%;
+        padding: 10px 15px;
+        font-size: 0.9em;
+    }
+
+    .bottom-nav {
+        padding: 8px 0;
+    }
+
+    .nav-item i {
+        font-size: 20px;
+    }
+
+    .nav-item span {
+        font-size: 10px;
+    }
+}

@@ -127,41 +127,8 @@
             font-size: 1.2em;
             margin-bottom: 5px;
         }
-
-        .loader {
-            display: none;
-            justify-content: center;
-            align-items: center;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.5);
-            z-index: 9999;
-        }
-
-        .loader .cooking {
-            position: relative;
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            background-color: #e74c3c;
-            box-shadow: 0 0 0 10px #333, 0 0 0 20px #666;
-            animation: cooking 2s linear infinite;
-        }
-
-        @keyframes cooking {
-            0%,
-            100% {
-                transform: rotate(0deg);
-            }
-
-            50% {
-                transform: rotate(360deg);
-            }
-        }
-    </style>
+}
+           </style>
 </head>
 
 <body>
@@ -176,7 +143,7 @@
         <a href="shop.html">Shop</a>
         <a href="news.html">New Features/Updates</a>
         <a href="withdraw.html">Withdraw</a>
-        <a href="whistory.html">Withdrawal History</a>
+       <a href="refer_earn.html">Refer & Earn</a>
         <a href="conversion.html">Convert Airtime/Data</a>
         <a href="about.html">About Us</a>
     </div>
@@ -216,15 +183,15 @@
     <!-- Bottom Navigation -->
     
     <div class="loader" id="loader">
-        <div class="cooking">
-            <div class="bubble"></div>
-            <div class="bubble"></div>
-            <div class="bubble"></div>
-            <div class="bubble"></div>
-            <div class="pot"></div>
-        </div>
+    <div class="cooking">
+        <div class="bubble"></div>
+        <div class="bubble"></div>
+        <div class="bubble"></div>
+        <div class="bubble"></div>
+        <div class="pot"></div>
     </div>
-
+</div>
+<script src="load.js"></script>
     <script>
         function toggleNav() {
             const sidenav = document.getElementById("sidenav");
@@ -256,7 +223,7 @@
             }
         }
     </script>
-    <script src="load.js"></script>
+    
     <script src="sidenav.js"></script>
     <script src="image.js"></script>
 </body>

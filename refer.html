@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Referral Dashboard</title>
+    <link rel="stylesheet" href="refer.css">
+   <link rel="stylesheet" href="sidenav.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="load.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.8/clipboard.min.js"></script>
+    
+    </head>
+<body>         
+    
+    
+    
+    <div class="bottom-nav">
+    <a href="app.html" class="nav-item"><i class="fa fa-home"></i><span>Home</span></a>
+    <a href="gift.html" class="nav-item"><i class="fa fa-gift"></i><span>Claim Code</span></a>
+    <a href="news.html" class="nav-item"><i class="fa fa-bell"></i><span>Notifications</span></a>
+    <a href="profile.html" class="nav-item"><i class="fa fa-user"></i><span>Profile</span></a>
+</div>
+  
+    
+    
+        <div class="dashboard-container">
+           <!-- Greeting Section -->
+        <div id="greeting" class="greeting-section">
+            <!-- Dynamic greeting will be inserted here by greetings.js -->
+        </div>
+
+        <!-- Referral Code Section -->
+        <div class="referral-code-section">
+            <h2>Your Referral Code</h2>
+            <div class="referral-code-container">
+                <span id="referralCode">Loading...</span>
+                <button id="copyReferralCode" class="copy-btn" data-clipboard-target="#referralCode">Copy</button>
+            </div>
+        </div>
+
+        <!-- Referral Stats Section -->
+        <div class="referral-stats-section">
+            <h2>Your Referral Stats</h2>
+            <div class="referral-stats-container">
+                <div>
+                    <span id="referralCount">0</span>
+                    <p>Referrals</p>
+                </div>
+                <div>
+                    <span id="referralBalance">0MB</span>
+                    <p>Referral Balance</p>
+                </div>
+                <div>
+                    <span>Referral Limit:</span>
+                    <span>2GB</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Withdrawal Button -->
+        <div class="withdrawal-section">
+            <button id="withdrawBtn" class="withdraw-btn">Withdraw</button>
+        </div>
+    </div>
+
+ <!-- New button outside the div -->
+    <div class="external-button-container">
+        <button id="redirectToButtonHtml" class="styled-button"> How to Earn</button>
+    </div>
+    
+
+
+
+    <!-- Payment Popup -->
+    <div id="paymentOverlay" class="popup-overlay"></div>
+    <div id="paymentPopup" class="payment-popup">
+        <p>You have reached the 2GB withdrawal limit. Please pay ₦600 to continue withdrawing.</p>
+        <button id="payWithDeposit">Pay with Deposit (₦600)</button>
+        <button id="payWithEarnings">Pay with Earnings (₦600)</button>
+        <button id="cancelPayment">Cancel</button>
+    </div>
+
+<!-- Custom Alert HTML -->
+<div id="customAlert" class="custom-alert">
+    <div class="custom-alert-content">
+        <p id="alertMessage">This is a custom alert message.</p>
+        <button id="alertOkButton" class="custom-alert-button">OK</button>
+    </div>
+</div>
+
+    <div class="loader" id="loader">
+        <div class="cooking">
+            <div class="bubble"></div>
+            <div class="bubble"></div>
+            <div class="bubble"></div>
+            <div class="bubble"></div>
+            <div class="pot"></div>
+        </div>
+    </div>
+   </div>
+
+ <script>
+        document.getElementById('redirectToButtonHtml').addEventListener('click', function() {
+            window.location.href = 'button.html';
+        });
+    </script>
+
+    <script>
+document.addEventListener('DOMContentLoaded', function() {
+    const referralCountElement = document.getElementById('referralCount');
+    const referralCodeElement = document.getElementById('referralCode');
+    const referralBalanceElement = document.getElementById('referralBalance');
+    const withdrawBtn = document.getElementById('withdrawBtn');
+    const copyReferralCodeBtn = document.getElementById('copyReferralCode');
+    const paymentPopup = document.getElementById('paymentPopup');
+    const paymentOverlay = document.getElementById('paymentOverlay');
+    const payWithDepositBtn = document.getElementById('payWithDeposit');
+    const payWithEarningsBtn = document.getElementById('payWithEarnings');
+    const cancelPaymentBtn = document.getElementById('cancelPayment');
+
+    const apiEndpoints = [
+        'https://sheetdb.io/api/v1/84jtnimwt8igz',
+        'https://sheetdb.io/api/v1/another-key',
+        'https://sheetdb.io/api/v1/yet-another-key'
+    ];
+
+    const referralCodeLocalStorageKey = 'userReferralCode';
+    const referralCountLocalStorageKey = 'referralCount';
+    const postRequestFlagKey = 'postRequestSent';
+    const paymentFlagKey = 'paymentCompleted';
+    const withdrawalFlagKey = 'firstFreeWithdrawal500MB';
+    const deductionFlagKey = 'deductionFlag';
+    const referralLimit = 20;
+
+    function getLocalStorageKeys() {
+        const userPhoneNumber = localStorage.getItem('phoneNumber');
+        const currentUser = localStorage.getItem('username');
+        const currentPassword = localStorage.getItem('password');
+
+        const earningsKey = `${userPhoneNumber}_${currentUser}_${currentPassword}_earnings`;
+        const depositKey = `${userPhoneNumber}_${currentUser}_${currentPassword}_deposit`;
+
+        return {
+            earningsKey,
+            depositKey
+        };
+    }
+
+    function showCustomAlert(message) {
+        const alertBox = document.getElementById('customAlert');
+        const alertMessage = document.getElementById('alertMessage');
+        const alertOkButton = document.getElementById('alertOkButton');
+
+        alertMessage.textContent = message;
+        alertBox.style.display = 'flex';
+
+        alertOkButton.addEventListener('click', () => {
+            alertBox.style.display = 'none';
+        });
+    }
+
+    function fetchWithRetry(urls, options) {
+        return new Promise((resolve, reject) => {
+            const tryNext = (index) => {
+                if (index >= urls.length) {
+                    reject('All API keys failed.');
+                } else {
+                    fetch(urls[index], options)
+                        .then(response => {
+                            if (response.ok) {
+                                resolve(response.json());
+                            } else {
+                                console.warn(`API key at index ${index} failed, trying next key...`);
+                                tryNext(index + 1);
+                            }
+                        })
+                        .catch(error => {
+                            console.error(`Error with API key at index ${index}:`, error);
+                            tryNext(index + 1);
+                        });
+                }
+            };
+            tryNext(0);
+        });
+    }
+
+    function retrieveReferralCount() {
+        fetchWithRetry(apiEndpoints)
+            .then(data => {
+                const userReferralCode = localStorage.getItem(referralCodeLocalStorageKey);
+                const userRecord = data.find(record => record.referralCode === userReferralCode);
+                if (userRecord) {
+                    console.log(`Referral code ${userReferralCode} found in API.`);
+                    let referralCount = parseInt(userRecord.referralCount, 10) || 0;
+
+                    console.log(`Referral count retrieved: ${referralCount}`);
+
+                    if (localStorage.getItem(withdrawalFlagKey)) {
+                        console.log(`${withdrawalFlagKey} found in local storage.`);
+
+                        if (!localStorage.getItem(deductionFlagKey)) { 
+                            referralCount -= 5;
+                            referralCount = Math.max(referralCount, 0);
+
+                            console.log(`Referral count after deduction: ${referralCount}`);
+
+                            fetchWithRetry(apiEndpoints.map(url => `${url}/referralCode/${userReferralCode}`), {
+                                method: 'PATCH',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                },
+                                body: JSON.stringify({ referralCount }),
+                            })
+                            .then(data => {
+                                console.log('Referral count successfully deducted and updated in API:', data);
+                                localStorage.setItem(referralCountLocalStorageKey, referralCount);
+                                updateReferralBalance(referralCount);
+
+                                showCustomAlert('You have used 500MB out of your 2GB referral limit. Your new balance won\'t exceed 1.5GB.');
+
+                                localStorage.setItem(deductionFlagKey, 'true');
+                            })
+                            .catch(error => {
+                                console.error('Error updating referral count in API:', error);
+                            });
+                        } else {
+                            localStorage.setItem(referralCountLocalStorageKey, referralCount);
+                            updateReferralBalance(referralCount);
+                        }
+                    } else {
+                        localStorage.setItem(referralCountLocalStorageKey, referralCount);
+                        updateReferralBalance(referralCount);
+                    }
+
+                    if (referralCount >= referralLimit) {
+                        if (!localStorage.getItem(paymentFlagKey)) {
+                            withdrawBtn.disabled = true;
+                            showPaymentPopup();
+                        }
+                    }
+                } else {
+                    console.warn(`Referral code ${userReferralCode} not found in API.`);
+                }
+            })
+            .catch(error => {
+                console.error('Error fetching referral data:', error);
+            });
+    }
+
+    function updateReferralBalance(count) {
+        let balance = count * 100;
+
+        if (localStorage.getItem(withdrawalFlagKey)) {
+            balance = Math.min(balance, 1500);
+        }
+
+        referralBalanceElement.textContent = `${balance}MB`;
+        referralCountElement.textContent = count;
+    }
+
+    function displayReferralCode() {
+        const referralCode = localStorage.getItem(referralCodeLocalStorageKey) || 'N/A';
+        referralCodeElement.textContent = referralCode;
+
+        if (!localStorage.getItem(postRequestFlagKey)) {
+            fetchWithRetry(apiEndpoints, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    referralCode: referralCode
+                }),
+            })
+            .then(data => {
+                console.log('Referral code POST successful:', data);
+                localStorage.setItem(postRequestFlagKey, 'true');
+            })
+            .catch(error => {
+                console.error('Error posting referral code:', error);
+            });
+        }
+    }
+
+    function setupClipboard() {
+        new ClipboardJS(copyReferralCodeBtn);
+        copyReferralCodeBtn.addEventListener('click', function() {
+            showCustomAlert('Referral code copied to clipboard!');
+        });
+    }
+
+    function showPaymentPopup() {
+        paymentOverlay.style.display = 'block';
+        paymentPopup.style.display = 'block';
+    }
+
+    function hidePaymentPopup() {
+        paymentOverlay.style.display = 'none';
+        paymentPopup.style.display = 'none';
+    }
+
+    function handlePayment(action) {
+        const { earningsKey, depositKey } = getLocalStorageKeys();
+        const userEarnings = parseFloat(localStorage.getItem(earningsKey)) || 0;
+        const userDeposit = parseFloat(localStorage.getItem(depositKey)) || 0;
+
+        console.log('User earnings:', userEarnings);
+        console.log('User deposit:', userDeposit);
+
+        if (action === 'earnings' && userEarnings >= 600) {
+            localStorage.setItem(earningsKey, userEarnings - 600);
+            localStorage.setItem(paymentFlagKey, 'true');
+            showCustomAlert('Thank you for paying ₦600 using earnings.');
+        } else if (action === 'deposit' && userDeposit >= 600) {
+            localStorage.setItem(depositKey, userDeposit - 600);
+            localStorage.setItem(paymentFlagKey, 'true');
+            showCustomAlert('Thank you for paying ₦600 using deposit.');
+        } else {
+            showCustomAlert('Insufficient funds to complete the payment.');
+            console.error('Insufficient funds:', {
+                action,
+                userEarnings,
+                userDeposit
+            });
+            return;
+        }
+
+        hidePaymentPopup();
+        withdrawBtn.disabled = false;
+        window.location.href = 'ReferWith.html';
+    }
+
+    payWithDepositBtn.addEventListener('click', () => handlePayment('deposit'));
+    payWithEarningsBtn.addEventListener('click', () => handlePayment('earnings'));
+    cancelPaymentBtn.addEventListener('click', hidePaymentPopup);
+
+    retrieveReferralCount();
+    displayReferralCode();
+    setupClipboard();
+
+    withdrawBtn.addEventListener('click', () => {
+        if (!withdrawBtn.disabled) {
+            window.location.href = 'ReferWith.html';
+        }
+    });
+});
+
+    </script>
+    <script src="greetings.js"></script>
+    <script src="clipboard.js"></script>
+    <script src="load.js"></script>
+    
+</body>
+</html>

@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Referral Withdrawal</title>
+    <style>
+        /* Base styling */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f8f9fa;
+            color: #343a40;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh; /* Changed to min-height to prevent overflow issues */
+        }
+
+        h1 {
+            font-size: 24px;
+            color: #495057;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            font-size: 14px;
+            color: #6c757d;
+            margin-bottom: 5px;
+            font-weight: 500;
+        }
+
+        input, select, button {
+            font-size: 16px;
+            padding: 10px;
+            border: 1px solid #ced4da;
+            border-radius: 5px;
+            background-color: #ffffff;
+            transition: all 0.3s ease;
+            box-sizing: border-box;
+        }
+
+        input.locked, input:read-only {
+            background-color: #e9ecef;
+            cursor: not-allowed;
+        }
+
+        select {
+            cursor: pointer;
+        }
+
+        input:focus, select:focus, button:focus {
+            outline: none;
+            border-color: #80bdff;
+            box-shadow: 0 0 5px rgba(0, 123, 255, 0.25);
+        }
+
+        button {
+            background-color: #007bff;
+            color: #ffffff;
+            cursor: pointer;
+            border: none;
+            margin-top: 20px;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        .notification-box {
+            display: none;
+            padding: 15px;
+            margin-top: 20px;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+
+        .notification-success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .notification-error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        /* Loader */
+        #loader {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 1000;
+        }
+
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 6px solid #f3f3f3;
+            border-top: 6px solid #007bff;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Container */
+        .container {
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            max-width: 400px;
+            width: 100%;
+            box-sizing: border-box;
+            margin-top: 20px; /* Added margin to ensure the container doesn't start at the very top */
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Referral Withdrawal</h1>
+        <div class="form-group">
+            <label for="type">Type:</label>
+            <input type="text" id="type" value="ReferalData" readonly class="locked">
+        </div>
+
+        <div class="form-group">
+            <label for="method">Method:</label>
+            <select id="method">
+                <option value="Data">Data</option>
+                <option value="Cash">Cash</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="dataSize">Data Size (MB):</label>
+            <input type="text" id="dataSize" readonly class="locked">
+        </div>
+
+        <div class="form-group">
+            <label for="date">Date:</label>
+            <input type="text" id="date" readonly class="locked">
+        </div>
+
+        <div class="form-group">
+            <label for="username">Username:</label>
+            <input type="text" id="username" readonly class="locked">
+        </div>
+
+        <div class="form-group">
+            <label for="phoneNumber">Phone Number:</label>
+            <input type="text" id="phoneNumber" readonly class="locked">
+        </div>
+
+        <div class="form-group">
+            <label for="referralCode">Referral Code:</label>
+            <input type="text" id="referralCode" readonly class="locked">
+        </div>
+
+        <div class="form-group">
+            <label for="network">Network:</label>
+            <input type="text" id="network" readonly class="locked">
+        </div>
+
+        <button id="withdrawBtn">Withdraw</button>
+
+        <div id="notificationBox" class="notification-box"></div>
+        
+        <!-- loader -->
+        <div id="loader" style="display: none;">
+            <div class="spinner"></div>
+        </div>
+    </div>
+
+
+    <script>
+document.addEventListener('DOMContentLoaded', function() {
+    const methodElement = document.getElementById('method');
+    const dataSizeElement = document.getElementById('dataSize');
+    const dateElement = document.getElementById('date');
+    const usernameElement = document.getElementById('username');
+    const phoneNumberElement = document.getElementById('phoneNumber');
+    const referralCodeElement = document.getElementById('referralCode');
+    const networkElement = document.getElementById('network');
+    const withdrawBtn = document.getElementById('withdrawBtn');
+    const notificationBox = document.getElementById('notificationBox');
+    const loader = document.getElementById('loader');
+
+    // List of API endpoints
+    const apiEndpoints = [
+        'https://sheetdb.io/api/v1/84jtnimwt8igz',
+        'https://sheetdb.io/api/v1/anotherapikey',
+        'https://sheetdb.io/api/v1/yetanotherapikey'
+    ];
+    
+    const referralCountLocalStorageKey = 'referralCount';
+    const referralCodeLocalStorageKey = 'userReferralCode';
+    const paymentFlagKey = 'paymentCompleted';
+    const firstFreeWithdrawalFlagKey = 'firstFreeWithdrawal500MB';
+
+    function getLocalStorageKeys() {
+        const userPhoneNumber = localStorage.getItem('phoneNumber');
+        const currentUser = localStorage.getItem('username');
+        const currentPassword = localStorage.getItem('password');
+
+        const earningsKey = `${userPhoneNumber}_${currentUser}_${currentPassword}_earnings`;
+
+        return {
+            earningsKey
+        };
+    }
+
+    function initializeFields() {
+        const referralCount = parseInt(localStorage.getItem(referralCountLocalStorageKey), 10) || 0;
+        dataSizeElement.value = `${referralCount * 100} MB`;
+        dateElement.value = new Date().toLocaleDateString();
+        usernameElement.value = localStorage.getItem('username') || 'N/A';
+        phoneNumberElement.value = localStorage.getItem('phoneNumber') || 'N/A';
+        referralCodeElement.value = localStorage.getItem(referralCodeLocalStorageKey) || 'N/A';
+        networkElement.value = localStorage.getItem('network') || 'N/A';
+    }
+
+    function showNotification(message, type) {
+        notificationBox.textContent = message;
+        notificationBox.className = `notification-box notification-${type}`;
+        notificationBox.style.display = 'block';
+        setTimeout(() => {
+            notificationBox.style.display = 'none';
+        }, 5000);
+    }
+
+    function showLoader() {
+        loader.style.display = 'block';
+    }
+
+    function hideLoader() {
+        loader.style.display = 'none';
+    }
+
+    function tryApiRequest(apiIndex, requestOptions, successCallback) {
+        if (apiIndex >= apiEndpoints.length) {
+            showNotification('All API requests failed. Please try again later.', 'error');
+            hideLoader();
+            return;
+        }
+
+        const apiUrl = `${apiEndpoints[apiIndex]}/referralCode/${referralCodeElement.value}`;
+        
+        fetch(apiUrl, requestOptions)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`API request failed with status ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(successCallback)
+            .catch(error => {
+                console.error(`Error with API ${apiEndpoints[apiIndex]}:`, error);
+                tryApiRequest(apiIndex + 1, requestOptions, successCallback);
+            });
+    }
+
+    function handleWithdraw() {
+        showLoader();
+
+        const method = methodElement.value;
+        const dataSize = dataSizeElement.value;
+        const referralCode = referralCodeElement.value;
+        const firstWithdrawalFlag = localStorage.getItem(firstFreeWithdrawalFlagKey) === 'true';
+
+        if (method === 'Data') {
+            if (dataSize === '500 MB' && !firstWithdrawalFlag) {
+                localStorage.setItem(firstFreeWithdrawalFlagKey, 'true');
+                showNotification('Withdrawal successful! You have withdrawn 500 MB.', 'success');
+                setTimeout(() => {
+                    window.location.href = 'refer.html';
+                }, 1000);
+
+            } else if ((dataSize === '1500 MB' || dataSize === '2000 MB') && firstWithdrawalFlag) {
+                const requestOptions = {
+                    method: 'PATCH',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ referralCount: 0 }),
+                };
+
+                tryApiRequest(0, requestOptions, data => {
+                    if (data.updated) {
+                        showNotification('Withdrawal successful!', 'success');
+                        localStorage.setItem(referralCountLocalStorageKey, '0');
+                        localStorage.removeItem(paymentFlagKey);
+                        setTimeout(() => {
+                            window.location.href = 'refer.html';
+                        }, 1000);
+                    } else {
+                        throw new Error('Referral code not found or not updated.');
+                    }
+                });
+
+            } else if (dataSize === '500 MB' && firstWithdrawalFlag) {
+                showNotification('500 MB can only be withdrawn once. Please choose 1.5 GB or 2 GB for further withdrawals.', 'error');
+                hideLoader();
+            } else {
+                showNotification('Invalid data size or conditions not met.', 'error');
+                hideLoader();
+            }
+
+        } else if (method === 'Cash') {
+            const { earningsKey } = getLocalStorageKeys();
+            let userEarnings = parseFloat(localStorage.getItem(earningsKey)) || 0;
+            let amountToAdd = 0;
+            const referralCount = parseInt(localStorage.getItem(referralCountLocalStorageKey), 10) || 0;
+
+            if (referralCount >= 5) {
+                if (referralCount * 100 >= 500 && referralCount * 100 < 1000) {
+                    amountToAdd = 125;
+                } else if (referralCount * 100 >= 1000 && referralCount * 100 < 2000) {
+                    amountToAdd = 250;
+                } else if (referralCount * 100 >= 2000) {
+                    amountToAdd = 500;
+                }
+            }
+
+            if (amountToAdd > 0) {
+                userEarnings += amountToAdd;
+                localStorage.setItem(earningsKey, userEarnings.toFixed(2));
+
+                const requestOptions = {
+                    method: 'PATCH',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ referralCount: 0 }),
+                };
+
+                tryApiRequest(0, requestOptions, data => {
+                    if (data.updated) {
+                        showNotification('Withdrawal successful! Amount added to earnings.', 'success');
+                        localStorage.setItem(referralCountLocalStorageKey, '0');
+                        localStorage.removeItem(paymentFlagKey);
+                        setTimeout(() => {
+                            window.location.href = 'refer.html';
+                        }, 1000);
+                    } else {
+                        throw new Error('Referral code not found or not updated.');
+                    }
+                });
+
+            } else {
+                showNotification('Insufficient referral balance for cash withdrawal.', 'error');
+                hideLoader();
+            }
+        }
+    }
+
+    // Initialize the page
+    initializeFields();
+
+    // Event listeners
+    withdrawBtn.addEventListener('click', handleWithdraw);
+});
+
+    </script>
+</body>
+</html>

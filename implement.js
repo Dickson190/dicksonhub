@@ -3,7 +3,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const earningsData = {
             "MDgxNDYwNTQ5MzA6RGlja3Nvbkc6MTkwR29kKy06MA": { amount: 7500, indicator: "0000K" },
             "MDI4Mzg1ODpDYXJwOjE6ODM5NTg=": { amount: 18679, indicator: "0000C" },
-            "MDgwOTk5MjY0MzU6TmFtcDoxOjA=":{ amount: 320, indicator: "000A"}
+            "MDI4Mzg1ODpDYXJwOjE6MA==":{ amount: 3200, indicator: "000J"}
         };
 
         const currentUser = localStorage.getItem('username'); // Assuming 'uniqueCode' stores the current username

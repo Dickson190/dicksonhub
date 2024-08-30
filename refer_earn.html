@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Referral Page</title>
+    <link rel="stylesheet" href="refer_earn.css">
+</head>
+<body>
+
+    <div class="container">
+        <h1>Referral Program</h1>
+        <p>If you have a referral code, please enter it below.</p>
+
+        <form id="referralForm">
+            <label for="referralCode">Referral Code (optional):</label>
+            <input type="text" id="referralCode" name="referralCode" placeholder="Enter your referral code">
+
+            <button type="button" id="submitBtn">Submit</button>
+        </form>
+
+        <div id="message"></div>
+    </div>
+
+  <script> document.addEventListener('DOMContentLoaded', function() {
+    const storedReferralCode = localStorage.getItem('userReferralCode');
+    const pageLocked = localStorage.getItem('pageLocked');
+    const messageElement = document.getElementById('message');
+
+    // Check if the page is already locked
+    if (pageLocked) {
+        showNotification("You have already claimed your referral. Redirecting to refer.html.");
+        console.log("User tried to access the page after it was locked. Redirecting.");
+        setTimeout(() => {
+            window.location.href = "refer.html";
+        }, 3000);
+        return;
+    }
+
+    // Generate the user's referral code and post it to the API
+    const username = localStorage.getItem('username');
+    const userReferralCode = username ? convertToHex(username) : null;
+
+    if (userReferralCode && !storedReferralCode) {
+        localStorage.setItem('userReferralCode', userReferralCode);
+        console.log("Generated referral code:", userReferralCode);
+
+        const referralData = { referralCode: userReferralCode, referralCount: 0 };
+
+        fetch('https://sheetdb.io/api/v1/84jtnimwt8igz', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(referralData)
+        })
+        .then(response => response.json())
+        .then(() => {
+            console.log("Referral code posted to API:", userReferralCode);
+        })
+        .catch(error => {
+            console.log("Error posting referral code to API:", error);
+        });
+    } else if (storedReferralCode) {
+        console.log("Referral code already generated and stored:", storedReferralCode);
+    }
+
+    // Submit button click handler
+    document.getElementById('submitBtn').addEventListener('click', function() {
+        const referralCode = document.getElementById('referralCode').value.trim();
+
+        if (referralCode === '') {
+            localStorage.setItem('pageLocked', 'true');
+            showNotification("No referral code entered. Redirecting to refer.html and locking the page.");
+            console.log("No referral code entered. Redirecting to refer.html and locking the page.");
+            setTimeout(() => {
+                window.location.href = "refer.html";
+            }, 3000);
+        } else {
+            // Fetch all records from the API
+            fetch('https://sheetdb.io/api/v1/84jtnimwt8igz')
+                .then(response => response.json())
+                .then(data => {
+                    // Check if the referral code exists
+                    const referral = data.find(entry => entry.referralCode === referralCode);
+
+                    if (referral) {
+                        console.log("Referral code found in API:", referralCode);
+
+                        // Prevent user from using their own referral code
+                        if (storedReferralCode && storedReferralCode === referralCode) {
+                            showNotification("You cannot use your own referral code.", "error");
+                            console.log("User tried to input their own referral code. Operation halted.");
+                            return;
+                        }
+
+                        // Handle referral count safely
+                        let currentCount = parseInt(referral.referralCount) || 0;  // Default to 0 if undefined or NaN
+                        const updatedCount = currentCount + 1;
+
+                        const updateData = { referralCount: updatedCount };
+
+                        fetch(`https://sheetdb.io/api/v1/84jtnimwt8igz/referralCode/${referralCode}`, {
+                            method: 'PATCH',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify(updateData)
+                        })
+                        .then(response => response.json())
+                        .then(() => {
+                            console.log(`Referral count PROPERLY UPDATED by 1 for referral code: ${referralCode}. New count: ${updatedCount}`);
+
+                            showNotification("Referral code applied successfully!", "success");
+
+                            // Lock the page after successful submission
+                            localStorage.setItem('pageLocked', 'true');
+                            console.log("Page locked after successful referral code application.");
+
+                            setTimeout(() => {
+                                window.location.href = "refer.html";
+                            }, 3000);
+
+                            console.log("Referral code applied and user redirected to refer.html");
+
+                        })
+                        .catch(error => {
+                            showNotification("Error updating referral count.", "error");
+                            console.log("Error updating referral count:", error);
+                        });
+                    } else {
+                        showNotification("Invalid referral code.", "error");
+                        console.log("Referral code not found in API:", referralCode);
+                    }
+                })
+                .catch(error => {
+                    showNotification("An error occurred while checking the referral code.", "error");
+                    console.log("Error occurred while fetching data from the API:", error);
+                });
+        }
+    });
+});
+
+// Function to convert a username to a hexadecimal referral code
+function convertToHex(str) {
+    let hex = '';
+    for (let i = 0; i < str.length; i++) {
+        hex += str.charCodeAt(i).toString(16);
+    }
+    console.log("Username converted to referral code:", hex);
+    return hex;
+}
+
+// Function to show a notification box
+function showNotification(message, type = "success") {
+    const notificationBox = document.createElement('div');
+    notificationBox.className = `notification-box ${type}`;
+    notificationBox.innerHTML = `
+        <div class="notification-content">
+            <div class="icon">${type === "success" ? "&#10004;" : "&#9888;"}</div>
+            <div class="message">${message}</div>
+        </div>
+    `;
+
+    document.body.appendChild(notificationBox);
+
+    setTimeout(() => {
+        notificationBox.style.opacity = '0';
+        setTimeout(() => {
+            notificationBox.remove();
+        }, 500);
+    }, 2500);
+}
+</script>
+</body>
+</html>
