@@ -1,8 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+       <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ 
     <meta charset="UTF-8">
     <title>Page title</title>
+    <link rel="stylesheet" href="load.css">
+    <link rel="stylesheet" href="fixed.css">
+    <link rel="stylesheet" href="sidenav.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  
     <style>
         /* Info Section Styles */
 .info-section {
@@ -54,6 +61,27 @@
     </style>
 </head>
 <body>
+    <!-- Side Navigation -->
+    <div id="sidenav" class="sidenav">
+      <a href="javascript:void(0)" class="closebtn" onclick="toggleNav()">&times;</a>
+      <a href="app.html">Home</a>
+      <a href="earn.html">Offerwall</a>
+      <a href="task.html">Task</a>
+      <a href="bean.html" class="active">Upgrade Account</a>
+      <a href="shop.html">Shop</a>
+      <a href="news.html">New Features/Updates</a>
+      <a href="withdraw.html">Withdraw</a>
+      <a href="refer_earn.html">Refer & Earn</a>
+      <a href="conversion.html">Convert Airtime/Data</a>
+      <a href="about.html">About Us</a>
+    </div>
+
+    <a href="javascript:void(0);" class="icon" onclick="toggleNav()">
+      <i class="fa fa-bars"></i>
+    </a>
+    
+    
+    
 <!-- Info Section -->
 <div class="info-section">
     <h2>🌟 Welcome to Our New Referral System! 🌟</h2>
@@ -89,5 +117,7 @@
         <li>Once successful, you'll be credited with <strong>100MB instantly</strong> in your referral balance, but your referral won't receive any reward.</li>
     </ol>
 </div>
+<script src="sidenav.js"></script>
+<script src="load.js"></script>
 </body>
 </html>

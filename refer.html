@@ -101,13 +101,7 @@
    </div>
 
  <script>
-        document.getElementById('redirectToButtonHtml').addEventListener('click', function() {
-            window.location.href = 'button.html';
-        });
-    </script>
-
-    <script>
-document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function() {
     const referralCountElement = document.getElementById('referralCount');
     const referralCodeElement = document.getElementById('referralCode');
     const referralBalanceElement = document.getElementById('referralBalance');
@@ -127,6 +121,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     const referralCodeLocalStorageKey = 'userReferralCode';
     const referralCountLocalStorageKey = 'referralCount';
+    const referralBalanceLocalStorageKey = 'referralBalance';
     const postRequestFlagKey = 'postRequestSent';
     const paymentFlagKey = 'paymentCompleted';
     const withdrawalFlagKey = 'firstFreeWithdrawal500MB';
@@ -196,41 +191,39 @@ document.addEventListener('DOMContentLoaded', function() {
 
                     console.log(`Referral count retrieved: ${referralCount}`);
 
+                    // Always update localStorage with the latest referral count
+                    localStorage.setItem(referralCountLocalStorageKey, referralCount);
+                    updateReferralBalance(referralCount);
+
                     if (localStorage.getItem(withdrawalFlagKey)) {
                         console.log(`${withdrawalFlagKey} found in local storage.`);
 
                         if (!localStorage.getItem(deductionFlagKey)) { 
-                            referralCount -= 5;
-                            referralCount = Math.max(referralCount, 0);
+                            // Deduction logic here only applies to the display balance, NOT referralCount
+                            let displayBalance = referralCount * 100 - 500; // Assume 500MB is deducted
+                            displayBalance = Math.max(displayBalance, 0);
 
-                            console.log(`Referral count after deduction: ${referralCount}`);
+                            console.log(`Display balance after deduction: ${displayBalance}`);
 
                             fetchWithRetry(apiEndpoints.map(url => `${url}/referralCode/${userReferralCode}`), {
                                 method: 'PATCH',
                                 headers: {
                                     'Content-Type': 'application/json',
                                 },
-                                body: JSON.stringify({ referralCount }),
+                                body: JSON.stringify({ displayBalance }), // This sends a display balance change, not the actual referral count
                             })
                             .then(data => {
-                                console.log('Referral count successfully deducted and updated in API:', data);
-                                localStorage.setItem(referralCountLocalStorageKey, referralCount);
-                                updateReferralBalance(referralCount);
+                                console.log('Display balance successfully deducted and updated in API:', data);
+                                updateReferralBalance(referralCount, displayBalance);
 
                                 showCustomAlert('You have used 500MB out of your 2GB referral limit. Your new balance won\'t exceed 1.5GB.');
 
                                 localStorage.setItem(deductionFlagKey, 'true');
                             })
                             .catch(error => {
-                                console.error('Error updating referral count in API:', error);
+                                console.error('Error updating display balance in API:', error);
                             });
-                        } else {
-                            localStorage.setItem(referralCountLocalStorageKey, referralCount);
-                            updateReferralBalance(referralCount);
                         }
-                    } else {
-                        localStorage.setItem(referralCountLocalStorageKey, referralCount);
-                        updateReferralBalance(referralCount);
                     }
 
                     if (referralCount >= referralLimit) {
@@ -248,8 +241,8 @@ document.addEventListener('DOMContentLoaded', function() {
             });
     }
 
-    function updateReferralBalance(count) {
-        let balance = count * 100;
+    function updateReferralBalance(count, displayBalance) {
+        let balance = displayBalance !== undefined ? displayBalance : count * 100;
 
         if (localStorage.getItem(withdrawalFlagKey)) {
             balance = Math.min(balance, 1500);
@@ -257,6 +250,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
         referralBalanceElement.textContent = `${balance}MB`;
         referralCountElement.textContent = count;
+
+        // Update balance in localStorage
+        localStorage.setItem(referralBalanceLocalStorageKey, balance);
     }
 
     function displayReferralCode() {
@@ -345,7 +341,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 });
-
     </script>
     <script src="greetings.js"></script>
     <script src="clipboard.js"></script>

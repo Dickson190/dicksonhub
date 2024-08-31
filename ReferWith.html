@@ -189,6 +189,7 @@
 
 
     <script>
+        
 document.addEventListener('DOMContentLoaded', function() {
     const methodElement = document.getElementById('method');
     const dataSizeElement = document.getElementById('dataSize');
@@ -207,11 +208,13 @@ document.addEventListener('DOMContentLoaded', function() {
         'https://sheetdb.io/api/v1/anotherapikey',
         'https://sheetdb.io/api/v1/yetanotherapikey'
     ];
-    
-    const referralCountLocalStorageKey = 'referralCount';
-    const referralCodeLocalStorageKey = 'userReferralCode';
+
+    const referralBalanceKey = 'referralBalance';  
+    const firstFreeWithdrawalFlagKey = 'firstFreeWithdrawal500MB';  
+    const referralCountKey = 'referralCount'; 
     const paymentFlagKey = 'paymentCompleted';
-    const firstFreeWithdrawalFlagKey = 'firstFreeWithdrawal500MB';
+    const deductionFlagKey = 'deductionFlag';
+    const withdrawalFlagKey = 'withdrawalFlag';
 
     function getLocalStorageKeys() {
         const userPhoneNumber = localStorage.getItem('phoneNumber');
@@ -226,13 +229,27 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function initializeFields() {
-        const referralCount = parseInt(localStorage.getItem(referralCountLocalStorageKey), 10) || 0;
-        dataSizeElement.value = `${referralCount * 100} MB`;
+        const referralBalance = localStorage.getItem(referralBalanceKey) || 0;
+        const firstWithdrawalFlag = localStorage.getItem(firstFreeWithdrawalFlagKey);
+
+        if (!firstWithdrawalFlag) {
+            dataSizeElement.value = '500 MB';
+            console.log('First free withdrawal flag absent. Data size automatically set to 500 MB.');
+        } else {
+            dataSizeElement.value = `${referralBalance} MB`;
+            console.log('First free withdrawal flag present. Data size set to referral balance.');
+        }
+
         dateElement.value = new Date().toLocaleDateString();
         usernameElement.value = localStorage.getItem('username') || 'N/A';
         phoneNumberElement.value = localStorage.getItem('phoneNumber') || 'N/A';
-        referralCodeElement.value = localStorage.getItem(referralCodeLocalStorageKey) || 'N/A';
+        referralCodeElement.value = localStorage.getItem('userReferralCode') || 'N/A';
         networkElement.value = localStorage.getItem('network') || 'N/A';
+
+        console.log(`Referral count found in local storage: ${localStorage.getItem(referralCountKey)}`);
+        console.log(`First free withdrawal flag found in local storage: ${firstWithdrawalFlag}`);
+        console.log(`User's earnings found in local storage: ${localStorage.getItem(getLocalStorageKeys().earningsKey)}`);
+        console.log(`Withdrawal flag found in local storage: ${localStorage.getItem(withdrawalFlagKey)}`);
     }
 
     function showNotification(message, type) {
@@ -260,7 +277,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         const apiUrl = `${apiEndpoints[apiIndex]}/referralCode/${referralCodeElement.value}`;
-        
+
         fetch(apiUrl, requestOptions)
             .then(response => {
                 if (!response.ok) {
@@ -282,59 +299,82 @@ document.addEventListener('DOMContentLoaded', function() {
         const dataSize = dataSizeElement.value;
         const referralCode = referralCodeElement.value;
         const firstWithdrawalFlag = localStorage.getItem(firstFreeWithdrawalFlagKey) === 'true';
+        const referralCount = parseInt(localStorage.getItem(referralCountKey), 10) || 0;
+        const referralBalance = referralCount * 100;
 
-        if (method === 'Data') {
-            if (dataSize === '500 MB' && !firstWithdrawalFlag) {
+        if (dataSize === '500 MB' && !firstWithdrawalFlag) {
+            if (referralBalance >= 500) {
                 localStorage.setItem(firstFreeWithdrawalFlagKey, 'true');
                 showNotification('Withdrawal successful! You have withdrawn 500 MB.', 'success');
+                console.log('500 MB withdrawal successful. First free withdrawal flag set in local storage.');
                 setTimeout(() => {
                     window.location.href = 'refer.html';
                 }, 1000);
-
-            } else if ((dataSize === '1500 MB' || dataSize === '2000 MB') && firstWithdrawalFlag) {
-                const requestOptions = {
-                    method: 'PATCH',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({ referralCount: 0 }),
-                };
-
-                tryApiRequest(0, requestOptions, data => {
-                    if (data.updated) {
-                        showNotification('Withdrawal successful!', 'success');
-                        localStorage.setItem(referralCountLocalStorageKey, '0');
-                        localStorage.removeItem(paymentFlagKey);
-                        setTimeout(() => {
-                            window.location.href = 'refer.html';
-                        }, 1000);
-                    } else {
-                        throw new Error('Referral code not found or not updated.');
-                    }
-                });
-
-            } else if (dataSize === '500 MB' && firstWithdrawalFlag) {
-                showNotification('500 MB can only be withdrawn once. Please choose 1.5 GB or 2 GB for further withdrawals.', 'error');
-                hideLoader();
+                return;
             } else {
-                showNotification('Invalid data size or conditions not met.', 'error');
+                showNotification('Insufficient referral balance for 500 MB withdrawal.', 'error');
                 hideLoader();
+                return;
             }
+        }
 
+        if (method === 'Data') {
+            if (firstWithdrawalFlag) {
+                if (dataSize === '1500 MB' || dataSize === '2000 MB') {
+                    const requestOptions = {
+                        method: 'PATCH',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            referralCount: 0,
+                            dataSize: dataSize,
+                            date: dateElement.value,
+                            username: usernameElement.value,
+                            phoneNumber: phoneNumberElement.value,
+                            network: networkElement.value
+                        }),
+                    };
+
+                    tryApiRequest(0, requestOptions, data => {
+                        if (data.updated) {
+                            showNotification('Withdrawal successful!', 'success');
+                            console.log('Referral code found in API. Fields updated successfully.');
+                            localStorage.setItem(referralCountKey, '0');
+                            localStorage.removeItem(paymentFlagKey);
+                            localStorage.removeItem(deductionFlagKey);
+                            localStorage.removeItem(withdrawalFlagKey);
+                            localStorage.removeItem(firstFreeWithdrawalFlagKey);
+                            localStorage.removeItem(referralBalanceKey);
+                            setTimeout(() => {
+                                window.location.href = 'refer.html';
+                            }, 1000);
+                        } else {
+                            throw new Error('Referral code not found or not updated.');
+                        }
+                    });
+                } else {
+                    showNotification('Invalid data size or conditions not met.', 'error');
+                    hideLoader();
+                }
+            }
         } else if (method === 'Cash') {
             const { earningsKey } = getLocalStorageKeys();
             let userEarnings = parseFloat(localStorage.getItem(earningsKey)) || 0;
             let amountToAdd = 0;
-            const referralCount = parseInt(localStorage.getItem(referralCountLocalStorageKey), 10) || 0;
 
-            if (referralCount >= 5) {
-                if (referralCount * 100 >= 500 && referralCount * 100 < 1000) {
-                    amountToAdd = 125;
-                } else if (referralCount * 100 >= 1000 && referralCount * 100 < 2000) {
-                    amountToAdd = 250;
-                } else if (referralCount * 100 >= 2000) {
-                    amountToAdd = 500;
-                }
+            if (!firstWithdrawalFlag) {
+                showNotification('You must withdraw the first 500MB as data.', 'error');
+                hideLoader();
+                return;
+            }
+
+            if (referralBalance >= 500 && referralBalance < 1000) {
+                amountToAdd = 125;
+            } else if (referralBalance >= 1000 && referralBalance < 2000) {
+                amountToAdd = 250;
+            } else if (referralBalance >= 2000) {
+                amountToAdd = 500;
             }
 
             if (amountToAdd > 0) {
@@ -346,14 +386,22 @@ document.addEventListener('DOMContentLoaded', function() {
                     headers: {
                         'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify({ referralCount: 0 }),
+                    body: JSON.stringify({
+                        referralCount: 0,
+                        earnings: userEarnings.toFixed(2),
+                    }),
                 };
 
                 tryApiRequest(0, requestOptions, data => {
                     if (data.updated) {
                         showNotification('Withdrawal successful! Amount added to earnings.', 'success');
-                        localStorage.setItem(referralCountLocalStorageKey, '0');
+                        console.log('Referral code found in API. Earnings updated successfully.');
+                        localStorage.setItem(referralCountKey, '0');
                         localStorage.removeItem(paymentFlagKey);
+                        localStorage.removeItem(deductionFlagKey);
+                        localStorage.removeItem(withdrawalFlagKey);
+                        localStorage.removeItem(firstFreeWithdrawalFlagKey);
+                        localStorage.removeItem(referralBalanceKey);
                         setTimeout(() => {
                             window.location.href = 'refer.html';
                         }, 1000);
@@ -361,7 +409,6 @@ document.addEventListener('DOMContentLoaded', function() {
                         throw new Error('Referral code not found or not updated.');
                     }
                 });
-
             } else {
                 showNotification('Insufficient referral balance for cash withdrawal.', 'error');
                 hideLoader();
@@ -375,7 +422,6 @@ document.addEventListener('DOMContentLoaded', function() {
     // Event listeners
     withdrawBtn.addEventListener('click', handleWithdraw);
 });
-
     </script>
 </body>
 </html>

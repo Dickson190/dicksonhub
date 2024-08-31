@@ -7,128 +7,7 @@
   <link rel="stylesheet" href="watermark.css">
   <link rel="stylesheet" href="Vstyles.css">
   <link rel="stylesheet" href="image.css">
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background-color: #f4f4f4;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      margin: 0;
-    }
-
-    .container {
-      background-color: #ffffff;
-      padding: 30px;
-      border-radius: 10px;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-      width: 100%;
-      max-width: 400px;
-      text-align: center;
-      position: relative;
-    }
-
-    .container img {
-      width: 80px;
-      height: 80px;
-      margin-bottom: 20px;
-    }
-
-    .container h2 {
-      margin-bottom: 20px;
-      font-size: 24px;
-      color: #333;
-    }
-
-    .container input {
-      width: calc(100% - 20px);
-      padding: 12px;
-      margin: 10px 0;
-      border: 1px solid #ddd;
-      border-radius: 5px;
-      box-sizing: border-box;
-    }
-
-    .container button {
-      background-color: #007BFF;
-      color: white;
-      padding: 12px 20px;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      margin-top: 10px;
-      font-size: 16px;
-    }
-
-    .container button:hover {
-      background-color: #0056b3;
-    }
-
-    .loader {
-      display: none;
-      border: 4px solid #f3f3f3;
-      border-radius: 50%;
-      border-top: 4px solid #007BFF;
-      width: 24px;
-      height: 24px;
-      animation: spin 1.5s linear infinite;
-      margin: 15px auto;
-    }
-
-    @keyframes spin {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
-    }
-
-    .notification {
-      display: none;
-      color: white;
-      padding: 15px;
-      text-align: center;
-      position: fixed;
-      top: 20px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 300px;
-      border-radius: 5px;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-      z-index: 1000;
-    }
-
-    .notification.success {
-      background-color: #28a745;
-    }
-
-    .notification.error {
-      background-color: #dc3545;
-    }
-
-    .notification button {
-      background-color: #ffffff;
-      color: #007BFF;
-      border: none;
-      padding: 8px 15px;
-      border-radius: 5px;
-      cursor: pointer;
-      margin-top: 10px;
-      font-size: 14px;
-    }
-
-    .notification button:hover {
-      background-color: #f1f1f1;
-    }
-
-    #forgot-password {
-      color: #007BFF;
-      text-decoration: none;
-      font-size: 14px;
-    }
-
-    #forgot-password:hover {
-      text-decoration: underline;
-    }
-  </style>
+  <link rel="stylesheet" href="login.css">
 </head>
 <body>
   <div class="container">
@@ -151,120 +30,127 @@
 
   <script>
     document.addEventListener('DOMContentLoaded', function () {
-      const loginForm = document.getElementById('login-form');
-      const loader = document.getElementById('loader');
-      const notificationBox = document.getElementById('notification');
-      const notificationMessage = document.getElementById('notification-message');
-      const notificationButton = document.getElementById('notification-button');
+    const loginForm = document.getElementById('login-form');
+    const loader = document.getElementById('loader');
+    const notificationBox = document.getElementById('notification');
+    const notificationMessage = document.getElementById('notification-message');
+    const notificationButton = document.getElementById('notification-button');
 
-      let usersData = [];
+    let usersData = [];
 
-      const apiUrls = [
+    const apiUrls = [
         'https://sheetdb.io/api/v1/rv6qbrxgyvk67',
-        'https://sheetdb.io/api/v1/nai5zcen7euxf'
-      ];
+        'https://sheetdb.io/api/v1/nai5zcen7euxf',
+        // Add more API URLs here as needed
+    ];
 
-      function fetchData(apiUrl) {
-        return fetch(apiUrl)
-          .then(response => response.json())
-          .catch(error => {
-            console.error('Error fetching user data from', apiUrl, ':', error);
-            return null;
-          });
-      }
+    function fetchDataFromApis(apiUrls) {
+        return apiUrls.reduce((promise, apiUrl) => {
+            return promise.catch(() => {
+                return fetch(apiUrl)
+                    .then(response => {
+                        if (!response.ok) throw new Error(`API failed: ${apiUrl}`);
+                        return response.json();
+                    })
+                    .catch(error => {
+                        console.error(`Error fetching user data from ${apiUrl}:`, error);
+                        return Promise.reject(error);
+                    });
+            });
+        }, Promise.reject());
+    }
 
-      function loadData() {
-        Promise.all(apiUrls.map(fetchData))
-          .then(results => {
-            usersData = results.flat();
-            console.log('Fetched user data:', usersData);
-          })
-          .catch(error => {
-            showNotification('An error occurred while fetching user data. Please try again.');
-          });
-      }
+    function loadData() {
+        fetchDataFromApis(apiUrls)
+            .then(data => {
+                usersData = Array.isArray(data) ? data : [];
+                console.log('Fetched user data:', usersData);
+            })
+            .catch(() => {
+                showNotification('An error occurred while fetching user data. Please try again.');
+            });
+    }
 
-      loadData();
+    loadData();
 
-      function showNotification(message, isSuccess = false) {
+    function showNotification(message, isSuccess = false) {
         notificationMessage.textContent = message;
         notificationBox.className = `notification ${isSuccess ? 'success' : 'error'}`;
         notificationBox.style.display = 'block';
         notificationButton.style.display = isSuccess ? 'inline-block' : 'none';
         if (isSuccess) {
-          notificationButton.addEventListener('click', () => {
-            window.location.href = 'profile.html';
-          });
+            notificationButton.addEventListener('click', () => {
+                window.location.href = 'profile.html';
+            });
         } else {
-          setTimeout(() => {
-            notificationBox.style.display = 'none';
-          }, 3000);
+            setTimeout(() => {
+                notificationBox.style.display = 'none';
+            }, 3000);
         }
-      }
+    }
 
-      function storeCredentials(username, password) {
+    function storeCredentials(username, password) {
         localStorage.setItem('username', username);
         localStorage.setItem('password', password);
-      }
+    }
 
-      function clearCredentials() {
+    function clearCredentials() {
         localStorage.removeItem('username');
         localStorage.removeItem('password');
-      }
+    }
 
-      function automaticLogin() {
+    function automaticLogin() {
         const storedUsername = localStorage.getItem('username');
         const storedPassword = localStorage.getItem('password');
 
         if (storedUsername && storedPassword) {
-          loader.style.display = 'block';
-          setTimeout(() => {
-            showNotification('Automatic login successful \u2714️', true);
-            window.location.href = 'profile.html';
-          }, 2000);
-          return true;
+            loader.style.display = 'block';
+            setTimeout(() => {
+                showNotification('Automatic login successful \u2714️', true);
+                window.location.href = 'profile.html';
+            }, 2000);
+            return true;
         }
         return false;
-      }
+    }
 
-      if (!automaticLogin()) {
+    if (!automaticLogin()) {
         loginForm.addEventListener('submit', function (event) {
-          event.preventDefault();
-          const enteredUsername = document.getElementById('username').value;
-          const enteredPassword = document.getElementById('password').value;
+            event.preventDefault();
+            const enteredUsername = document.getElementById('username').value;
+            const enteredPassword = document.getElementById('password').value;
 
-          if (!enteredUsername || !enteredPassword) {
-            showNotification('Username and password are required.');
-            return;
-          }
+            if (!enteredUsername || !enteredPassword) {
+                showNotification('Username and password are required.');
+                return;
+            }
 
-          loader.style.display = 'block';
+            loader.style.display = 'block';
 
-          // Fetch users data from API and verify locally
-          Promise.all(apiUrls.map(fetchData))
-            .then(results => {
-              usersData = results.flat();
-              const user = usersData.find(user => user['name'] === enteredUsername);
+            fetchDataFromApis(apiUrls)
+                .then(data => {
+                    usersData = Array.isArray(data) ? data : [];
+                    const user = usersData.find(user => user['name'] === enteredUsername);
 
-              if (user && user['password'] === enteredPassword) {
-                storeCredentials(enteredUsername, enteredPassword);
-                showNotification('Login successful \u2714️', true);
-              } else {
-                clearCredentials();
-                showNotification('Incorrect username or password. Please try again.');
-              }
+                    if (user && user['password'] === enteredPassword) {
+                        storeCredentials(enteredUsername, enteredPassword);
+                        showNotification('Login successful \u2714️', true);
+                    } else {
+                        clearCredentials();
+                        showNotification('Incorrect username or password. Please try again.');
+                    }
 
-              loader.style.display = 'none';
-            })
-            .catch(error => {
-              loader.style.display = 'none';
-              clearCredentials();
-              showNotification('An error occurred. Please try again.');
-              console.error('Error:', error);
-            });
+                    loader.style.display = 'none';
+                })
+                .catch(error => {
+                    loader.style.display = 'none';
+                    clearCredentials();
+                    showNotification('An error occurred. Please try again.');
+                    console.error('Error:', error);
+                });
         });
-      }
-    });
+    }
+});
   </script>
   <script src="image.js"></script>
 </body>
