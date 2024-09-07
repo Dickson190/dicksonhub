@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Deposit Check</title>
+    <style>
+        /* Basic reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .container {
+            width: 400px;
+            padding: 20px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            position: relative;
+            animation: fadeIn 0.7s ease-out;
+        }
+
+        h2 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        p {
+            font-size: 16px;
+            color: #555;
+            margin-bottom: 20px;
+        }
+
+        .notification {
+            display: none;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            text-align: center;
+            font-size: 16px;
+        }
+
+        .success {
+            background-color: #28a745;
+            color: white;
+        }
+
+        .error {
+            background-color: #dc3545;
+            color: white;
+        }
+
+        .redirecting {
+            background-color: #17a2b8;
+            color: white;
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        .loader {
+            display: none;
+            font-size: 14px;
+            color: #007bff;
+        }
+
+        /* Keyframes for animations */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Deposit Status</h2>
+
+    <p id="message">Checking deposit status...</p>
+    <div id="notification" class="notification"></div>
+
+    <button id="depositBtn" style="display: none;">Deposit Now</button>
+    <p id="countdown" class="loader"></p>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const message = document.getElementById('message');
+        const notification = document.getElementById('notification');
+        const depositBtn = document.getElementById('depositBtn');
+        const countdown = document.getElementById('countdown');
+
+        // Check localStorage for Deposited200Yes
+        const depositStatus = localStorage.getItem('Deposited200Yes');
+
+        if (!depositStatus) {
+            // If not found, show the deposit message and button
+            message.textContent = 'You have to deposit at least ₦150 to make withdrawals as this is a one-time payment only.';
+            depositBtn.style.display = 'inline-block';
+            notification.textContent = 'No deposit found.';
+            notification.className = 'notification error';
+            notification.style.display = 'block';
+
+            // Button click redirects to deposit.html
+            depositBtn.addEventListener('click', function () {
+                window.location.href = 'deposit.html';
+            });
+        } else {
+            // If found, show success message and start countdown for redirection
+            message.textContent = 'Your deposit has been verified. Redirecting to withdrawals...';
+            notification.textContent = 'Deposit verified successfully!';
+            notification.className = 'notification success';
+            notification.style.display = 'block';
+            countdown.style.display = 'block';
+
+            // Countdown timer (7 seconds)
+            let timeLeft = 7;
+            countdown.textContent = `Redirecting in ${timeLeft} seconds...`;
+            const timer = setInterval(() => {
+                timeLeft--;
+                countdown.textContent = `Redirecting in ${timeLeft} seconds...`;
+
+                if (timeLeft <= 0) {
+                    clearInterval(timer);
+                    window.location.href = 'withdraw.html';
+                }
+            }, 1000);
+        }
+    });
+</script>
+
+</body>
+</html>
