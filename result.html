@@ -5,31 +5,42 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Quiz Result Page</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="load.css">
+    <link rel="stylesheet" href="sidenav.css">
+    <style>
+        .table-container {
+            margin: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+        }
+        th {
+            background-color: #f2f2f2;
+            text-align: left;
+        }
+        .table-container h2 {
+            color: #333;
+        }
+    </style>
 </head>
 <body>
     <div class="mobile-container">
-
-        <!-- Side Navigation -->
-        <div id="sidenav" class="sidenav">
-            <a href="javascript:void(0)" class="closebtn" onclick="toggleNav()">&times;</a>
-            <a href="app.html">Home</a>
-            <a href="earn.html">Offerwall</a>
-            <a href="task.html">Task</a>
-            <a href="bean.html" class="active">Upgrade Account</a>
-            <a href="shop.html">Shop</a>
-            <a href="news.html">New Features/Updates</a>
-            <a href="cop.html">Withdraw</a>
-            <a href="whistory.html">Withdrawal History</a>
-            <a href="conversion.html">Convert Airtime/Data</a>
-            <a href="about.html">About Us</a>
-        </div>
-
-        <a href="javascript:void(0);" class="icon" onclick="toggleNav()">
-            <i class="fa fa-bars"></i>
-        </a>
-
+        <!-- Other elements remain unchanged -->
+        
+        <!-- Hamburger Icon to Open Sidenav -->
+        <span class="icon">
+            <i class="fa fa-bars hamburger"></i>
+        </span>
+        
         <header class="header">
             <img src="Dig1.png" alt="Logo" class="logo">
         </header>
@@ -37,15 +48,57 @@
         <div class="content">
             <h1>Quiz Result Page</h1>
             <p>Welcome Member! Your results will be posted here once reviewed.</p>
-        </div>
 
-        <div class="loader" id="loader">
-            <div class="cooking">
-                <div class="bubble"></div>
-                <div class="bubble"></div>
-                <div class="bubble"></div>
-                <div class="bubble"></div>
-                <div class="pot"></div>
+            <!-- Tables for displaying results -->
+            <div class="table-container">
+                <h2>Freemium Quiz Winners</h2>
+                <table id="freemium-table">
+                    <thead>
+                        <tr>
+                            <th>s/n</th>
+                            <th>Name</th>
+                            <th>score</th>
+                            <th>Rewards</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Rows will be populated by JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="table-container">
+                <h2>Bronze Quiz Winners</h2>
+                <table id="bronze-table">
+                    <thead>
+                        <tr>
+                            <th>s/n</th>
+                            <th>Name</th>
+                            <th>Score</th>
+                            <th>Rewards</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Rows will be populated by JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="table-container">
+                <h2>Premium & Golden Quiz Winners</h2>
+                <table id="premium-table">
+                    <thead>
+                        <tr>
+                            <th>s/n</th>
+                            <th>Name</th>
+                            <th>Score</th>
+                            <th>Rewards</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Rows will be populated by JavaScript -->
+                    </tbody>
+                </table>
             </div>
         </div>
 
@@ -57,27 +110,140 @@
                 <a href="earn.html" class="footer-link">Earn</a>
             </nav>
         </footer>
-
     </div>
     <script src="load.js"></script>
     <script src="sidenav.js"></script>
-    <script>
-        window.onload = function() {
+    
+   <script>
+    window.onload = function() {
+        // Hide the loader after 3 seconds
+        const loader = document.getElementById('loader');
+        if (loader) {
             setTimeout(() => {
-                document.getElementById('loader').style.display = 'none';
-            }, 3000); // Hide loader after 3 seconds
-        };
+                loader.style.display = 'none';
+                console.log('Loader hidden after 3 seconds');
+            }, 3000);
+        }
 
+        // Handle footer link clicks with a loader
         document.querySelectorAll('.footer-link').forEach(link => {
             link.addEventListener('click', function(event) {
                 event.preventDefault();
                 const href = this.getAttribute('href');
-                document.getElementById('loader').style.display = 'flex';
+                if (loader) {
+                    loader.style.display = 'flex';
+                    console.log('Loader displayed for redirect');
+                }
                 setTimeout(() => {
                     window.location.href = href;
                 }, 3000); // Redirect after 3 seconds
             });
         });
+
+        // Fetch and display quiz results
+        async function fetchAndDisplayResults() {
+            try {
+                console.log('Fetching quiz results...');
+                const response = await fetch('https://sheetdb.io/api/v1/g365f08c476j3', {
+                    method: 'GET'
+                });
+
+                if (!response.ok) {
+                    throw new Error(`Network response was not ok: ${response.statusText}`);
+                }
+
+                const data = await response.json();
+                console.log('Data fetched successfully:', data);
+                
+                // Store data in local storage
+                localStorage.setItem('quizResults', JSON.stringify(data));
+                console.log('Data saved to local storage');
+
+                // Retrieve data from local storage
+                const storedData = JSON.parse(localStorage.getItem('quizResults'));
+                console.log('Data retrieved from local storage:', storedData);
+
+                // Sort data by score in descending order, and handle ties
+                storedData.sort((a, b) => b.score - a.score || a.username.localeCompare(b.username));
+                console.log('Data sorted by score:', storedData);
+                
+                // Allocate rewards
+                const freemiumRewards = [100, 50, 50];
+                const bronzeRewards = [150, 120, 100];
+                const premiumRewards = [200, 150, 100]; // Example values
+                
+                const tables = {
+                    freemium: document.getElementById('freemium-table').getElementsByTagName('tbody')[0],
+                    bronze: document.getElementById('bronze-table').getElementsByTagName('tbody')[0],
+                    premium: document.getElementById('premium-table').getElementsByTagName('tbody')[0]
+                };
+
+                console.log('Tables selected:', tables);
+                
+                // Function to populate table
+                function populateTable(table, data, rewards) {
+                    console.log(`Populating ${table.id} table...`);
+                    if (table) {
+                        table.innerHTML = ''; // Clear existing rows
+                        data.forEach((item, index) => {
+                            let reward = 0;
+                            if (index < rewards.length) {
+                                reward = rewards[index];
+                            }
+                            const row = table.insertRow();
+                            row.insertCell().innerText = index + 1;
+                            row.insertCell().innerText = item.username;
+                            row.insertCell().innerText = item.score;
+                            row.insertCell().innerText = `₦${reward}`;
+                        });
+                        console.log(`${table.id} table populated.`);
+                    } else {
+                        console.error(`Table with id ${table.id} not found.`);
+                    }
+                }
+
+                // Populate tables
+                const freemiumData = storedData.filter(item => item.status === 'Free' || item.status === '');
+                const bronzeData = storedData.filter(item => item.status === 'BRONZE');
+                const premiumData = storedData.filter(item => item.status === 'PREMIUM'); // Assuming 'PREMIUM' for Premium & Golden
+
+                populateTable(tables.freemium, freemiumData, freemiumRewards);
+                populateTable(tables.bronze, bronzeData, bronzeRewards);
+                populateTable(tables.premium, premiumData, premiumRewards);
+
+            } catch (error) {
+                console.error('Error fetching quiz results:', error);
+            }
+        }
+
+        // Call the function to fetch and display results
+        fetchAndDisplayResults();
+
+        // Clear local storage on Friday
+        function clearLocalStorageOnFriday() {
+            const now = new Date();
+            const dayOfWeek = now.getDay(); // 0 = Sunday, 1 = Monday, ..., 5 = Friday
+
+            // Check if today is Friday
+            if (dayOfWeek === 5) {
+                console.log('Today is Friday. Clearing local storage.');
+
+                // Clear the local storage
+                localStorage.removeItem('quizResults'); // Replace 'quizResults' with the key you use
+
+                // Optional: Show a message to the user
+                alert('Quiz data has been cleared for this week.');
+            } else {
+                console.log('Today is not Friday. Local storage is not cleared.');
+            }
+        }
+
+        // Run the function to clear local storage on page load
+        clearLocalStorageOnFriday();
+    };
+</script>
+
     </script>
+    
 </body>
 </html>

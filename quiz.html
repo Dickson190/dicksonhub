@@ -51,7 +51,7 @@
     <script>
 document.addEventListener("DOMContentLoaded", function() {
     var today = new Date().toISOString().split('T')[0];
-    var nextParticipationDate = new Date('2024-06-17').toISOString().split('T')[0];
+    var nextParticipationDate = new Date('2024-09-13').toISOString().split('T')[0];
     var hasParticipated = localStorage.getItem("hasParticipated");
     var participationDate = localStorage.getItem("participationDate");
     var userAllowed = !hasParticipated || (hasParticipated && participationDate && participationDate < nextParticipationDate && today >= nextParticipationDate);
@@ -104,55 +104,57 @@ document.addEventListener("DOMContentLoaded", function() {
     populateField("password", "password");
     populateField("network", "network");
 
-    var questions = [
-        {
-            question: "What is the capital of France?",
-            options: ["Paris", "London", "Berlin", "NONE"]
-        },
-        {
-            question: "Which planet is known as the Red Planet?",
-            options: ["Mars", "Venus", "Jupiter", "NONE"]
-        },
-        {
-            question: "What is the capital of Australia?",
-            options: ["Sydney", "Melbourne", "Canberra", "Perth"]
-        },
-        {
-            question: "Which planet is the hottest in our solar system?",
-            options: ["Mars", "Mercury", "Venus", "Earth"]
-        },
-        {
-            question: "Which of these elements is a noble gas?",
-            options: ["Oxygen", "Helium", "Hydrogen", "Nitrogen"]
-        },
-        {
-            question: "In which country is the tallest building in the world located?",
-            options: ["China", "Saudi Arabia", "United Arab Emirates", "USA"]
-        },
-        {
-            question: "Which of the following numbers is a prime number?",
-            options: ["15", "21", "29", "35"]
-        },
-        {
-            question: "Which language has the most native speakers?",
-            options: ["English", "Hindi", "Mandarin", "Spanish"]
-        },
-        {
-            question: "What is the chemical symbol for gold?",
-            options: ["Au", "Ag", "Pb", "Fe"]
-        },
-        {
-            question: "Which famous artist cut off his own ear?",
-            options: ["Pablo Picasso", "Leonardo da Vinci", "Vincent van Gogh", "Claude Monet"]
-        },
-        {
-            question: "Which country has the longest coastline in the world?",
-            options: ["Russia", "Australia", "Canada", "Brazil"]
-        },
-        {
-            question: "What is the main ingredient in traditional hummus?",
-            options: ["Chickpeas", "Lentils", "Beans", "Peas"]
-        }
+      
+      
+      var questions = [
+    {
+        question: "What is the largest ocean on Earth?",
+        options: ["Atlantic Ocean", "Indian Ocean", "Southern Ocean", "Pacific Ocean"]
+    },
+    {
+        question: "Which element has the atomic number 1?",
+        options: ["Helium", "Oxygen", "Hydrogen", "Nitrogen"]
+    },
+    {
+        question: "Who wrote 'To Kill a Mockingbird'?",
+        options: ["Harper Lee", "J.K. Rowling", "Ernest Hemingway", "Mark Twain"]
+    },
+    {
+        question: "What is the smallest planet in our solar system?",
+        options: ["Mars", "Earth", "Mercury", "Venus"]
+    },
+    {
+        question: "What is the hardest natural substance on Earth?",
+        options: ["Gold", "Iron", "Diamond", "Platinum"]
+    },
+    {
+        question: "Which country is known as the Land of the Rising Sun?",
+        options: ["Japan", "China", "South Korea", "Thailand"]
+    },
+    {
+        question: "What is the capital of Canada?",
+        options: ["Toronto", "Vancouver", "Montreal", "Ottawa"]
+    },
+    {
+        question: "Which planet is known for its ring system?",
+        options: ["Saturn", "Jupiter", "Uranus", "Neptune"]
+    },
+    {
+        question: "What is the chemical symbol for silver?",
+        options: ["Ag", "Au", "Pb", "Hg"]
+    },
+    {
+        question: "Who is the author of the 'Harry Potter' series?",
+        options: ["J.K. Rowling", "J.R.R. Tolkien", "C.S. Lewis", "George R.R. Martin"]
+    },
+    {
+        question: "Which country has the most volcanoes?",
+        options: ["Indonesia", "Japan", "USA", "Iceland"]
+    },
+    {
+        question: "What is the main ingredient in traditional guacamole?",
+        options: ["Tomatoes", "Avocados", "Onions", "Peppers"]
+    }
   
     ];
 
@@ -231,22 +233,26 @@ document.addEventListener("DOMContentLoaded", function() {
             var userAnswer = formData.get(`answer${index + 1}`);
             if (userAnswer === "NONE") return;
 
-            var correctAnswer;
-            switch (index) {
-                case 0: correctAnswer = "Paris"; break;
-                case 1: correctAnswer = "Mars"; break;
-                case 2: correctAnswer = "Canberra"; break;
-                case 3: correctAnswer = "Venus"; break;
-                case 4: correctAnswer = "Helium"; break;
-                case 5: correctAnswer = "United Arab Emirates"; break;
-                case 6: correctAnswer = "29"; break;
-                case 7: correctAnswer = "Mandarin"; break;
-                case 8: correctAnswer = "Au"; break;
-                case 9: correctAnswer = "Vincent van Gogh"; break;
-                case 10: correctAnswer = "Canada"; break;
-                case 11: correctAnswer = "Chickpeas"; break;
-            }
+           
+           var correctAnswer;
+switch (index) {
+    case 0: correctAnswer = "Pacific Ocean"; break;
+    case 1: correctAnswer = "Hydrogen"; break;
+    case 2: correctAnswer = "Harper Lee"; break;
+    case 3: correctAnswer = "Mercury"; break;
+    case 4: correctAnswer = "Diamond"; break;
+    case 5: correctAnswer = "Japan"; break;
+    case 6: correctAnswer = "Ottawa"; break;
+    case 7: correctAnswer = "Saturn"; break;
+    case 8: correctAnswer = "Ag"; break;
+    case 9: correctAnswer = "J.K. Rowling"; break;
+    case 10: correctAnswer = "Indonesia"; break;
+    case 11: correctAnswer = "Avocados"; break;
+}
 
+           
+           
+           
             if (userAnswer === correctAnswer) {
                 totalScore += 8.3;
             }

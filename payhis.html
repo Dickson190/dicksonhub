@@ -4,36 +4,24 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Deposit History</title>
-    <link rel="stylesheet" href="fixed.css">
+    <link rel="stylesheet" href="load.css">
     <link rel="stylesheet" href="sidenav.css">
     <link rel="stylesheet" href="whistory.css"> <!-- Make sure history.css exists and styles the table properly -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
 </head>
 <body>
     <div class="mobile-container">
         <!-- Side Navigation -->
-        <div id="sidenav" class="sidenav">
-            <a href="javascript:void(0)" class="closebtn" onclick="toggleNav()">&times;</a>
-            <a href="app.html">Home</a>
-            <a href="earn.html">Offerwall</a>
-            <a href="task.html">Task</a>
-            <a href="bean.html">Upgrade Account</a>
-            <a href="shop.html">Shop</a>
-            <a href="news.html">New Features/Updates</a>
-            <a href="cop.html">Withdraw</a>
-            <a href="whistory.html">Withdrawal History</a>
-            <a href="conversion.html">Convert Airtime/Data</a>
-            <a href="payhis.html" class="active">Deposit History</a>
-            <a href="about.html">About Us</a>
-        </div>
-
-        <a href="javascript:void(0);" class="icon" onclick="toggleNav()">
-            <i class="fa fa-bars"></i>
-        </a>
-
-            <h2>Deposit History</h2>
+                  <h2>Deposit History</h2>
                <div class="table-container">
- 
+ <!-- Hamburger Icon to Open Sidenav -->
+            <span class="icon">
+                <i class="fa fa-bars hamburger"></i>
+            </span>
+
+
             <table id="historyTable">
                 <thead>
                     <tr>
@@ -51,13 +39,7 @@
         </div>
     </div>
 
-    <div class="bottom-nav">
-        <a href="app.html" class="nav-item"><i class="fa fa-home"></i><span>Home</span></a>
-        <a href="gift.html" class="nav-item"><i class="fa fa-gift"></i><span>Claim Code</span></a>
-        <a href="news.html" class="nav-item"><i class="fa fa-bell"></i><span>Notifications</span></a>
-        <a href="profile.html" class="nav-item"><i class="fa fa-user"></i><span>Profile</span></a>
-    </div>
-
+   <script src="load.js"></script>
     <script src="sidenav.js"></script>
     <script src="payhis.js"></script>
 </body>

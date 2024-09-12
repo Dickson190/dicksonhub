@@ -54,7 +54,7 @@
    <script>
 document.addEventListener("DOMContentLoaded", function() {
     var today = new Date().toISOString().split('T')[0];
-    var nextParticipationDate = new Date('2024-08-01').toISOString().split('T')[0];
+    var nextParticipationDate = new Date('2024-09-13').toISOString().split('T')[0];
     var hasParticipated = localStorage.getItem("hasParticipated");
     var participationDate = localStorage.getItem("participationDate");
     var userAllowed = !hasParticipated || (hasParticipated && participationDate && participationDate < nextParticipationDate && today >= nextParticipationDate);

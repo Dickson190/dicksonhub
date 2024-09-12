@@ -2,34 +2,52 @@ body {
     font-family: "Lato", sans-serif;
 }
 
+/* Default (closed) state of the sidenav */
 .sidenav {
     height: 100%;
     width: 0;
     position: fixed;
-    z-index: 1000; /* Ensure the sidenav is on top of all content */
+    z-index: 9999;
     top: 0;
     left: 0;
     background-color: #111;
-    overflow-y: auto; /* Enable vertical scrolling */
+    overflow-y: auto;
     overflow-x: hidden;
-    transition: 0.5s;
+    transition: width 0.5s ease, opacity 0.5s ease;
     padding-top: 60px;
-    opacity: 0; /* Make the side nav initially transparent */
+    padding-bottom: 30px;
+    opacity: 0;
+    box-sizing: border-box;
 }
 
+/* Open state of the sidenav */
+.sidenav.open {
+    width: 250px;
+    opacity: 1;
+}
+
+/* Styling for links inside the sidenav */
 .sidenav a {
-    padding: 8px 8px 8px 32px;
+    padding: 10px 16px;
     text-decoration: none;
-    font-size: 25px;
+    font-size: 18px;
     color: #818181;
-    display: block;
-    transition: 0.3s;
+    display: flex;
+    align-items: center;
+    transition: color 0.3s ease;
 }
 
+/* Font Awesome icon styling */
+.sidenav i {
+    margin-right: 15px; /* Space between icon and text */
+}
+
+/* Hover effect for sidenav links */
 .sidenav a:hover {
     color: #f1f1f1;
 }
 
+/* Close button styling */
 .sidenav .closebtn {
     position: absolute;
     top: 0;
@@ -38,8 +56,9 @@ body {
     margin-left: 50px;
 }
 
+/* Hamburger icon styling */
 .hamburger {
-    font-size: 30px;
+    font-size: 15px;
     cursor: pointer;
 }
 
@@ -47,11 +66,17 @@ body {
     position: absolute;
     top: 15px;
     right: 15px;
-    color: white; /* Color for the hamburger icon */
-    background-color: black; /* Background color for the hamburger icon */
+    color: white;
+    background-color: black;
     padding: 10px;
     border-radius: 5px;
     cursor: pointer;
+}
+
+/* Ensure that sidenav is always above other elements */
+.bottom-nav {
+    position: relative;
+    z-index: 1;
 }
 
 #content {

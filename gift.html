@@ -3,75 +3,88 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- External FontAwesome CSS for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+
+    <!-- Sidenav CSS -->
     <link rel="stylesheet" href="sidenav.css">
+
+    <!-- Additional Stylesheets -->
     <link rel="stylesheet" href="watermark.css">
     <link rel="stylesheet" href="load.css">
     <link rel="stylesheet" href="fixed.css">
     <link rel="stylesheet" href="gift.css">
+    
     <title>Claim Gift</title>
+
+    <!-- Notification Box Styling -->
     <style>
         .notification-box {
-    display: none;
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background-color: #4CAF50; /* Green background */
-    color: white;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.2);
-    z-index: 1000;
-    text-align: center;
-    width: 80%;
-    max-width: 300px;
-    font-size: 18px;
-}
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: #4CAF50; /* Green background */
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+            text-align: center;
+            width: 80%;
+            max-width: 300px;
+            font-size: 18px;
+        }
 
-.notification-box.error {
-    background-color: #f44336; /* Red background for error */
-}
+        .notification-box.error {
+            background-color: #f44336; /* Red background for error */
+        }
     </style>
 </head>
+
 <body>
+
+    <!-- Container for Main Content -->
     <div class="container">
         <div class="mobile-container">
-            <!-- Side Navigation -->
-            <div id="sidenav" class="sidenav">
-                <a href="javascript:void(0)" class="closebtn" onclick="toggleNav()">&times;</a>
-                <a href="app.html">Home</a>
-                <a href="earn.html">Offerwall</a>
-                <a href="task.html">Task</a>
-                <a href="bean.html" class="active">Upgrade Account</a>
-                <a href="shop.html">Shop</a>
-                <a href="news.html">New Features/Updates</a>
-                <a href="cop.html">Withdraw</a>
-                <a href="refer_earn.html">Refer & Earn</a>
-                 <a href="conversion.html">Convert Airtime/Data </a>
-                <a href="about.html">About Us</a>
-            </div>
-            <a href="javascript:void(0);" class="icon" onclick="toggleNav()">
-                <i class="fa fa-bars"></i>
-            </a>
+            
+     <!-- Hamburger Icon to Open Sidenav -->
+            <span class="icon">
+                <i class="fa fa-bars hamburger"></i>
+            </span>
+
+
+            <!-- Page Header -->
             <h1>Claim Your Gift</h1>
+
+            <!-- Input for Claim Code and Button -->
             <input type="text" id="claimCode" placeholder="Enter your claim code">
             <button onclick="claimGift()">Claim Gift</button>
+
+            <!-- Display Remaining Claims -->
             <div id="flag" class="flag">Remaining claims: 1</div>
+
+            <!-- Social Links for Telegram and WhatsApp -->
             <div class="social-buttons">
                 <p>If you want a claim code, check one of the two social platforms below:</p>
-                <a href="https://t.me/DicksonHubweb" target="_blank" class="fa fa-telegram"></a>
-                <a href="https://chat.whatsapp.com/HHAM9pj0EfZEIzpFIgy19O" target="_blank" class="fa fa-whatsapp"></a>
-            </div>
+             <!-- Social Media Links with Icons from Font Awesome 6.0 --> <a href="https://t.me/DicksonHubweb" target="_blank" class="fa-brands fa-telegram" aria-label="Telegram"></a> <a href="https://chat.whatsapp.com/HHAM9pj0EfZEIzpFIgy19O" target="_blank" class="fa-brands fa-whatsapp" aria-label="WhatsApp"></a> 
+             </div>
         </div>
     </div>
-    <!-- Bottom Navigation -->
+
+    <!-- Bottom Navigation Section -->
     <div class="bottom-nav">
         <a href="app.html" class="nav-item"><i class="fa fa-home"></i><span>Home</span></a>
         <a href="gift.html" class="nav-item"><i class="fa fa-gift"></i><span>Claim Code</span></a>
         <a href="news.html" class="nav-item"><i class="fa fa-bell"></i><span>Notifications</span></a>
         <a href="profile.html" class="nav-item"><i class="fa fa-user"></i><span>Profile</span></a>
     </div>
+
+    <!-- Loader Section (for loading animations) -->
     <div class="loader" id="loader">
         <div class="cooking">
             <div class="bubble"></div>
@@ -82,10 +95,13 @@
         </div>
     </div>
     
-    <!-- Notification Box -->
-<div id="notificationBox" class="notification-box">
-    <span id="notificationMessage"></span>
-</div>
+    <!-- Notification Box for Success/Error Messages -->
+    <div id="notificationBox" class="notification-box">
+        <span id="notificationMessage"></span>
+    </div>
+
+    <!-- Include the dynamically loaded sidenav -->
+    <script src="sidenav.js"></script>
     
     <script>
   function showNotification(message, type = 'success') {
@@ -141,7 +157,7 @@ function claimGift() {
     }
 }
 </script>
-    <script src="sidenav.js"></script>
+    
     <script src="load.js"></script>
 </body>
 </html>
