@@ -1,59 +1,62 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <!-- Meta Information -->
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Dashboard</title>
-  <!-- Stylesheets -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  
+  <!-- Font Awesome Stylesheets -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
+  
+  <!-- Slick Carousel Stylesheets -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick-theme.min.css">
+  
+  <!-- Custom Stylesheets -->
   <link rel="stylesheet" href="image.css">
   <link rel="stylesheet" href="app.css">
   <link rel="stylesheet" href="slides.css">
-<<link rel="stylesheet" href="app2.css">
+  <link rel="stylesheet" href="app2.css">
   <link rel="stylesheet" href="sidenav.css">
   <link rel="stylesheet" href="load.css">
   <link rel="stylesheet" href="wapp.css"> 
-   
-  </head>
+</head>
 <body>
+  
   <!-- Side Navigation -->
   <!-- Hamburger Icon to Open Sidenav -->
-            <span class="icon">
-                <i class="fa fa-bars hamburger"></i>
-            </span>
-
-  </div>
+  <span class="icon">
+    <i class="fa fa-bars hamburger"></i>
+  </span>
 
   <!-- Top Navigation -->
   <div class="topnav" id="myTopnav">
-    <a href="#news" class="active"><b><p style="color: cyan;">DICKSONHUB</p></b></a>
+    <a href="#news" class="active">
+      <b><p style="color: cyan;">DICKSONHUB</p></b>
+    </a>
     <a href="javascript:void(0);" class="icon" onclick="toggleNav()">
       <i class="fa fa-bars"></i>
     </a>
   </div>
-  
-    <div id="notificationBox" class="notification-box"></div>
 
+  <!-- Notification Box -->
+  <div id="notificationBox" class="notification-box"></div>
 
+  <!-- Main Content Section -->
   <div id="content" style="padding-top: 10px;">
     <div class="container">
       <h1>Welcome to Your Dashboard, <span id="username"></span>!</h1>
       <p id="greeting"></p>
 
-     
       <!-- Earnings Section -->
       <div class="card">
         <h2>Your Earnings</h2>
         <p id="userEarnings">₦0.00</p>
-        <a href="cop.html" class="withdraw-button">Withdraw</a>
+        <a href="withdraw.html" class="withdraw-button">Withdraw</a>
       </div>
 
-      <!-- Deposit Section -->
+      <!-- Deposit Balance Section -->
       <div class="card">
         <h2>Deposit Balance</h2>
         <p id="userDeposit">₦0.00</p>
@@ -78,7 +81,7 @@
         <button id="viewMoreButton">View More</button>
       </div>
 
-      <!-- Action Buttons -->
+      <!-- Action Buttons Section -->
       <div class="buttons">
         <a href="earn.html" class="button-icon">
           <i class="fa fa-shapes"></i>
@@ -86,7 +89,7 @@
         </a>
         <a href="premium.html" class="button-icon">
           <i class="fa fa-question-circle"></i>
-          <span>Quiz </span>
+          <span>Quiz</span>
         </a>
         <a href="result.html" class="button-icon">
           <i class="fa fa-list"></i>
@@ -98,7 +101,7 @@
         </a>
       </div>
 
-      <!-- Slideshow -->
+      <!-- Slideshow Section -->
       <div class="slideshow-container">
         <div><a href="result.html"><img src="woman.png" alt="Slide 1"></a></div>
         <div><a href="news.html"><img src="announcement.jpg" alt="Slide 2"></a></div>
@@ -108,14 +111,27 @@
     </div>
   </div>
 
-  <!-- Bottom Navigation -->
+  <!-- Bottom Navigation Section -->
   <div class="bottom-nav">
-    <a href="app.html" class="nav-item"><i class="fa fa-home"></i><span>Home</span></a>
-    <a href="gift.html" class="nav-item"><i class="fa fa-gift"></i><span>Claim Code</span></a>
-    <a href="news.html" class="nav-item"><i class="fa fa-bell"></i><span>Notifications</span></a>
-    <a href="profile.html" class="nav-item"><i class="fa fa-user"></i><span>Profile</span></a>
+    <a href="app.html" class="nav-item">
+      <i class="fa fa-home"></i>
+      <span>Home</span>
+    </a>
+    <a href="gift.html" class="nav-item">
+      <i class="fa fa-gift"></i>
+      <span>Claim Code</span>
+    </a>
+    <a href="news.html" class="nav-item">
+      <i class="fa fa-bell"></i>
+      <span>Notifications</span>
+    </a>
+    <a href="profile.html" class="nav-item">
+      <i class="fa fa-user"></i>
+      <span>Profile</span>
+    </a>
   </div>
 
+  <!-- Loading Spinner -->
   <div class="loader" id="loader">
     <div class="cooking">
       <div class="bubble"></div>
@@ -125,198 +141,17 @@
       <div class="pot"></div>
     </div>
   </div>
-  
 
-
-  <!-- Scripts -->
+  <!-- JavaScript Files -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.js"></script>
   
-  <script>
-      const apiUrl = 'https://sheetdb.io/api/v1/qw932qls70g5c';
-const username = localStorage.getItem('username');
-const apiKeys = [
-    'editCount', 'airtimeData', 'dataConversionData', 'withdrawalsData', 
-    'taskData', 'depositData'
-];
-
-// Show notification on the page
-function showNotification(message, type) {
-    const notification = document.getElementById('notification');
-    notification.textContent = message;
-    notification.className = type;
-    notification.style.display = 'block';
-    setTimeout(() => {
-        notification.style.display = 'none';
-    }, 5000);
-}
-
-// Store the date of the last request in localStorage
-function storeLastRequestDate() {
-    localStorage.setItem('lastRequestDate', new Date().toISOString());
-}
-
-// Extract localStorage data for sending to the API
-function getLocalStorageData() {
-    const excludedKeys = [
-        'age', 'network', 'lga', 'bankName', 'state', 'phoneNumber', 
-        'uniqueCode', 'userProfile', 'gender', 'lastName', 'accountName', 
-        'password', 'email', 'firstName', 'others', 'dataFetched'
-    ];
-
-    let dataToSend = {};
-    let undefinedData = [];
-
-    for (let i = 0; i < localStorage.length; i++) {
-        let key = localStorage.key(i);
-        let value = localStorage.getItem(key);
-        if (apiKeys.includes(key)) {
-            dataToSend[key] = value;
-        } else if (!excludedKeys.includes(key) && key !== 'username') {
-            undefinedData.push(`(${key} = ${value})`);
-        }
-    }
-
-    dataToSend['undefinedData'] = undefinedData.join(', ');
-    return dataToSend;
-}
-
-// Handle GET request to retrieve data from the API
-function sendGetRequest() {
-    fetch(`${apiUrl}/search?username=${username}`)
-        .then(response => response.json())
-        .then(existingData => {
-            if (existingData.length > 0) {
-                console.log(`Username found in API: ${username}`);
-                console.log('GET request successful, data retrieved and added to local storage');
-
-                // Store the API keys' data in localStorage separately according to keys
-                Object.keys(existingData[0]).forEach(key => {
-                    if (apiKeys.includes(key)) {
-                        localStorage.setItem(key, existingData[0][key]);
-                    }
-                });
-
-                // Handle undefinedData by splitting and storing correctly in localStorage
-                if (existingData[0].undefinedData) {
-                    let undefinedItems = existingData[0].undefinedData.match(/\(([^)]+)\)/g);
-                    if (undefinedItems) {
-                        undefinedItems.forEach(item => {
-                            let [key, value] = item.slice(1, -1).split(' = ');
-                            if (key && value) {
-                                localStorage.setItem(key, value);
-                            } else {
-                                console.error('Data not split properly in undefinedData:', item);
-                            }
-                        });
-                        console.log('undefinedData retrieved and added to local storage properly');
-                    } else {
-                        console.error('Data not retrieved from undefinedData properly.');
-                    }
-                }
-
-                storeLastRequestDate();
-                sendPatchRequest(); // Trigger PATCH request after successful GET request
-            } else {
-                console.log('Username not found in API, proceeding with POST request.');
-                sendPostRequest();
-            }
-        })
-        .catch(error => {
-            console.error('GET request Error:', error);
-            showNotification(`Error during GET request: ${error.message}`, 'error');
-        });
-}
-
-// Handle POST request to send data to the API
-function sendPostRequest() {
-    const dataToSend = getLocalStorageData();
-    dataToSend['username'] = username;
-
-    fetch(apiUrl, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ data: dataToSend }),
-    })
-    .then(response => response.json())
-    .then(data => {
-        console.log(`POST request successful by username: ${username}`);
-        showNotification('Nice to have you here', 'success');
-        storeLastRequestDate();
-    })
-    .catch(error => {
-        console.error('POST request Error:', error);
-        showNotification(`Error during POST request: ${error.message}`, 'error');
-    });
-}
-
-// Handle PATCH request to update data in the API
-function sendPatchRequest() {
-    const dataToSend = getLocalStorageData();
-    dataToSend['username'] = username;
-
-    fetch(`${apiUrl}/username/${username}`, {
-        method: 'PATCH',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ data: dataToSend }),
-    })
-    .then(response => response.json())
-    .then(data => {
-        console.log(`PATCH request successful by username: ${username}`);
-        showNotification('Welcome Back! Please refresh this page ', 'success');
-        storeLastRequestDate();
-    })
-    .catch(error => {
-        console.error('PATCH request Error:', error);
-        showNotification(`Error during PATCH request: ${error.message}`, 'error');
-    });
-}
-
-// Handle automatic requests based on the last request date
-function handleRequests() {
-    if (username) {
-        console.log(`Username found in local storage: ${username}`);
-        const lastRequestDate = new Date(localStorage.getItem('lastRequestDate'));
-        const currentDate = new Date();
-        const oneDayInMs = 24 * 60 * 60 * 1000;
-
-        // First-time visit or first day of every week
-        if (!lastRequestDate || currentDate - lastRequestDate >= 7 * oneDayInMs) {
-            sendGetRequest();
-        }
-
-        // Two days after the first visit
-        if (currentDate - lastRequestDate >= 2 * oneDayInMs && currentDate - lastRequestDate < 3 * oneDayInMs) {
-            sendPatchRequest();
-        }
-
-        // Two days after the second trigger (four days in total)
-        if (currentDate - lastRequestDate >= 4 * oneDayInMs && currentDate - lastRequestDate < 5 * oneDayInMs) {
-            sendPatchRequest();
-        }
-
-        console.log(`Last request date: ${localStorage.getItem('lastRequestDate')}`);
-    } else {
-        console.warn('Username not found in local storage.');
-        showNotification('Username is required!', 'error');
-    }
-}
-
-// Trigger the request handling when the page loads
-document.addEventListener('DOMContentLoaded', handleRequests);
-  </script>
-  
-   <script src="wapp.js"></script>
-   <script src="implement.js"></script>
-
+  <script src="app2.js"></script> 
+  <script src="wapp.js"></script>
+  <script src="implement.js"></script>
   <script src="app.js"></script>
   <script src="load.js"></script>
   <script src="sidenav.js"></script>
- 
   <script src="deposit.js"></script>
   <script src="image.js"></script>
 </body>

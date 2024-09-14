@@ -11,10 +11,13 @@ function loadSidenav() {
             <a href="bean.html" class="active"><i class="fas fa-gem"></i> Upgrade Account</a>
             <a href="shop.html"><i class="fas fa-store"></i> Shop</a>
             <a href="news.html"><i class="fas fa-bell"></i> New Features/Updates</a>
-            <a href="cop.html"><i class="fas fa-wallet"></i> Withdraw</a>
+            <a href="withdraw.html"><i class="fas fa-wallet"></i> Withdraw</a>
             <a href="gift.html"><i class="fa fa-gift"></i> Claim gift </a>
             <a href="refer_earn.html"><i class="fas fa-share-alt"></i> Refer & Earn</a>
             <a href="conversion.html"><i class="fas fa-exchange-alt"></i> Convert Airtime/Data</a>
+            
+                 
+
             <a href="about.html"><i class="fas fa-info-circle"></i> About Us</a>
         </div>
     `;
@@ -53,3 +56,9 @@ function toggleNav() {
 window.addEventListener('DOMContentLoaded', function() {
     loadSidenav(); // Dynamically load the sidenav HTML
 });
+
+
+
+//fa-plus-circle or fa-upload icon to represent creating or uploading a task.
+
+//View Task Response: For viewing task responses, the fa-eye or fa-comment-dots icon 
