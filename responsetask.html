@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="responsetask.css">
+    <link rel="stylesheet" href="sidenav.css">
+    <title>Task Responses</title>
+</head>
+<body>
+
+    <!-- Page Title and Introduction -->
+    <header>
+        <h1>Task Responses</h1>
+        <p class="intro">Here are the task submissions awaiting your approval. Review the details carefully before approving or rejecting each task. You can reject tasks with a valid reason provided.</p>
+    </header>
+
+    <!-- Task Responses Container -->
+    <div id="responses-container"></div>
+    
+    <!-- Hamburger Icon to Open Sidenav -->
+    <span class="icon">
+        <i class="fa fa-bars hamburger"></i>
+    </span>
+
+    <!-- Notification and Reject Reason Box -->
+    <div id="notification-box" class="notification-box"></div>
+    <div id="reject-reason-container" class="reject-reason-container">
+        <textarea id="reject-reason" placeholder="Why did you reject this submission?"></textarea>
+        <button id="submit-reject-reason">Submit</button>
+    </div>
+
+    <!-- JavaScript files -->
+    <script src="responsetask.js"></script>
+    <script src="sidenav.js"></script>
+</body>
+</html>

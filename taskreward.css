@@ -1,0 +1,127 @@
+/* Global Styling */
+body {
+    font-family: 'Roboto', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f9f9f9;
+    color: #333;
+}
+
+/* Hamburger Menu Styling */
+
+/* Main Container Styling */
+#main-container {
+    margin: 50px 20px; /* Adjust space between top and the content */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Task Reward Container Styling */
+#task-reward-container {
+    width: 90%;
+    max-width: 800px;
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+#task-reward-container h1 {
+    margin-bottom: 20px;
+    font-size: 24px;
+    color: #333;
+}
+
+/* Rewardee Container Styling */
+#rewardee-container {
+    width: 90%;
+    max-width: 800px;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    text-align: left;
+}
+
+/* Each Rewardee Entry Styling */
+.rewardee {
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 15px;
+    background-color: #fafafa;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+}
+
+.rewardee h2 {
+    margin-top: 0;
+    font-size: 18px;
+    color: #555;
+}
+
+.rewardee p {
+    margin: 10px 0;
+    font-size: 14px;
+    color: #666;
+}
+
+/* Button Styling */
+button.claim-button, button.reject-button {
+    display: inline-block;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    border: none;
+    border-radius: 6px;
+    transition: background-color 0.3s ease;
+    margin-top: 10px;
+}
+
+button.claim-button {
+    background-color: #28a745;
+    color: white;
+}
+
+button.claim-button:hover {
+    background-color: #218838;
+}
+
+button.reject-button {
+    background-color: #dc3545;
+    color: white;
+}
+
+button.reject-button:hover {
+    background-color: #c82333;
+}
+
+/* Notification Box Styling */
+    .notification-box {
+        position: fixed;
+        top: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        background-color: #fff;
+        border-radius: 8px;
+        box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.2);
+        padding: 15px;
+        display: none; /* Hidden by default, shown dynamically */
+        text-align: center;
+        font-size: 16px;
+        z-index: 1000;
+    }
+
+    .notification-box.success {
+        background-color: #d4edda;
+        border-color: #c3e6cb;
+        color: #155724;
+    }
+
+    .notification-box.error {
+        background-color: #f8d7da;
+        border-color: #f5c6cb;
+        color: #721c24;
+    }

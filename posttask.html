@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="posttask.css">
+    <title>Post Task</title>
+</head>
+<body>
+    <div class="container">
+        <h1>Post a Task</h1>
+
+        <form id="taskForm">
+            <div class="form-group">
+                <label for="taskId">Task ID</label>
+                <input type="text" id="taskId" name="taskId" readonly>
+            </div>
+
+            <div class="form-group">
+                <label for="taskTitle">Task Title</label>
+                <input type="text" id="taskTitle" name="taskTitle" required>
+            </div>
+
+            <div class="form-group">
+                <label for="instructions">Instructions</label>
+                <textarea id="instructions" name="instructions" required></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="proofInstructions">Proof Instructions</label>
+                <textarea id="proofInstructions" name="proofInstructions" required></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="category">Category</label>
+                <select id="category" name="category">
+                    <option value="business">Business</option>
+                    <option value="social">Social</option>
+                    <option value="sponsored">Sponsored</option>
+                </select>
+            </div>
+<center>
+<div class="form-group">
+    <label>Choose the method the user will send proof</label>
+    <div>
+        <input type="checkbox" id="linkProof" name="linkProof">
+        <label for="linkProof">Link</label>
+    </div>
+    <div>
+        <input type="checkbox" id="imageProof" name="imageProof">
+        <label for="imageProof">Image</label>
+    </div>
+    <div>
+        <input type="checkbox" id="textProof" name="textProof">
+        <label for="textProof">Text</label>
+    </div>
+</div>
+</center>
+
+            <div class="form-group">
+                <label for="reward">Reward (₦)</label>
+                <input type="number" id="reward" name="reward" required>
+            </div>
+
+            <div class="form-group">
+                <label for="clicks">Clicks</label>
+                <input type="number" id="clicks" name="clicks" required>
+            </div>
+
+            <div class="form-group">
+                <label for="rewardBalance">Reward Balance (₦)</label>
+                <input type="number" id="rewardBalance" name="rewardBalance" readonly>
+            </div>
+
+            <div class="form-group">
+                <label for="date">Date</label>
+                <input type="text" id="date" name="date" readonly>
+            </div>
+
+            <button type="button" id="postTaskBtn">Post Task</button>
+        </form>
+        
+        <div id="notification"></div>
+
+        <div id="paymentModal" class="modal">
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <h2>Choose Payment Method</h2>
+                <button id="payWithDeposit">Pay with Deposit</button>
+                <br>
+                <button id="payWithEarnings">Pay with Earnings</button>
+            </div>
+        </div>
+    </div>
+<div id="loader" class="loader"></div>
+
+    <script src="posttask.js"></script>
+    <script src="spy.js"></script>
+</body>
+</html>
