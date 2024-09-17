@@ -1,45 +1,69 @@
-// Function to monitor "clicks" field and send delete requests
-async function monitorClicksAndDelete() {
-    const apiURL = 'https://sheetdb.io/api/v1/zucejzp83yddh'; // Your SheetDB API URL
+// List of APIs to try
+const apiList = [
+  'https://sheetdb.io/api/v1/zucejzp83yddh',
+  'https://another-api-url.com/v1/data',  // Add additional APIs here
+  'https://yet-another-api-url.com/v1/data'
+];
 
+// Function to try deleting a record across multiple APIs
+async function deleteRecordByTaskIdAcrossAPIs(taskId) {
+  for (let i = 0; i < apiList.length; i++) {
+    const apiUrl = apiList[i];
     try {
-        // Fetch the data from the API
-        const response = await fetch(apiURL);
-        const data = await response.json();
+      const response = await fetch(`${apiUrl}/taskId/${taskId}`, {
+        method: 'DELETE',
+      });
+      if (!response.ok) {
+        throw new Error(`API ${apiUrl} failed.`);
+      }
 
-        let deleteCount = 0;
-
-        // Loop through the data to check for clicks = 0
-        for (let i = 0; i < data.length; i++) {
-            const record = data[i];
-
-            if (record.clicks === "0") {
-                console.log(`Clicks is 0 for record: ${record.taskId}`);
-
-                // Send DELETE request for the first zero clicks field
-                const deleteUrl = `${apiURL}/taskId/${record.taskId}`; // Use taskId to delete specific row
-                const deleteResponse = await fetch(deleteUrl, { method: 'DELETE' });
-
-                if (deleteResponse.ok) {
-                    console.log(`Successfully deleted record with taskId: ${record.taskId}`);
-                } else {
-                    console.log(`Failed to delete record: ${deleteResponse.statusText}`);
-                }
-
-                deleteCount++;
-
-                // If it's the second zero clicks field, wait for 20 seconds before deleting
-                if (deleteCount === 2) {
-                    console.log("Waiting for 20 seconds before deleting the next one...");
-                    await new Promise(resolve => setTimeout(resolve, 20000)); // Wait for 20 seconds
-                    deleteCount = 0; // Reset counter after 2 deletions
-                }
-            }
-        }
+      const data = await response.json();
+      console.log(`Record with taskId=${taskId} has been successfully deleted from API ${apiUrl}.`, data);
+      return; // Stop the loop on a successful deletion
     } catch (error) {
-        console.error('Error fetching or deleting data:', error);
+      console.error(`Error deleting record with taskId=${taskId} from API ${apiUrl}:`, error);
+      // Try the next API in the list
     }
+  }
+  console.error(`All APIs failed to delete the record with taskId=${taskId}.`);
 }
 
-// Run the function every minute (60 seconds)
-setInterval(monitorClicksAndDelete, 60000); // Adjust interval as necessary
+// Function to handle deleting records with a 20-second wait between deletions
+async function handleDeletions(records) {
+  // Filter records where clicks are 0
+  const zeroClickRecords = records.filter(record => record.clicks === '0');
+
+  if (zeroClickRecords.length > 0) {
+    console.log(`Found ${zeroClickRecords.length} record(s) with 0 clicks.`);
+
+    // Delete records one by one, waiting 20 seconds between each
+    for (let i = 0; i < zeroClickRecords.length; i++) {
+      console.log(`Deleting record with taskId: ${zeroClickRecords[i].taskId}`);
+      await deleteRecordByTaskIdAcrossAPIs(zeroClickRecords[i].taskId);
+
+      // Wait 20 seconds before deleting the next record, if there is one
+      if (i < zeroClickRecords.length - 1) {
+        console.log('Waiting 20 seconds before deleting the next record...');
+        await new Promise(resolve => setTimeout(resolve, 20000));
+      }
+    }
+  } else {
+    console.log('No records with 0 clicks found.');
+  }
+}
+
+// Function to fetch records from the API
+function fetchRecords() {
+  fetch(apiList[0]) // Start with the first API in the list
+    .then(response => response.json())
+    .then(data => {
+      console.log('Fetched records:', data);
+      handleDeletions(data);
+    })
+    .catch(error => console.error('Error fetching records:', error));
+}
+
+// Call the fetchRecords function on page load
+window.onload = function () {
+  fetchRecords();
+};

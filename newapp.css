@@ -1,0 +1,253 @@
+/* General Reset and Styling */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Arial', sans-serif;
+  background-color: #f4f7f6;
+  color: #333;
+  line-height: 1.6;
+  margin: 0;
+  padding-bottom: 60px; /* Space for the fixed bottom navigation */
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+/* Responsive Layout */
+@media (max-width: 768px) {
+  .container {
+    padding: 10px;
+  }
+
+  h1 {
+    font-size: 28px;
+  }
+
+  .card {
+    padding: 15px;
+    margin-bottom: 15px;
+  }
+
+  .buttons {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .button-icon {
+    width: 100%;
+    max-width: 300px;
+    margin-bottom: 10px;
+  }
+
+  .table-container {
+    overflow-x: auto;
+  }
+
+  table {
+    width: 100%;
+    display: block;
+    white-space: nowrap;
+  }
+}
+
+/* Top Navigation Bar */
+.topnav {
+  background-color: #333;
+  overflow: hidden;
+  padding: 15px 20px;
+  display: flex;
+  justify-content: center; /* Center the elements */
+  align-items: center; /* Align items vertically */
+  position: relative;
+}
+
+.topnav .logo {
+  position: absolute;
+  left: 20px; /* Space for a potential logo */
+}
+
+.topnav p {
+  font-size: 22px;
+  color: #00aaff;
+  font-weight: bold;
+  letter-spacing: 1px;
+}
+
+
+/* Dashboard Greeting */
+h1 {
+  font-size: 36px;
+  margin-bottom: 20px;
+  color: #333;
+  text-align: center; /* Center align welcome text */
+}
+
+h1 span {
+  color: #00aaff;
+}
+
+/* Cards Section */
+.card {
+  background-color: #fff;
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.card h2 {
+  font-size: 24px;
+  color: #00aaff;
+  margin-bottom: 10px;
+}
+
+.card p {
+  font-size: 18px;
+  font-weight: bold;
+  color: #555;
+}
+
+.withdraw-button {
+  display: inline-block;
+  padding: 10px 20px;
+  margin-top: 10px;
+  background-color: #00aaff;
+  color: #fff;
+  border-radius: 4px;
+  text-decoration: none;
+  font-size: 16px;
+}
+
+.withdraw-button:hover {
+  background-color: #008fcc;
+}
+
+/* Table Styling */
+.table-container {
+  margin-top: 30px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: #fff;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+th, td {
+  padding: 15px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+th {
+  background-color: #00aaff;
+  color: black;
+  font-size: 18px;
+}
+
+td {
+  font-size: 16px;
+  color: #555;
+}
+
+#viewMoreButton {
+  display: block;
+  width: 100%;
+  padding: 12px;
+  background-color: #00aaff;
+  color: white;
+  text-align: center;
+  border: none;
+  border-radius: 4px;
+  font-size: 16px;
+  margin-top: 10px;
+  cursor: pointer;
+}
+
+#viewMoreButton:hover {
+  background-color: #008fcc;
+}
+
+/* Buttons Section */
+.buttons {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 30px;
+}
+
+.button-icon {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 15px;
+  width: 150px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  text-decoration: none;
+  color: #333;
+  transition: transform 0.3s ease-in-out;
+}
+
+.button-icon:hover {
+  transform: translateY(-5px);
+}
+
+.button-icon i {
+  font-size: 24px;
+  color: #00aaff;
+}
+
+.button-icon span {
+  margin-top: 10px;
+  font-size: 16px;
+  color: #333;
+}
+
+/* Slideshow */
+.slideshow-container {
+  margin-top: 30px;
+}
+
+.slideshow-container div {
+  width: 100%;
+  height: 200px;
+  margin-bottom: 15px;
+}
+
+.slideshow-container img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+/* Notification Box */
+.notification-box {
+  display: none;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #007BFF;
+  color: white;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.2);
+  z-index: 1000;
+  font-size: 18px;
+  text-align: center;
+  width: 80%;
+  max-width: 500px;
+}

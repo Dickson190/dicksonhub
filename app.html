@@ -15,17 +15,63 @@
   
   <!-- Custom Stylesheets -->
   <link rel="stylesheet" href="image.css">
-  <link rel="stylesheet" href="app.css">
+  <link rel="stylesheet" href="newapp.css">
   <link rel="stylesheet" href="slides.css">
-  <link rel="stylesheet" href="app2.css">
   <link rel="stylesheet" href="sidenav.css">
-  <link rel="stylesheet" href="load.css">
-  <link rel="stylesheet" href="wapp.css"> 
+  <link rel="stylesheet" href="wapp.css">
+  
+  <!-- Ensure the body has full height -->
+  <style>
+    html, body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+    }
+
+    /* Adjust container padding to prevent content overlap with bottom nav */
+    .container {
+      padding-bottom: 60px; /* Ensure there's space for the bottom nav */
+    }
+
+    /* Bottom Navigation */
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background-color: #1f1f1f;
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      padding: 10px 0;
+      box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+      z-index: 1000;
+    }
+
+    .nav-item {
+      color: white;
+      text-align: center;
+      text-decoration: none;
+      flex: 1;
+    }
+
+    .nav-item i {
+      font-size: 24px;
+    }
+
+    .nav-item span {
+      display: block;
+      font-size: 12px;
+    }
+
+    .nav-item:hover {
+      background-color: #333;
+    }
+  </style>
 </head>
 <body>
   
   <!-- Side Navigation -->
-  <!-- Hamburger Icon to Open Sidenav -->
   <span class="icon">
     <i class="fa fa-bars hamburger"></i>
   </span>
@@ -131,17 +177,6 @@
     </a>
   </div>
 
-  <!-- Loading Spinner -->
-  <div class="loader" id="loader">
-    <div class="cooking">
-      <div class="bubble"></div>
-      <div class="bubble"></div>
-      <div class="bubble"></div>
-      <div class="bubble"></div>
-      <div class="pot"></div>
-    </div>
-  </div>
-
   <!-- JavaScript Files -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.js"></script>
@@ -150,7 +185,8 @@
   <script src="wapp.js"></script>
   <script src="implement.js"></script>
   <script src="app.js"></script>
-  <script src="load.js"></script>
+  
+  <script src="spy.js"></script>
   <script src="sidenav.js"></script>
   <script src="deposit.js"></script>
   <script src="image.js"></script>
