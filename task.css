@@ -1,169 +1,190 @@
 body {
-    font-family: Arial, sans-serif;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f0f4f8;
     margin: 0;
     padding: 0;
-    background-color: #f8f9fa;
-    color: #343a40;
 }
 
-.navbar {
-    background-color: #007bff;
-    color: #fff;
-    overflow: hidden;
-    position: fixed;
-    top: 0;
-    width: 100%;
-    z-index: 1000;
-    border-bottom-left-radius: 15px;
-    border-bottom-right-radius: 15px;
+/* Task Cards Styling */
+.task-container {
     display: flex;
-    justify-content: space-around;
-    padding: 10px 0;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.navbar a {
-    color: #fff;
-    text-align: center;
-    padding: 14px 20px;
-    text-decoration: none;
-    font-size: 17px;
-    cursor: pointer;
-    transition: background-color 0.3s ease, color 0.3s ease;
-}
-
-.navbar a:hover {
-    background-color: #0056b3;
-    color: #fff;
-}
-
-.content {
-    margin-top: 80px; /* Adjust according to navbar height */
-    padding: 20px;
-    display: flex;
-    justify-content: center;
     flex-wrap: wrap;
+    justify-content: center;
+    padding: 20px;
 }
 
-.task {
-    border: 1px solid #dee2e6;
-    border-radius: 10px;
-    margin: 20px;
-    padding: 15px;
-    background-color: #fff;
-    cursor: pointer;
-    max-width: 300px;
+.task-card {
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    margin: 15px;
+    padding: 20px;
+    width: 320px;
+    position: relative;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    border: 1px solid #e1e4e8;
 }
 
-.task:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+.task-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
 }
 
-.task-title {
+.task-card h3 {
     font-size: 20px;
-    font-weight: bold;
-    margin-bottom: 10px;
+    font-weight: 600;
+    margin: 0 0 10px 0;
+    color: #333;
     text-align: center;
 }
 
-.task-details {
-    margin-top: 10px;
-    width: 100%;
-}
-
-.task-icon {
-    width: 30px;
-    height: 30px;
-    margin-right: 10px;
-    vertical-align: middle;
-}
-
-.task-description {
-    flex: 1;
-    text-align: center;
-}
-
-.task-amount {
-    font-size: 18px;
-    color: green;
-}
-
-.submit-form {
-    margin-top: 20px;
-    width: 100%;
-}
-
-.submit-form label {
-    display: block;
-    margin-bottom: 5px;
-    font-weight: bold;
+.task-card p {
+    margin: 5px 0;
     font-size: 14px;
-    color: #495057;
+    line-height: 1.6;
+    color: #555;
 }
 
-.submit-form input[type="text"],
-.submit-form input[type="url"],
-.submit-form input[type="file"] {
-    width: 100%;
-    padding: 10px;
-    margin-bottom: 10px;
-    border: 1px solid #ced4da;
-    border-radius: 5px;
+.task-card .reward {
+    font-weight: 700;
+    color: #28a745;
     font-size: 16px;
 }
 
-.submit-form button {
+.task-card .expand-button {
+    display: block;
+    margin: 15px auto;
+    padding: 8px 16px;
     background-color: #007bff;
     color: #fff;
     border: none;
-    padding: 12px 20px;
-    border-radius: 5px;
+    border-radius: 6px;
     cursor: pointer;
-    font-size: 16px;
+    text-align: center;
+    font-size: 14px;
     transition: background-color 0.3s ease;
 }
 
-.submit-form button:hover {
+.task-card .expand-button:hover {
     background-color: #0056b3;
 }
 
+.task-details {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.5s ease;
+}
+
+.task-card.expanded .task-details {
+    max-height: 600px;
+}
+
+label {
+    font-weight: 600;
+    margin-top: 10px;
+    display: block;
+    color: #333;
+}
+
+input[type="text"],
+input[type="url"],
+input[type="file"],
+textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 14px;
+    margin-top: 5px;
+}
+
+input[readonly] {
+    background-color: #f5f5f5;
+}
+
+button.submit-btn {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    background-color: #28a745;
+    color: white;
+    border-radius: 6px;
+    font-size: 16px;
+    margin-top: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button.submit-btn:hover {
+    background-color: #218838;
+}
+
+/* Header Styling */
+.page-header {
+    text-align: center;
+    padding: 30px 0;
+    background-color: #007bff;
+    color: white;
+    border-bottom: 3px solid #0056b3;
+    margin-bottom: 30px;
+}
+
+.page-header h1 {
+    margin: 0;
+    font-size: 36px;
+    font-weight: 700;
+}
+
+.page-header p {
+    margin-top: 10px;
+    font-size: 18px;
+    color: #e1e4e8;
+}
+
+/* Modern Notification Box Styling */
 .notification-box {
-    display: none;
     position: fixed;
-    top: 20%;
+    top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    background-color: #fff;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    z-index: 2000;
+    background-color: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    padding: 20px 40px;
     text-align: center;
-    width: 80%;
-    max-width: 400px;
+    z-index: 9999;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.4s ease, visibility 0.4s ease;
+}
+
+.notification-box.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.notification-box .checkmark-icon {
+    font-size: 48px;
+    color: #28a745;
+    margin-bottom: 15px;
 }
 
 .notification-box .message {
     font-size: 18px;
-    margin-bottom: 20px;
+    font-weight: 600;
+    color: #333;
 }
 
-.notification-box .close-btn {
-    background-color: #007bff;
-    color: #fff;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 16px;
-    transition: background-color 0.3s ease;
+.notification-box.fade-out {
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.6s ease, visibility 0.6s ease;
 }
 
-.notification-box .close-btn:hover {
-    background-color: #0056b3;
+/* Media Queries */
+@media (max-width: 768px) {
+    .task-card {
+        width: 100%;
+        margin: 10px 0;
+    }
 }
