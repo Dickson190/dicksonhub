@@ -21,7 +21,7 @@ const sidenavHTML = `
         <h2 class="sidenav-section">Information</h2>
         <a href="news.html"><i class="fa-solid fa-bell"></i> New Features/Updates</a>
 <a href="contact.html"><i class="fa-solid fa-envelope"></i> Contact</a>
-<a href="help.html"><i class="fa-solid fa-circle-question"></i> Help</a>
+<a href="Help.html"><i class="fa-solid fa-circle-question"></i> Help</a>
 
         <a href="about.html"><i class="fa-solid fa-info-circle"></i> About Us</a>
     </div>
