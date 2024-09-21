@@ -1,3 +1,4 @@
+
 document.addEventListener('DOMContentLoaded', function () {
     const withdrawalTypeElement = document.getElementById('withdrawalType');
     const airtimeFields = document.getElementById('airtimeFields');
@@ -5,13 +6,24 @@ document.addEventListener('DOMContentLoaded', function () {
     const withdrawForm = document.getElementById('withdrawForm');
     const popupSuccess = document.getElementById('popup-success');
     const popupError = document.getElementById('popup-error');
-    
+    const popupSuccessMessage = document.getElementById('popup-success-message') || document.createElement('p');
+    const popupErrorMessage = document.getElementById('popup-error-message') || document.createElement('p');
+
     const userPhoneNumber = localStorage.getItem('phoneNumber');
     const currentUser = localStorage.getItem('username');
     const currentPassword = localStorage.getItem('password');
     let userEarnings = parseFloat(localStorage.getItem(`${userPhoneNumber}_${currentUser}_${currentPassword}_earnings`)) || 0;
 
-    // Retrieve stored user details for Airtime and Bank fields
+    const activeCardKey = `${userPhoneNumber}_${currentUser}_${currentPassword}_activeCard`;
+    const activeCard = JSON.parse(localStorage.getItem(activeCardKey));
+    
+    const thresholdMap = {
+        'Free Membership': 200,
+        'Bronze Membership': 100,
+        'Premium Membership': 50,
+        'Gold Membership': 50
+    };
+
     document.getElementById('network').value = localStorage.getItem('network') || '';
     document.getElementById('phoneNumber').value = localStorage.getItem('phoneNumber') || '';
     document.getElementById('uniqueCode').value = localStorage.getItem('uniqueCode') || '';
@@ -44,8 +56,8 @@ document.addEventListener('DOMContentLoaded', function () {
         event.preventDefault();
         let amount;
         const withdrawalType = withdrawalTypeElement.value;
-        const apiUrl = "https://sheetdb.io/api/v1/p9ekt4e7qrl1f";
-        const secondaryApiUrl = "https://sheetdb.io/api/v1/lxeb2ia2rnfs1";
+        const apiUrl = "https://sheetdb.io/api/v1/wjwgv7t6ub8mq";
+        const secondaryApiUrl = "https://sheetdb.io/api/v1/wjwgv7t6ub8mq";
 
         if (withdrawalType === 'airtime') {
             amount = parseFloat(document.getElementById('amountAirtime').value);
@@ -54,58 +66,122 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
         if (amount > userEarnings) {
-            alert('Insufficient funds for withdrawal');
+            console.log('Error: Insufficient funds');
+            showPopup('error', 'Insufficient funds for withdrawal.');
             return;
         }
 
+        const userPlanName = activeCard ? activeCard.planName : 'Free Membership';
+        const threshold = thresholdMap[userPlanName];
+
+        if (amount < threshold) {
+            console.log(`Error: Amount below threshold (${threshold})`);
+            showPopup('error', `Your plan requires a minimum withdrawal of ₦${threshold}. Please enter a higher amount.`);
+            return;
+        }
+
+        const transactionId = Math.random().toString(36).substr(2, 9); // Generate a random transaction ID
         const formData = new FormData(withdrawForm);
 
+        // Append the transaction ID to the formData object
+        formData.append('data[transactionId]', transactionId);
+
+        const withdrawalRecord = {
+            time: new Date().toLocaleTimeString(),
+            date: new Date().toLocaleDateString(),
+            amount: amount,
+            status: 'Pending',
+            transactionId: transactionId, // Store the transaction ID
+            createdAt: new Date().toISOString() // Store timestamp
+        };
+
+        // Retrieve or initialize the withdrawal history
+        const withdrawalHistoryKey = `${userPhoneNumber}_${currentUser}_${currentPassword}_withdrawalHistory`;
+        const withdrawalHistory = JSON.parse(localStorage.getItem(withdrawalHistoryKey)) || [];
+        withdrawalHistory.push(withdrawalRecord);
+        localStorage.setItem(withdrawalHistoryKey, JSON.stringify(withdrawalHistory));
+
+        console.log('Attempting to send data to primary API...');
         fetch(apiUrl, {
             method: 'POST',
             body: formData
         })
         .then(response => response.json())
         .then(data => {
+            console.log('Primary API Response:', data);
             if (data.created || data.updated) {
-                showPopup('success');
+                console.log('Primary API success');
+                showPopup('success', 'Withdrawal request submitted successfully.');
                 userEarnings -= amount;
                 localStorage.setItem(`${userPhoneNumber}_${currentUser}_${currentPassword}_earnings`, userEarnings.toString());
             } else {
                 throw new Error('Primary API failed');
             }
         })
-        .catch(() => {
+        .catch(error => {
+            console.log('Primary API Error:', error);
+            console.log('Attempting to send data to secondary API...');
             fetch(secondaryApiUrl, {
                 method: 'POST',
                 body: formData
             })
             .then(response => response.json())
             .then(data => {
+                console.log('Secondary API Response:', data);
                 if (data.created || data.updated) {
-                    showPopup('success');
+                    console.log('Secondary API success');
+                    showPopup('success', 'Withdrawal request submitted successfully.');
                     userEarnings -= amount;
                     localStorage.setItem(`${userPhoneNumber}_${currentUser}_${currentPassword}_earnings`, userEarnings.toString());
                 } else {
                     throw new Error('Secondary API failed');
                 }
             })
-            .catch(() => {
-                showPopup('error');
+            .catch(error => {
+                console.log('Secondary API Error:', error);
+                showPopup('error', 'Failed to submit withdrawal request. Please try again later.');
             });
         });
     });
 
-    function showPopup(type) {
+    function showPopup(type, message) {
         if (type === 'success') {
-            popupSuccess.style.display = 'block';
+            if (popupSuccessMessage) {
+                popupSuccessMessage.textContent = message;
+                popupSuccess.style.display = 'block';
+            }
         } else if (type === 'error') {
-            popupError.style.display = 'block';
+            if (popupErrorMessage) {
+                popupErrorMessage.textContent = message;
+                popupError.style.display = 'block';
+            }
         }
     }
 
+    function updateWithdrawalStatuses() {
+        const withdrawalHistoryKey = `${userPhoneNumber}_${currentUser}_${currentPassword}_withdrawalHistory`;
+        const withdrawalHistory = JSON.parse(localStorage.getItem(withdrawalHistoryKey)) || [];
+
+        const now = new Date();
+        withdrawalHistory.forEach(record => {
+            const recordTime = new Date(record.createdAt);
+            const timeDiff = now - recordTime; // Difference in milliseconds
+            const hoursDiff = timeDiff / (1000 * 60 * 60);
+
+            if (record.status === 'Pending' && hoursDiff >= 48) {
+                record.status = 'Completed';
+            }
+        });
+
+        localStorage.setItem(withdrawalHistoryKey, JSON.stringify(withdrawalHistory));
+    }
+
+    // Update statuses on page load
+    updateWithdrawalStatuses();
+
     window.handleOk = function() {
         popupSuccess.style.display = 'none';
-        window.location.href = "https://dickson190.github.io/dicksonhub/whistory.html";
+        window.location.href = "whistory.html";
     }
 
     window.handleError = function() {

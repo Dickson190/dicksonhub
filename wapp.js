@@ -1,7 +1,22 @@
-// wapp.js
 document.addEventListener('DOMContentLoaded', function() {
     const transactionsPerPage = 5;
     let showingAllTransactions = false;
+
+    // Function to retrieve "COMPLETED" status from local storage for a specific transaction
+    function getStatusFromLocalStorage(transactionId) {
+        const userPhoneNumber = localStorage.getItem('phoneNumber');
+        const currentUser = localStorage.getItem('username');
+        const currentPassword = localStorage.getItem('password');
+        const withdrawalHistoryKey = `${userPhoneNumber}_${currentUser}_${currentPassword}_withdrawalHistory`;
+        const withdrawalHistory = JSON.parse(localStorage.getItem(withdrawalHistoryKey)) || [];
+        
+        const matchingRecord = withdrawalHistory.find(record => record.transactionId === transactionId);
+        
+        if (matchingRecord) {
+            return matchingRecord.status || "PENDING";  // Return the status, default to PENDING if not found
+        }
+        return "PENDING";  // Default to PENDING if no match is found
+    }
 
     function updateTransactionTable() {
         const transactionTable = document.getElementById('transactionTableBody');
@@ -21,12 +36,20 @@ document.addEventListener('DOMContentLoaded', function() {
         // Add entries to the table
         entriesToShow.forEach(entry => {
             const row = document.createElement('tr');
+            let statusDetails = entry.details || 'CREDITED';
+            
+            // Update the details if it's a withdrawal with a "COMPLETED" status
+            if (entry.type === 'Withdrawal') {
+                const storedStatus = getStatusFromLocalStorage(entry.transactionId);
+                statusDetails = storedStatus === 'COMPLETED' ? 'COMPLETED' : statusDetails;
+            }
+
             row.innerHTML = `
                 <td>${entry.type}</td>
                 <td>${entry.time}</td>
                 <td>${entry.date}</td>
                 <td>${entry.amount}</td>
-                <td>${entry.details || 'CREDITED'}</td>
+                <td>${statusDetails}</td>
             `;
             transactionTable.appendChild(row);
         });
@@ -76,8 +99,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 time: record.time || '-',
                 date: record.date || '-',
                 amount: record.amount || '-',
-                details: record.status || '-',
-                fullDate: fullDate.toISOString()
+                details: getStatusFromLocalStorage(record.transactionId),  // Fetch and display correct status
+                fullDate: fullDate.toISOString(),
+                transactionId: record.transactionId // Include transaction ID for status tracking
             };
         });
     }

@@ -1,196 +1,196 @@
-    body {
-      font-family: Arial, sans-serif;
-      background-color: #f4f4f4;
-      margin: 0;
-      padding: 20px;
-    }
-    .container {
-      max-width: 600px;
-      margin: 0 auto;
-      background: #fff;
-      padding: 20px;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    }
-    h1 {
-      text-align: center;
-      color: #333;
-    }
-    label {
-      display: block;
-      margin-bottom: 10px;
-      color: #555;
-    }
-    input, textarea, select, button {
-      width: 100%;
-      padding: 10px;
-      margin-bottom: 20px;
-      border: 1px solid #ddd;
-      border-radius: 5px;
-    }
-    button {
-      background-color: #007BFF;
-      color: #fff;
-      border: none;
-      cursor: pointer;
-    }
-    button:disabled {
-      background-color: #aaa;
-      cursor: not-allowed;
-    }
-    .form-section {
-      display: none;
-    }
-    .form-section.active {
-      display: block;
-    }
-    .info {
-      color: #d9534f;
-      font-size: 14px;
-    }
-  
-           .instruction {
-            color: red;
-            font-size: 0.9em;
-            text-align: center;
-        }
-        #notification-container {
+/* General Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #f4f7fb;
+    color: #333;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    padding-top: 50px;
+}
+
+.mobile-container {
+    width: 100%;
+    max-width: 400px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.withdraw-container {
+    text-align: center;
+}
+
+.withdraw-container h1 {
+    font-size: 24px;
+    margin-bottom: 15px;
+    color: #0056b3;
+    font-weight: 600;
+}
+
+.withdraw-container .instruction {
+    font-size: 14px;
+    background-color: #e9f5ff;
+    border-left: 4px solid #00b5f7;
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 20px;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+label {
+    font-size: 14px;
+    color: blue;
+    text-align: left;
+}
+
+input, select {
+    width: 100%;
+    padding: 10px;
+    font-size: 14px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+    transition: border-color 0.3s ease;
+}
+
+input:focus, select:focus {
+    border-color: #00b5f7;
+    outline: none;
+    background-color: #fff;
+}
+
+button[type="submit"] {
+    background-color: #0056b3;
+    color: white;
+    font-size: 16px;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button[type="submit"]:hover {
+    background-color: #004494;
+}
+
+/* Popups */
+.popup {
     position: fixed;
-    top: 10px;
+    top: 50%;
     left: 50%;
-    transform: translateX(-50%);
-    width: 300px;
-    z-index: 9999;
-    font-family: Arial, sans-serif;
+    transform: translate(-50%, -50%);
+    width: 80%;
+    max-width: 400px;
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    z-index: 1000;
+}
+
+.popup h2 {
+    font-size: 18px;
+    color: #333;
+    margin-bottom: 15px;
+}
+
+.popup button {
+    background-color: #00b5f7;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.popup button:hover {
+    background-color: #009bce;
+}
+
+/* Success Popup */
+#popup-success .checkmark svg {
+    width: 50px;
+    height: 50px;
+}
+
+#popup-success .checkmark circle {
+    stroke: #22c55e;
+}
+
+#popup-success .checkmark path {
+    stroke: #22c55e;
+}
+
+.popup p {
+    font-size: 14px;
+    margin-bottom: 20px;
+}
+
+
+/* Error Popup */
+#popup-error p {
+    color: #ff4f4f;
+    font-size: 16px;
+    margin-bottom: 15px;
+}
+
+/* Notifications */
+#notification-container {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 1001;
 }
 
 .notification {
-    display: none;
-    background-color: #f8f9fa;
-    color: #333;
-    border-radius: 4px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    background-color: #00b5f7;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
     margin-bottom: 10px;
-    padding: 15px;
-    width: 100%;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.notification.show {
+    opacity: 1;
 }
 
 .notification.success {
-    border-left: 5px solid #28a745;
+    background-color: #22c55e;
 }
 
 .notification.error {
-    border-left: 5px solid #dc3545;
+    background-color: #ff4f4f;
 }
 
-.notification .notification-content {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+/* Input-specific for small screens */
+@media (max-width: 768px) {
+    input, select, button {
+        font-size: 14px;
+        padding: 8px;
+    }
+
+    .popup {
+        width: 90%;
+    }
 }
-
-.notification .icon {
-    font-size: 20px;
-    margin-right: 10px;
-}
-
-.notification .message {
-    flex-grow: 1;
-}
-
-.notification .close-btn {
-    background: none;
-    border: none;
-    color: #007bff;
-    cursor: pointer;
-    font-size: 14px;
-}       
-    
-        /* Notification Styles */
-        .notification {
-            position: fixed;
-            top: 10px;
-            right: 10px;
-            padding: 15px;
-            border-radius: 5px;
-            z-index: 1000;
-            display: none;
-            min-width: 200px;
-            text-align: center;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
-
-        .notification.success {
-            background-color: #d4edda;
-            color: #155724;
-        }
-
-        .notification.error {
-            background-color: #f8d7da;
-            color: #721c24;
-        }
-
-        .notification .notification-content {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-
-        .notification .icon {
-            font-size: 20px;
-            margin-right: 10px;
-        }
-
-        .notification .message {
-            flex-grow: 1;
-        }
-
-        .notification .close-btn {
-            background: none;
-            border: none;
-            font-size: 16px;
-            cursor: pointer;
-            margin-left: 10px;
-        }
-
-        /* Popup Styles */
-        .popup {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            padding: 20px;
-            border-radius: 5px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            background-color: #fff;
-            z-index: 1000;
-            display: none;
-            text-align: center;
-        }
-
-        .popup .checkmark svg {
-            width: 50px;
-            height: 50px;
-            margin-bottom: 10px;
-        }
-
-        .popup button {
-            padding: 10px 20px;
-            border: none;
-            background-color: #007bff;
-            color: #fff;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-
-        /* Success Popup Specific Styles */
-        #popup-success {
-            background-color: #d4edda;
-            color: #155724;
-        }
-
-        /* Error Popup Specific Styles */
-        #popup-error {
-            background-color: #f8d7da;
-            color: #721c24;
-        }
-    

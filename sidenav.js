@@ -2,28 +2,34 @@ let isNavOpen = false; // Track whether the sidenav is open or closed
 
 // Function to load the sidenav HTML into the page
 function loadSidenav() {
-    const sidenavHTML = `
-        <div id="sidenav" class="sidenav">
-            <a href="javascript:void(0)" class="closebtn" onclick="toggleNav()">&times;</a>
-           <a href="app.html"><i class="fa-solid fa-house"></i> Home</a>
-<a href="earn.html"><i class="fa-solid fa-dollar-sign"></i> Offerwall</a>
-<a href="task.html"><i class="fa-solid fa-tasks"></i> Task</a>
-<a href="posttask.html"><i class="fa-solid fa-circle-notch"></i> Post a Task</a>
-<a href="responsetask.html"><i class="fa-solid fa-comments"></i> Task Response</a>
-<a href="responsetask.html"><i class="fa-solid fa-gift"></i> Task Reward</a>
-<a href="bean.html" class="active"><i class="fa-solid fa-gem"></i> Upgrade Account</a>
-<a href="shop.html"><i class="fa-solid fa-shop"></i> Shop</a>
-<a href="news.html"><i class="fa-solid fa-bell"></i> New Features/Updates</a>
-<a href="withdraw.html"><i class="fa-solid fa-wallet"></i> Withdraw</a>
-<a href="gift.html"><i class="fa-solid fa-gift"></i> Claim Gift</a>
-<a href="refer_earn.html"><i class="fa-solid fa-share-nodes"></i> Refer & Earn</a>
-<a href="conversion.html"><i class="fa-solid fa-exchange"></i> Convert Airtime/Data</a>
-<a href="about.html"><i class="fa-solid fa-info-circle"></i> About Us</a>
-        </div>
-    `;
+const sidenavHTML = `
+    <div id="sidenav" class="sidenav">
+        <a href="javascript:void(0)" class="closebtn" onclick="toggleNav()">&times;</a>
+        <a href="app.html"><i class="fa-solid fa-house"></i> Home</a>
 
-    // Insert the sidenav into the body
-    document.body.insertAdjacentHTML('afterbegin', sidenavHTML);
+        <h2 class="sidenav-section">Earn</h2>
+        <a href="earn.html"><i class="fa-solid fa-dollar-sign"></i> Offerwall</a>
+        <a href="task.html"><i class="fa-solid fa-tasks"></i> Task</a>
+        <a href="posttask.html"><i class="fa-solid fa-circle-notch"></i> Post a Task</a>
+        <a href="responsetask.html"><i class="fa-solid fa-gift"></i> Task Reward</a>
+        <a href="gift.html"><i class="fa-solid fa-gift"></i> Claim Gift</a>
+        <a href="shop.html"><i class="fa-solid fa-shop"></i> Shop</a>
+        <a href="refer_earn.html"><i class="fa-solid fa-share-nodes"></i> Refer & Earn</a>
+
+        <a href="withdraw.html"><i class="fa-solid fa-wallet"></i> Withdraw</a>
+        <a href="conversion.html"><i class="fa-solid fa-exchange"></i> Convert Airtime/Data</a>
+        <h2 class="sidenav-section">Information</h2>
+        <a href="news.html"><i class="fa-solid fa-bell"></i> New Features/Updates</a>
+<a href="contact.html"><i class="fa-solid fa-envelope"></i> Contact</a>
+<a href="help.html"><i class="fa-solid fa-circle-question"></i> Help</a>
+
+        <a href="about.html"><i class="fa-solid fa-info-circle"></i> About Us</a>
+    </div>
+`;
+
+// Insert the sidenav into the body
+document.body.insertAdjacentHTML('afterbegin', sidenavHTML);
+
 
     // Attach the event listener for the hamburger icon after sidenav is loaded
     const icon = document.querySelector('.icon');
