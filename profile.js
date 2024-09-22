@@ -1,114 +1,268 @@
-document.addEventListener('DOMContentLoaded', () => {
-    const storedUsername = localStorage.getItem('username');
-    const storedPassword = localStorage.getItem('password');
-    const storedUniqueCode = localStorage.getItem('uniqueCode');
-
-    document.getElementById('username').value = storedUsername || '';
-    document.getElementById('password').value = storedPassword || '';
-    document.getElementById('uniqueCode').value = storedUniqueCode || '';
-
+document.addEventListener('DOMContentLoaded', function () {
     const profileForm = document.getElementById('profileForm');
-    const ageSelect = document.getElementById('age');
-    
-    for (let i = 13; i <= 100; i++) {
-        const option = document.createElement('option');
-        option.value = i;
-        option.textContent = i;
-        ageSelect.appendChild(option);
+    const notificationBox = document.getElementById('notification');
+    const notificationMessage = document.getElementById('notification-message');
+    const notificationButton = document.getElementById('notification-button');
+    const progressBar = document.getElementById('progress-bar');
+    const loader = document.getElementById('loader');
+
+    const usernameField = document.getElementById('username');
+    const passwordField = document.getElementById('password');
+    const uniqueCodeField = document.getElementById('uniqueCode');
+    const phoneNumberField = document.getElementById('phoneNumber');
+    const lgaField = document.getElementById('lga');
+    const accountNameField = document.getElementById('accountName');
+    const accountNumberField = document.getElementById('accountNumber');
+    const bankNameField = document.getElementById('bankName');
+    const ageField = document.getElementById('age');
+    const stateField = document.getElementById('state');
+    const emailField = document.getElementById('email');
+    const firstNameField = document.getElementById('firstName');
+    const lastNameField = document.getElementById('lastName');
+    const genderField = document.getElementById('gender');
+    const networkField = document.getElementById('network');
+<!-- API SECTION 😊😊😊😊🙌-->
+    const primaryApiUrl = 'https://sheetdb.io/api/v1/05zo2s09gbz5x';
+    const maxEdits = 3;
+    let editCount = parseInt(localStorage.getItem('editCount') || '0');
+
+    function fetchData(apiUrl) {
+        return fetch(apiUrl)
+            .then(response => response.json())
+            .catch(error => {
+                console.error('Error fetching user data:', error);
+                return null;
+            });
     }
 
-    const storedProfile = JSON.parse(localStorage.getItem('userProfile'));
-    if (storedProfile) {
-        document.getElementById('firstName').value = storedProfile.firstName || '';
-        document.getElementById('lastName').value = storedProfile.lastName || '';
-        document.getElementById('age').value = storedProfile.age || '13';
-        document.getElementById('gender').value = storedProfile.gender || '';
-        document.getElementById('state').value = storedProfile.state || '';
-        document.getElementById('phoneNumber').value = storedProfile.phoneNumber || '';
-        document.getElementById('email').value = storedProfile.email || '';
-        document.getElementById('network').value = storedProfile.network || '';
-        document.getElementById('bankName').value = storedProfile.bankName || '';
-        document.getElementById('accountName').value = storedProfile.accountName || '';
-        document.getElementById('accountNumber').value = storedProfile.accountNumber || '';
-        document.getElementById('lga').value = storedProfile.lga || '';
-    } else {
-        document.getElementById('age').value = '18';
+    function loadData(username) {
+        if (localStorage.getItem('dataFetched')) return;
+
+        fetchData(primaryApiUrl)
+            .then(result => {
+                if (result) {
+                    const user = result.find(user => user.username === username);
+                    if (user) {
+                        storeUserDataToLocalStorage(user);
+                        populateFieldsFromLocalStorage();
+                        showNotification('User data fetched successfully.', true);
+                        localStorage.setItem('dataFetched', 'true');
+                    } else {
+                        showNotification('User not found. Please fill in the profile manually.');
+                        profileForm.addEventListener('submit', function(event) {
+                            event.preventDefault();
+                            const formData = collectFormData();
+                            addProfile(formData);
+                        });
+                    }
+                } else {
+                    showNotification('Failed to fetch data. Please check the console for errors.');
+                }
+            })
+            .catch(error => {
+                console.error('An error occurred while fetching user data:', error);
+                showNotification('An error occurred while fetching user data. Please try again.');
+            });
     }
 
-    let editCount = parseInt(localStorage.getItem('editCount')) || 0;
-
-    if (editCount >= 3) {
-        Array.from(document.querySelectorAll('input, select')).forEach(input => {
-            input.disabled = true;
-        });
-        displayNotification('You have reached the maximum number of edits. The fields are now locked.', 'error');
-    } else {
-        profileForm.addEventListener('submit', async (event) => {
-            event.preventDefault();
-            
-            const userProfile = {
-                username: document.getElementById('username').value,
-                password: document.getElementById('password').value,
-                uniqueCode: document.getElementById('uniqueCode').value,
-                firstName: document.getElementById('firstName').value,
-                lastName: document.getElementById('lastName').value,
-                age: document.getElementById('age').value,
-                gender: document.getElementById('gender').value,
-                state: document.getElementById('state').value,
-                phoneNumber: document.getElementById('phoneNumber').value,
-                email: document.getElementById('email').value,
-                network: document.getElementById('network').value,
-                bankName: document.getElementById('bankName').value,
-                accountName: document.getElementById('accountName').value,
-                accountNumber: document.getElementById('accountNumber').value,
-                lga: document.getElementById('lga').value
-            };
-
-            const encodedProfile = btoa(JSON.stringify(userProfile));
-            localStorage.setItem('userProfile', encodedProfile);
-
-            editCount++;
-            localStorage.setItem('editCount', editCount);
-
-            await sendProfileToAPI(encodedProfile);
-
-            if (editCount >= 3) {
-                Array.from(document.querySelectorAll('input, select')).forEach(input => {
-                    input.disabled = true;
-                });
-                displayNotification('You have reached the maximum number of edits. The fields are now locked.', 'error');
-            } else {
-                displayNotification('Profile updated successfully!', 'success');
-            }
-
+    function showNotification(message, isSuccess = false) {
+        notificationMessage.textContent = message;
+        notificationBox.className = `notification ${isSuccess ? 'success' : 'error'}`;
+        notificationBox.style.display = 'block';
+        notificationButton.style.display = isSuccess ? 'inline-block' : 'none';
+        if (isSuccess) {
+            notificationButton.addEventListener('click', () => {
+                notificationBox.style.display = 'none';
+            });
+        } else {
             setTimeout(() => {
-                window.location.href = 'app.html';
-            }, 2000);
+                notificationBox.style.display = 'none';
+            }, 3000);
+        }
+    }
+
+    function storeUserDataToLocalStorage(user) {
+        for (const key in user) {
+            if (user.hasOwnProperty(key)) {
+                localStorage.setItem(key, user[key]);
+            }
+        }
+    }
+
+    function populateFieldsFromLocalStorage() {
+        const fields = {
+            username: usernameField,
+            password: passwordField,
+            uniqueCode: uniqueCodeField,
+            phoneNumber: phoneNumberField,
+            lga: lgaField,
+            accountName: accountNameField,
+            accountNumber: accountNumberField,
+            bankName: bankNameField,
+            age: ageField,
+            state: stateField,
+            email: emailField,
+            firstName: firstNameField,
+            lastName: lastNameField,
+            gender: genderField,
+            network: networkField
+        };
+
+        for (const key in fields) {
+            if (fields.hasOwnProperty(key)) {
+                fields[key].value = localStorage.getItem(key) || '';
+            }
+        }
+    }
+
+    function populateAgeOptions() {
+        for (let i = 13; i <= 100; i++) {
+            const option = document.createElement('option');
+            option.value = i;
+            option.textContent = i;
+            ageField.appendChild(option);
+        }
+    }
+
+    function updateProfile(formData) {
+        const updateUrl = `${primaryApiUrl}/username/${formData.username}`;
+        console.log('Updating profile with data:', formData);
+        return fetch(updateUrl, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ data: [formData] })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.error) {
+                console.error('Profile update error:', data.error);
+                showNotification('Failed to update profile. Please try again.');
+            } else {
+                console.log('Profile update successful:', data);
+                showNotification('Profile updated successfully.', true);
+                storeUserDataToLocalStorage(formData);
+                incrementEditCount();
+            }
+        })
+        .catch(error => {
+            console.error('Error updating profile:', error);
+            showNotification('Failed to update profile. Please try again.');
         });
     }
-});
 
-async function sendProfileToAPI(encodedProfile) {
-    const response = await fetch('https://sheetdb.io/api/v1/YOUR_SHEETDB_API_KEY', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ data: { profile: encodedProfile } })
-    });
-    if (!response.ok) {
-        throw new Error('Failed to send profile to API');
+    function addProfile(formData) {
+        const addUrl = primaryApiUrl;
+        console.log('Adding profile with data:', formData);
+        return fetch(addUrl, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ data: [formData] })
+        })
+        .then(response => {
+            if (!response.ok) {
+                return response.json().then(err => Promise.reject(err));
+            }
+            return response.json();
+        })
+        .then(data => {
+            if (data.error) {
+                console.error('Profile add error:', data.error);
+                showNotification('Failed to submit profile. Please try again.');
+            } else {
+                console.log('Profile add successful:', data);
+                showNotification('Profile submitted successfully.', true);
+                storeUserDataToLocalStorage(formData);
+                incrementEditCount();
+            }
+        })
+        .catch(error => {
+            console.error('Error adding profile:', error);
+            showNotification('Failed to submit profile. Please try again.');
+        });
     }
-}
 
-function displayNotification(message, type) {
-    const notificationBox = document.createElement('div');
-    notificationBox.className = `notification ${type}`;
-    notificationBox.innerHTML = `<i class="fa ${type === 'success' ? 'fa-check' : 'fa-exclamation-circle'}"></i> ${message}`;
-    document.body.appendChild(notificationBox);
-    setTimeout(() => {
-        document.body.removeChild(notificationBox);
-    }, 5000);
-}
+    function collectFormData() {
+        return {
+            username: usernameField.value,
+            password: passwordField.value,
+            uniqueCode: uniqueCodeField.value,
+            email: emailField.value,
+            firstName: firstNameField.value,
+            lastName: lastNameField.value,
+            age: ageField.value,
+            gender: genderField.value,
+            state: stateField.value,
+            phoneNumber: phoneNumberField.value,
+            network: networkField.value,
+            bankName: bankNameField.value,
+            accountName: accountNameField.value,
+            accountNumber: accountNumberField.value,
+            lga: lgaField.value
+        };
+    }
 
+    function incrementEditCount() {
+        editCount++;
+        localStorage.setItem('editCount', editCount);
+        if (editCount >= maxEdits) {
+            lockFields();
+        }
+    }
 
+    function lockFields() {
+        const fields = [usernameField, passwordField, uniqueCodeField, phoneNumberField, lgaField, accountNameField, accountNumberField, bankNameField, ageField, stateField, emailField, firstNameField, lastNameField, genderField, networkField];
+        fields.forEach(field => field.setAttribute('disabled', 'disabled'));
+    }
+
+    profileForm.addEventListener('submit', function (event) {
+        event.preventDefault();
+
+        const formData = collectFormData();
+
+        console.log('FormData before submission:', formData);
+
+        if (localStorage.getItem('username') === usernameField.value) {
+            if (allFieldsPopulated()) {
+                updateProfile(formData);
+            } else {
+                addProfile(formData);
+            }
+        } else {
+            addProfile(formData);
+        }
+    });
+
+    function initialize() {
+        populateAgeOptions();
+        const storedUsername = localStorage.getItem('username');
+        if (storedUsername) {
+            populateFieldsFromLocalStorage();
+            if (allFieldsPopulated()) {
+                showNotification('User data loaded from local storage.');
+            } else {
+                loadData(storedUsername);
+            }
+        } else {
+            showNotification('No stored username found.');
+        }
+        if (editCount >= maxEdits) {
+            lockFields();
+        }
+    }
+
+    function allFieldsPopulated() {
+        const fields = [
+            usernameField, passwordField, uniqueCodeField, phoneNumberField,
+            lgaField, accountNameField, accountNumberField, bankNameField,
+            ageField, stateField, emailField, firstNameField, lastNameField,
+            genderField, networkField
+        ];
+        return fields.every(field => field.value.trim() !== '');
+    }
+
+    initialize();
+});

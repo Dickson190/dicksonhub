@@ -11,8 +11,8 @@ const sidenavHTML = `
         <a href="earn.html"><i class="fa-solid fa-dollar-sign"></i> Offerwall</a>
         <a href="task.html"><i class="fa-solid fa-tasks"></i> Task</a>
         <a href="posttask.html"><i class="fa-solid fa-circle-notch"></i> Post a Task</a>
-        <a href="responsetask.html"><i class="fa-solid fa-gift"></i> Task Reward</a>
-        <a href="gift.html"><i class="fa-solid fa-gift"></i> Claim Gift</a>
+      <a href="responsetask.html"><i class="fa-solid fa-paper-plane"></i> Task Submissions</a>  <a href="taskreward.html"><i class="fa-solid fa-gift"></i> Task Reward</a>
+<a href="gift.html"><i class="fa-solid fa-box-open"></i> Claim Gift</a>
         <a href="shop.html"><i class="fa-solid fa-shop"></i> Shop</a>
         <a href="clicks.html"><i class="fa-solid fa-share"></i> Click to Earn</a>
         <a href="refer_earn.html"><i class="fa-solid fa-share-nodes"></i> Refer & Earn</a>
