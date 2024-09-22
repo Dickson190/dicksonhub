@@ -9,26 +9,28 @@ document.addEventListener('DOMContentLoaded', function() {
         const currentPassword = localStorage.getItem('password');
         const withdrawalHistoryKey = `${userPhoneNumber}_${currentUser}_${currentPassword}_withdrawalHistory`;
         const withdrawalHistory = JSON.parse(localStorage.getItem(withdrawalHistoryKey)) || [];
-        
+
         const matchingRecord = withdrawalHistory.find(record => record.transactionId === transactionId);
-        
+
         if (matchingRecord) {
             return matchingRecord.status || "PENDING";  // Return the status, default to PENDING if not found
         }
         return "PENDING";  // Default to PENDING if no match is found
     }
 
+    // Function to update the transaction table
     function updateTransactionTable() {
         const transactionTable = document.getElementById('transactionTableBody');
         transactionTable.innerHTML = ''; // Clear existing rows
 
-        // Retrieve transactions, withdrawals, and deposits from local storage
+        // Retrieve transactions, withdrawals, deposits, and claim rewards from local storage
         const transactions = JSON.parse(localStorage.getItem('transactions')) || [];
         const withdrawals = getWithdrawalHistory();
         const deposits = getDepositHistory();
+        const claims = getClaimTransactions(); // Retrieve click claim transactions
 
         // Combine all entries and sort by the most recent date and time
-        const allEntries = [...transactions, ...withdrawals, ...deposits].filter(entry => entry.fullDate).sort((a, b) => new Date(b.fullDate) - new Date(a.fullDate));
+        const allEntries = [...transactions, ...withdrawals, ...deposits, ...claims].filter(entry => entry.fullDate).sort((a, b) => new Date(b.fullDate) - new Date(a.fullDate));
 
         // Determine the transactions to display
         const entriesToShow = showingAllTransactions ? allEntries : allEntries.slice(0, transactionsPerPage);
@@ -37,7 +39,7 @@ document.addEventListener('DOMContentLoaded', function() {
         entriesToShow.forEach(entry => {
             const row = document.createElement('tr');
             let statusDetails = entry.details || 'CREDITED';
-            
+
             // Update the details if it's a withdrawal with a "COMPLETED" status
             if (entry.type === 'Withdrawal') {
                 const storedStatus = getStatusFromLocalStorage(entry.transactionId);
@@ -55,6 +57,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
+    // Function to add a transaction (used for all transaction types)
     function addTransaction(type, amount, details = 'CREDITED') {
         const transactions = JSON.parse(localStorage.getItem('transactions')) || [];
         const now = new Date();
@@ -68,6 +71,7 @@ document.addEventListener('DOMContentLoaded', function() {
         updateTransactionTable();
     }
 
+    // Function to retrieve withdrawal history
     function getWithdrawalHistory() {
         const userPhoneNumber = localStorage.getItem('phoneNumber');
         const currentUser = localStorage.getItem('username');
@@ -106,6 +110,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
+    // Function to retrieve deposit history
     function getDepositHistory() {
         const userPhoneNumber = localStorage.getItem('phoneNumber');
         const currentUser = localStorage.getItem('username');
@@ -138,6 +143,44 @@ document.addEventListener('DOMContentLoaded', function() {
                 date: record.date || '-',
                 amount: record.amount || '-',
                 details: `Bank: ${record.bankName || '-'}, Account: ${record.accountNumber || '-'}`,
+                fullDate: fullDate.toISOString()
+            };
+        });
+    }
+
+    // Function to retrieve click claim transactions from local storage
+    function getClaimTransactions() {
+        const userPhoneNumber = localStorage.getItem('phoneNumber');
+        const currentUser = localStorage.getItem('username');
+        const currentPassword = localStorage.getItem('password');
+        const claimHistoryKey = `${userPhoneNumber}_${currentUser}_${currentPassword}_claimHistory`;
+        const claimHistory = JSON.parse(localStorage.getItem(claimHistoryKey)) || [];
+
+        return claimHistory.map(record => {
+            let fullDate = null;
+            try {
+                if (record.date && record.time) {
+                    fullDate = new Date(`${record.date}, ${record.time}`);
+                    if (isNaN(fullDate)) {
+                        fullDate = new Date(`${record.date} ${record.time}`);
+                    }
+                    if (isNaN(fullDate)) {
+                        throw new Error('Invalid date or time format');
+                    }
+                } else {
+                    throw new Error('Missing date or time information');
+                }
+            } catch (error) {
+                console.error(`Error parsing claim record: ${JSON.stringify(record)} - ${error.message}`);
+                fullDate = new Date();
+            }
+
+            return {
+                type: 'Click Claim',
+                time: record.time || '-',
+                date: record.date || '-',
+                amount: record.amount || '-',
+                details: 'Reward Claimed',  // Display this for all claim transactions
                 fullDate: fullDate.toISOString()
             };
         });

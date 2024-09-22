@@ -14,6 +14,7 @@ const sidenavHTML = `
         <a href="responsetask.html"><i class="fa-solid fa-gift"></i> Task Reward</a>
         <a href="gift.html"><i class="fa-solid fa-gift"></i> Claim Gift</a>
         <a href="shop.html"><i class="fa-solid fa-shop"></i> Shop</a>
+        <a href="clicks.html"><i class="fa-solid fa-share"></i> Click to Earn</a>
         <a href="refer_earn.html"><i class="fa-solid fa-share-nodes"></i> Refer & Earn</a>
 
         <a href="withdraw.html"><i class="fa-solid fa-wallet"></i> Withdraw</a>
