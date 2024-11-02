@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enhanced Notepad</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            background-color: #f5f5f5;
+        }
+
+        .notepad-container {
+            width: 80%;
+            max-width: 800px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            background-color: #fff;
+            position: relative;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px;
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        .header select, .header button {
+            padding: 8px 12px;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+
+        .header select {
+            margin-right: 10px;
+        }
+
+        .counters {
+            font-size: 14px;
+            color: #333;
+            padding: 5px;
+            text-align: right;
+        }
+
+        textarea {
+            width: 100%;
+            height: 70vh;
+            padding: 10px;
+            font-size: 16px;
+            border: none;
+            resize: none;
+            outline: none;
+            background-color: #fdfdfd;
+        }
+
+        /* Notification box styling */
+        .notification {
+            display: none;
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            font-size: 16px;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+        }
+
+        .notification.show {
+            display: block;
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+    <div class="notepad-container">
+        <div class="header">
+            <select id="fileType">
+                <option value="txt">Save as .txt</option>
+                <option value="html">Save as .html</option>
+                <option value="js">Save as .js</option>
+                <option value="css">Save as .css</option>
+            </select>
+            <button onclick="saveFile()">Save</button>
+        </div>
+        <textarea id="notepad" placeholder="Start typing or paste your text here..." oninput="updateCounters()"></textarea>
+        <div class="counters" id="counters">Words: 0 | Lines: 0</div>
+        <div class="notification" id="notification">File saved successfully!</div>
+    </div>
+
+    <script>
+        // Function to save the file
+        function saveFile() {
+            const text = document.getElementById('notepad').value;
+            const fileType = document.getElementById('fileType').value;
+            const blob = new Blob([text], { type: 'text/plain' });
+            const link = document.createElement('a');
+            
+            link.href = URL.createObjectURL(blob);
+            link.download = `notepad.${fileType}`;
+            link.click();
+            
+            // Clean up URL object to prevent memory leaks
+            URL.revokeObjectURL(link.href);
+            
+            // Show notification
+            showNotification();
+        }
+
+        // Function to show notification
+        function showNotification() {
+            const notification = document.getElementById('notification');
+            notification.classList.add('show');
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 2000); // Hide after 2 seconds
+        }
+
+        // Function to update word and line counters
+        function updateCounters() {
+            const text = document.getElementById('notepad').value;
+            const words = text.match(/\b\S+\b/g) ? text.match(/\b\S+\b/g).length : 0;
+            const lines = text.split(/\n/).length;
+            document.getElementById('counters').textContent = `Words: ${words} | Lines: ${lines}`;
+        }
+    </script>
+</body>
+</html>
